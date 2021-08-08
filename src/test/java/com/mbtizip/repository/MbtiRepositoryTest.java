@@ -1,6 +1,7 @@
 package com.mbtizip.repository;
 
 import com.mbtizip.domain.mbti.Mbti;
+import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.mbti.MbtiRepository;
 import org.junit.jupiter.api.Test;
@@ -21,9 +22,8 @@ class MbtiRepositoryTest {
     @Test
     public void MBTI_등록_조회(){
         //given
-        String name = "INFP";
         Mbti mbti = Mbti.builder()
-                .name(name)
+                .name(MbtiEnum.INFP)
                 .build();
 
         //when
@@ -32,7 +32,7 @@ class MbtiRepositoryTest {
         //then
         Mbti findMbti = mbtiRepository.find(saveId);
 
-        assertEquals(findMbti.getName(), name);
+        assertEquals(findMbti.getName(), MbtiEnum.INFP);
     }
 
     @Test

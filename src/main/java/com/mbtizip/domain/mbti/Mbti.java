@@ -1,14 +1,15 @@
 package com.mbtizip.domain.mbti;
 
+import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.person.Person;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,6 +23,11 @@ public class Mbti {
     private Long id;
 
     @Column(name = "mbti_name")
-    private String name;
+    private MbtiEnum name;
 
+    @OneToMany(mappedBy = "mbti")
+    private List<Person> persons = new ArrayList<>();
+
+    @OneToMany(mappedBy = "mbti")
+    private List<Job> jobs = new ArrayList<>();
 }

@@ -1,8 +1,6 @@
 package com.mbtizip.repository.mbtiCount;
 
-import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
-import com.mbtizip.domain.person.Person;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -39,6 +37,22 @@ public class MbtiCountRepositoryImpl implements MbtiCountRepository {
                         "where c.person.id =: personId")
                 .setParameter("personId", personId)
                 .getResultList();
+    }
+
+    @Override
+    public MbtiCount findMaxByJob(Long jobId) {
+        return (MbtiCount) em.createQuery("select c from MbtiCount c" +
+                " where c.job.id =: jobId order by c.count desc")
+                .setParameter("jobId", jobId)
+                .getResultList().get(0);
+    }
+
+    @Override
+    public MbtiCount findMaxByPerson(Long personId) {
+        return (MbtiCount) em.createQuery("select c from MbtiCount c" +
+                        " where c.person.id =: personId order by c.count desc")
+                .setParameter("personId", personId)
+                .getResultList().get(0);
     }
 
 }

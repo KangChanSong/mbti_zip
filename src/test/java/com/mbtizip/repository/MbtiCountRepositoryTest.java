@@ -53,4 +53,29 @@ class MbtiCountRepositoryTest {
 
     }
 
+    @Test
+    public void FIND_MAX_테스트(){
+
+        //given
+        String jobTitle = "개발자";
+        Job job = Job.builder().title(jobTitle).build();
+        Long jobId = jobRepository.save(job);
+
+        MbtiCount mbtiCount1 = MbtiCount.builder().job(job).count(1).build();
+        MbtiCount mbtiCount2 = MbtiCount.builder().job(job).count(2).build();
+        MbtiCount mbtiCount3 = MbtiCount.builder().job(job).count(3).build();
+        MbtiCount mbtiMax = MbtiCount.builder().job(job).count(4).build();
+
+        //when
+        mbtiCountRepository.save(mbtiCount1);
+        mbtiCountRepository.save(mbtiCount2);
+        mbtiCountRepository.save(mbtiCount3);
+        mbtiCountRepository.save(mbtiMax);
+
+        //then
+        MbtiCount maxObject = mbtiCountRepository.findMaxByJob(jobId);
+        assertTrue(maxObject.getCount() > mbtiCount1.getCount());
+        assertTrue(maxObject.getCount() > mbtiCount2.getCount());
+        assertTrue(maxObject.getCount() > mbtiCount3.getCount());
+    }
 }

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -24,5 +25,12 @@ public class JobRepositoryImpl implements JobRepository{
         Job job = em.find(Job.class, id);
         if(job == null) throw new NoEntityFoundException("Job 을 찾을 수 없습니다. id = " +  id);
         return job;
+    }
+
+    @Override
+    public List<Job> findAllWithMbti() {
+        return em.createQuery("select j from Job j " +
+                "join fetch j.mbti")
+                .getResultList();
     }
 }
