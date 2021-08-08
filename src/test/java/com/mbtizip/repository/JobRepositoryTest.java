@@ -1,8 +1,8 @@
 package com.mbtizip.repository;
 
-import com.mbtizip.domain.mbti.Mbti;
+import com.mbtizip.domain.job.Job;
 import com.mbtizip.exception.NoEntityFoundException;
-import com.mbtizip.repository.mbti.MbtiRepository;
+import com.mbtizip.repository.job.JobRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,26 +13,26 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
-class MbtiRepositoryTest {
+class JobRepositoryTest {
 
     @Autowired
-    MbtiRepository mbtiRepository;
-
-    @Test
-    public void MBTI_등록_조회(){
+    private JobRepository jobRepository;
+    
+    @Test 
+    public void 직업_등록(){
         //given
-        String name = "INFP";
-        Mbti mbti = Mbti.builder()
-                .name(name)
+        String title = "개발자";
+        Job job = Job.builder()
+                .title(title)
                 .build();
-
+        
         //when
-        Long saveId = mbtiRepository.save(mbti);
-
+        Long saveId = jobRepository.save(job);
+        
         //then
-        Mbti findMbti = mbtiRepository.find(saveId);
+        Job findJob = jobRepository.find(saveId);
 
-        assertEquals(findMbti.getName(), name);
+        assertEquals(findJob.getTitle(), title);
     }
 
     @Test
@@ -40,7 +40,7 @@ class MbtiRepositoryTest {
         //then
 
         assertThrows(NoEntityFoundException.class, () -> {
-            mbtiRepository.find(123L);
+           jobRepository.find(123L);
         });
     }
 

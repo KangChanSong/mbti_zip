@@ -1,4 +1,4 @@
-package com.mbtizip.domain;
+package com.mbtizip.domain.mbti;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

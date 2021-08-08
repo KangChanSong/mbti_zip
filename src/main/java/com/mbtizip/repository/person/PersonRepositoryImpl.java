@@ -1,0 +1,37 @@
+package com.mbtizip.repository.person;
+
+import com.mbtizip.domain.person.Person;
+import com.mbtizip.exception.NoEntityFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import java.util.List;
+
+
+@Repository
+@RequiredArgsConstructor
+public class PersonRepositoryImpl implements PersonRepository{
+
+    private final EntityManager em;
+
+    @Override
+    public Long save(Person person) {
+        em.persist(person);
+        return person.getId();
+    }
+
+    @Override
+    public Person find(Long id) {
+        Person person = em.find(Person.class, id);
+        if(person == null) throw new NoEntityFoundException("Person 을 찾을 수 없습니다. id = " + id);
+        return person;
+    }
+
+    @Override
+    public List<Person> getList() {
+        return em.createQuery("select p from Person p " +
+                "join fetch p.mbti")
+                .getResultList();
+    }
+}
