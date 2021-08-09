@@ -1,5 +1,6 @@
 package com.mbtizip.domain.person;
 
+import com.mbtizip.domain.personCategory.PersonCategory;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.comment.Comment;
 import lombok.AllArgsConstructor;
@@ -46,6 +47,9 @@ public class Person {
     @JoinColumn(name = "mbti_id")
     private Mbti mbti;
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    private List<PersonCategory> personCategories = new ArrayList<>();
 }

@@ -1,6 +1,7 @@
 package com.mbtizip.domain.comment;
 
 import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.person.Person;
 import lombok.*;
 
@@ -31,5 +32,14 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_id")
     private Job job;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mbti_id")
+    private Mbti mbti;
+
+    public void update(Comment comment) {
+        this.content = comment.getContent();
+        this.writer = comment.getWriter();
+    }
 }
 

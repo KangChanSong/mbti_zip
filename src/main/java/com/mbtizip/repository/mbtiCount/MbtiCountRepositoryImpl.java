@@ -5,6 +5,7 @@ import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.exception.TooManyEntityException;
+import com.mbtizip.repository.common.CommonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -19,19 +20,13 @@ public class MbtiCountRepositoryImpl implements MbtiCountRepository {
     private final EntityManager em;
 
     @Override
-    public List<MbtiCount> findAllByJob(Long jobId) {
-        return em.createQuery("select c from MbtiCount c " +
-                "where c.job.id =: jobId")
-                .setParameter("jobId", jobId)
-                .getResultList();
+    public List<MbtiCount> findAllByJob(Job job) {
+        return (List<MbtiCount>) CommonRepository.findAllByObject(em, MbtiCount.class, Job.class, job.getId());
     }
 
     @Override
-    public List<MbtiCount> findAllByPerson(Long personId) {
-        return em.createQuery("select c from MbtiCount c " +
-                        "where c.person.id =: personId")
-                .setParameter("personId", personId)
-                .getResultList();
+    public List<MbtiCount> findAllByPerson(Person person) {
+        return (List<MbtiCount>) CommonRepository.findAllByObject(em, MbtiCount.class, Person.class,  person.getId());
     }
 
     @Override

@@ -22,6 +22,12 @@ public class TestPersonRepository {
         return person;
     }
 
+    public Person createPerson(String name){
+        Person person = Person.builder().name(name).build();
+        em.persist(person);
+        return person;
+    }
+
     public Person createPersonWithMbti(Mbti mbti){
         Person person = Person.builder()
                 .mbti(mbti)

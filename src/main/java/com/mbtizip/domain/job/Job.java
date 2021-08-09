@@ -37,6 +37,6 @@ public class Job {
     @JoinColumn(name = "mbti_id")
     private Mbti mbti;
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 }

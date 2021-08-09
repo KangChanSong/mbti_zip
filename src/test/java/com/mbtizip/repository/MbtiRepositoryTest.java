@@ -4,10 +4,18 @@ import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.mbti.MbtiRepository;
+import com.mbtizip.repository.test.TestMbtiRepository;
+import org.hibernate.exception.ConstraintViolationException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -18,6 +26,16 @@ class MbtiRepositoryTest {
 
     @Autowired
     MbtiRepository mbtiRepository;
+
+    @Autowired
+    EntityManager em;
+
+    TestMbtiRepository testMbtiRepository;
+
+    @BeforeEach
+    public void setUp(){
+        testMbtiRepository = new TestMbtiRepository(em);
+    }
 
     @Test
     public void MBTI_등록_조회(){
@@ -42,6 +60,30 @@ class MbtiRepositoryTest {
         assertThrows(NoEntityFoundException.class, () -> {
             mbtiRepository.find(123L);
         });
+    }
+
+    @Test
+    public void UNIQUE_KEY_테스트(){
+
+        //given
+        Mbti mbti1 = Mbti.builder()
+                .name(MbtiEnum.INFP)
+                .build();
+
+        Mbti mbti2 = Mbti.builder()
+                .name(MbtiEnum.INFP)
+                .build();
+
+        //when
+        mbtiRepository.save(mbti1);
+        mbtiRepository.save(mbti2);
+
+        // 왜 persist 할때는 unique 에 대한 에러가 안나고 조회를 할때 에러가 나지????...
+        //then
+        Assertions.assertThrows(PersistenceException.class , ()->{
+           testMbtiRepository.findAll();
+        });
+
     }
 
 }
