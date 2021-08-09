@@ -1,7 +1,7 @@
 package com.mbtizip.domain.person;
 
 import com.mbtizip.domain.mbti.Mbti;
-import com.mbtizip.domain.mbtiCount.MbtiCount;
+import com.mbtizip.domain.comment.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,4 +45,7 @@ public class Person {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mbti_id")
     private Mbti mbti;
+
+    @OneToMany(mappedBy = "person")
+    private List<Comment> comments = new ArrayList<>();
 }

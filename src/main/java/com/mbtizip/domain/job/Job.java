@@ -1,7 +1,7 @@
 package com.mbtizip.domain.job;
 
 import com.mbtizip.domain.mbti.Mbti;
-import com.mbtizip.domain.mbtiCount.MbtiCount;
+import com.mbtizip.domain.comment.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,4 +36,7 @@ public class Job {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mbti_id")
     private Mbti mbti;
+
+    @OneToMany(mappedBy = "person")
+    private List<Comment> comments = new ArrayList<>();
 }

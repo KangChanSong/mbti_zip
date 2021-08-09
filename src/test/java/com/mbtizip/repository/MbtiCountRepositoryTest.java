@@ -83,7 +83,7 @@ class MbtiCountRepositoryTest {
         childMbtiCountRepository.save(mbtiMax);
 
         //then
-        MbtiCount maxObject = childMbtiCountRepository.findMaxByJob(job.getId());
+        MbtiCount maxObject = childMbtiCountRepository.findMaxByJob(job);
         assertTrue(maxObject.getCount() > mbtiCount1.getCount());
         assertTrue(maxObject.getCount() > mbtiCount2.getCount());
         assertTrue(maxObject.getCount() > mbtiCount3.getCount());
@@ -100,7 +100,7 @@ class MbtiCountRepositoryTest {
         childMbtiCountRepository.modifyJobCount(mbti, job, true);
 
         //then
-        MbtiCount max = childMbtiCountRepository.findMaxByJob(job.getId());
+        MbtiCount max = childMbtiCountRepository.findMaxByJob(job);
         List<MbtiCount> counts = childMbtiCountRepository.findAllByJob(job.getId());
 
         assertEquals(counts.size(), 1);
@@ -118,7 +118,7 @@ class MbtiCountRepositoryTest {
         childMbtiCountRepository.modifyPersonCount(mbti, person, true);
 
         //then
-        MbtiCount max = childMbtiCountRepository.findMaxByPerson(person.getId());
+        MbtiCount max = childMbtiCountRepository.findMaxByPerson(person);
         List<MbtiCount> counts = childMbtiCountRepository.findAllByPerson(person.getId());
 
         assertEquals(counts.size(), 1);
@@ -147,6 +147,29 @@ class MbtiCountRepositoryTest {
 
     }
 
+    @Test
+    public void 두번_이상_증가(){
+
+        //given
+        Mbti mbti = testMbtiRepository.findAll().get(0);
+        Job job = testJobRepository.createJobWithMbti(mbti);
+
+        int count = 10;
+        //when
+        for(int i = 0 ; i < 10 ; i++){
+            childMbtiCountRepository.modifyJobCount(mbti, job , true);
+        }
+
+        //then
+        MbtiCount max = childMbtiCountRepository.findMaxByJob(job);
+    }
+
+    /**
+     *
+     * @param count MbtiCount 를 등록할때의 카운트 수
+     * @return count 를 1 감소시키고 엔티티 반환 
+     *          0일때는 감소안됨
+     */
     private MbtiCount decreaseAndGet(int count){
         Mbti mbti = testMbtiRepository.findAll().get(0);
         Job job = testJobRepository.createJobWithMbti(mbti);
@@ -165,6 +188,9 @@ class MbtiCountRepositoryTest {
         return mbtiCount;
     }
 
+    /**
+     * static 클래스
+     */
     static class ChildMbtiCountRepository extends MbtiCountRepositoryImpl{
 
         private final EntityManager thisEm;

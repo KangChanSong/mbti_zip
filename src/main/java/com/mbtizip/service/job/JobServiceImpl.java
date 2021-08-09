@@ -32,16 +32,17 @@ public class JobServiceImpl implements JobService{
 
     @Override
     public void increaseMbtiCount(Mbti mbti, Job job) {
-        
+        mbtiCountRepository.modifyJobCount(mbti, job , true);
     }
 
     @Override
     public void decreaseMbtiCount(Mbti mbti, Job job) {
-
+        mbtiCountRepository.modifyJobCount(mbti, job, false);
     }
 
     @Override
     public List<Job> findAllWithMbti() {
-        return null;
+
+        return jobRepository.findAllWithMbti();
     }
 }

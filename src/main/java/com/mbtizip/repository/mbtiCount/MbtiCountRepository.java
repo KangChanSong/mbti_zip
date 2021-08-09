@@ -13,8 +13,8 @@ public interface MbtiCountRepository {
     List<MbtiCount> findAllByPerson(Long personId);
 
     // 최댓값 불러오는 메서드
-    MbtiCount findMaxByJob(Long jobId);
-    MbtiCount findMaxByPerson(Long personId);
+    MbtiCount findMaxByJob(Job job);
+    MbtiCount findMaxByPerson(Person person);
 
     // 카운트 증가, 감소 메서드
     void modifyJobCount(Mbti mbti , Job job, boolean isIncrease);
