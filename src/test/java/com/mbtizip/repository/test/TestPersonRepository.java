@@ -5,18 +5,20 @@ import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.repository.person.PersonRepository;
 
-public class PersonTestHelper {
+import javax.persistence.EntityManager;
+
+public class TestPersonRepository {
     public static final String PERSON_NAME ="송강찬";
 
-    PersonRepository personRepository;
+    EntityManager em;
 
-    public PersonTestHelper(PersonRepository personRepository) {
-        this.personRepository = personRepository;
+    public TestPersonRepository(EntityManager em) {
+        this.em = em;
     }
 
     public Person createPerson(){
         Person person = Person.builder().name(PERSON_NAME).build();
-        personRepository.save(person);
+        em.persist(person);
         return person;
     }
 
@@ -24,7 +26,7 @@ public class PersonTestHelper {
         Person person = Person.builder()
                 .mbti(mbti)
                 .name(PERSON_NAME).build();
-        personRepository.save(person);
+        em.persist(person);
         return person;
     }
 }

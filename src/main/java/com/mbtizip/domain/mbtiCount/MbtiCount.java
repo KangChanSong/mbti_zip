@@ -47,8 +47,6 @@ public class MbtiCount {
         } else {
             if(this.count > 0){
                 this.count--;
-            } else {
-                throw new IllegalArgumentException("count = 0 에서 더이상 감소할 수 없습니다.");
             }
         }
     }

@@ -4,19 +4,21 @@ import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.repository.job.JobRepository;
 
-public class JobTestHelper {
+import javax.persistence.EntityManager;
+
+public class TestJobRepository {
 
     public static final String JOB_TITLE = "개발자";
 
-    JobRepository jobRepository;
+    EntityManager em;
 
-    public JobTestHelper(JobRepository jobRepository) {
-        this.jobRepository = jobRepository;
+    public TestJobRepository(EntityManager em) {
+        this.em = em;
     }
 
     public Job createJob(){
         Job job = Job.builder().title(JOB_TITLE).build();
-        jobRepository.save(job);
+        em.persist(job);
         return job;
     }
 
@@ -25,7 +27,7 @@ public class JobTestHelper {
         Job job = Job.builder()
                 .mbti(mbti)
                 .title(JOB_TITLE).build();
-        jobRepository.save(job);
+        em.persist(job);
         return job;
     }
 }

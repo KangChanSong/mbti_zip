@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,16 +18,6 @@ import java.util.Locale;
 public class MbtiCountRepositoryImpl implements MbtiCountRepository {
 
     private final EntityManager em;
-
-    @Override
-    public Long save(MbtiCount mbtiCount){
-        em.persist(mbtiCount);
-        return mbtiCount.getId();
-    }
-    @Override
-    public MbtiCount find(Long id){
-        return em.find(MbtiCount.class, id);
-    }
 
     @Override
     public List<MbtiCount> findAllByJob(Long jobId) {
@@ -81,10 +72,7 @@ public class MbtiCountRepositoryImpl implements MbtiCountRepository {
     @Override
     public void modifyPersonCount(Mbti mbti, Person person, boolean isIncrease) {
 
-
-
         List<MbtiCount> mbtiCounts = getMbtiCounts(mbti, person, person.getId());
-        mbtiCounts.get(0).updateCount(isIncrease);
 
         if(mbtiCounts.size() == 0){
             MbtiCount mbtiCount = MbtiCount.builder()
@@ -121,6 +109,10 @@ public class MbtiCountRepositoryImpl implements MbtiCountRepository {
         }
 
         return mbtiCounts;
+    }
+
+    private void save(MbtiCount mbtiCount){
+        em.persist(mbtiCount);
     }
 
 

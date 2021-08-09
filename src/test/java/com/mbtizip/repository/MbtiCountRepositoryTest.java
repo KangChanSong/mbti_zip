@@ -4,14 +4,10 @@ import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
 import com.mbtizip.domain.person.Person;
-import com.mbtizip.repository.job.JobRepository;
-import com.mbtizip.repository.mbti.MbtiRepository;
-import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
-import com.mbtizip.repository.person.PersonRepository;
-import com.mbtizip.repository.test.JobTestHelper;
-import com.mbtizip.repository.test.PersonTestHelper;
+import com.mbtizip.repository.mbtiCount.MbtiCountRepositoryImpl;
+import com.mbtizip.repository.test.TestJobRepository;
 import com.mbtizip.repository.test.TestMbtiRepository;
-import org.junit.jupiter.api.Assertions;
+import com.mbtizip.repository.test.TestPersonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,34 +17,31 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.mbtizip.repository.test.JobTestHelper.JOB_TITLE;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.mbtizip.repository.test.TestJobRepository.JOB_TITLE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Transactional
 class MbtiCountRepositoryTest {
 
-    @Autowired
-    MbtiCountRepository mbtiCountRepository;
 
-    @Autowired
-    JobRepository jobRepository;
-
-    @Autowired
-    PersonRepository personRepository;
 
     @Autowired
     EntityManager em;
 
-    PersonTestHelper personTestHelper;
-    JobTestHelper jobTestHelper;
+    //== 테스트 대역 ==//
+    ChildMbtiCountRepository childMbtiCountRepository;
+    TestPersonRepository testPersonRepository;
+    TestJobRepository testJobRepository;
     TestMbtiRepository testMbtiRepository;
 
     @BeforeEach
     public void setUp(){
         testMbtiRepository = new TestMbtiRepository(em);
-        personTestHelper = new PersonTestHelper(personRepository);
-        jobTestHelper = new JobTestHelper(jobRepository);
+        testPersonRepository = new TestPersonRepository(em);
+        testJobRepository = new TestJobRepository(em);
+        childMbtiCountRepository = new ChildMbtiCountRepository(em);
     }
 
     @Test
@@ -56,16 +49,16 @@ class MbtiCountRepositoryTest {
         //given
         // -- Job  먼저 영속성 컨텍스트에 저장 -- //
 
-        Job job = jobTestHelper.createJob();
+        Job job = testJobRepository.createJob();
         MbtiCount mbtiCount = MbtiCount.builder()
                 .job(job)
                 .count(1)
                 .build();
 
         //when
-        Long saveid = mbtiCountRepository.save(mbtiCount);
+        Long saveid = childMbtiCountRepository.save(mbtiCount);
         //then
-        List<MbtiCount> mbtiCounts = mbtiCountRepository.findAllByJob(job.getId());
+        List<MbtiCount> mbtiCounts = childMbtiCountRepository.findAllByJob(job.getId());
 
         assertEquals(mbtiCounts.size() , 1);
         assertEquals(mbtiCounts.get(0).getJob().getTitle(), JOB_TITLE);
@@ -76,7 +69,7 @@ class MbtiCountRepositoryTest {
     public void FIND_MAX_테스트(){
 
         //given
-        Job job = jobTestHelper.createJob();
+        Job job = testJobRepository.createJob();
 
         MbtiCount mbtiCount1 = MbtiCount.builder().job(job).count(1).build();
         MbtiCount mbtiCount2 = MbtiCount.builder().job(job).count(2).build();
@@ -84,13 +77,13 @@ class MbtiCountRepositoryTest {
         MbtiCount mbtiMax = MbtiCount.builder().job(job).count(4).build();
 
         //when
-        mbtiCountRepository.save(mbtiCount1);
-        mbtiCountRepository.save(mbtiCount2);
-        mbtiCountRepository.save(mbtiCount3);
-        mbtiCountRepository.save(mbtiMax);
+        childMbtiCountRepository.save(mbtiCount1);
+        childMbtiCountRepository.save(mbtiCount2);
+        childMbtiCountRepository.save(mbtiCount3);
+        childMbtiCountRepository.save(mbtiMax);
 
         //then
-        MbtiCount maxObject = mbtiCountRepository.findMaxByJob(job.getId());
+        MbtiCount maxObject = childMbtiCountRepository.findMaxByJob(job.getId());
         assertTrue(maxObject.getCount() > mbtiCount1.getCount());
         assertTrue(maxObject.getCount() > mbtiCount2.getCount());
         assertTrue(maxObject.getCount() > mbtiCount3.getCount());
@@ -101,13 +94,16 @@ class MbtiCountRepositoryTest {
 
         //given
         Mbti mbti = testMbtiRepository.findAll().get(0);
-        Job job = jobTestHelper.createJobWithMbti(mbti);
+        Job job = testJobRepository.createJobWithMbti(mbti);
 
         //when
-        mbtiCountRepository.modifyJobCount(mbti, job, true);
+        childMbtiCountRepository.modifyJobCount(mbti, job, true);
 
         //then
-        MbtiCount max = mbtiCountRepository.findMaxByJob(job.getId());
+        MbtiCount max = childMbtiCountRepository.findMaxByJob(job.getId());
+        List<MbtiCount> counts = childMbtiCountRepository.findAllByJob(job.getId());
+
+        assertEquals(counts.size(), 1);
         assertEquals(max.getCount(), 1);
     }
 
@@ -116,15 +112,73 @@ class MbtiCountRepositoryTest {
 
         //given
         Mbti mbti = testMbtiRepository.findAll().get(0);
-        Person person = personTestHelper.createPersonWithMbti(mbti);
+        Person person = testPersonRepository.createPersonWithMbti(mbti);
 
         //when
-        mbtiCountRepository.modifyPersonCount(mbti, person, true);
+        childMbtiCountRepository.modifyPersonCount(mbti, person, true);
 
         //then
-        MbtiCount max = mbtiCountRepository.findMaxByPerson(person.getId());
+        MbtiCount max = childMbtiCountRepository.findMaxByPerson(person.getId());
+        List<MbtiCount> counts = childMbtiCountRepository.findAllByPerson(person.getId());
+
+        assertEquals(counts.size(), 1);
+        assertEquals(max.getCount(), 1);
     }
 
+    @Test
+    public void 감소_테스트(){
+
+        //given
+        int count = 1;
+
+        //when
+        MbtiCount mbtiCount = decreaseAndGet(count);
+
+        //then
+        assertEquals(mbtiCount.getCount(), count-1);
+    }
+
+    @Test
+    public void 감소_테스트_0일떄(){
+        //when
+        MbtiCount mbtiCount = decreaseAndGet(0);
+        //then
+        assertEquals(mbtiCount.getCount(), 0);
+
+    }
+
+    private MbtiCount decreaseAndGet(int count){
+        Mbti mbti = testMbtiRepository.findAll().get(0);
+        Job job = testJobRepository.createJobWithMbti(mbti);
+
+        MbtiCount mbtiCount = MbtiCount.builder()
+                .mbti(mbti)
+                .job(job)
+                .count(count)
+                .build();
+        childMbtiCountRepository.save(mbtiCount);
+
+        assertEquals(mbtiCount.getCount() , count);
+
+        childMbtiCountRepository.modifyJobCount(mbti, job , false);
+
+        return mbtiCount;
+    }
+
+    static class ChildMbtiCountRepository extends MbtiCountRepositoryImpl{
+
+        private final EntityManager thisEm;
+
+        public ChildMbtiCountRepository(EntityManager em) {
+            super(em);
+            thisEm = em;
+        }
+
+        public Long save(MbtiCount mbtiCount){
+            thisEm.persist(mbtiCount);
+            return mbtiCount.getId();
+        }
+    }
 
 
 }
