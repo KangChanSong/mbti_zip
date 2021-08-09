@@ -1,7 +1,9 @@
 package com.mbtizip.repository.job;
 
 import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.exception.NoEntityFoundException;
+import com.mbtizip.repository.common.CommonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -33,4 +35,25 @@ public class JobRepositoryImpl implements JobRepository{
                 "join fetch j.mbti")
                 .getResultList();
     }
+
+    @Override
+    public List<Job> findAllByMbti(Mbti mbti) {
+        return em.createQuery("select j from Job j" +
+                        " join fetch j.mbti" +
+                        " where j.mbti.id =: mbtiId")
+                .setParameter("mbtiId", mbti.getId())
+                .getResultList();
+    }
+
+    @Override
+    public void modifyLikes(Job job, Boolean isIncrease) {
+        CommonRepository.modifyLikes(em, Job.class, job.getId(), isIncrease );
+    }
+
+    @Override
+    public void changeMbti(Job job, Mbti mbti) {
+        CommonRepository.changeMbti(em, Job.class, job.getId(), mbti);
+    }
+
+
 }

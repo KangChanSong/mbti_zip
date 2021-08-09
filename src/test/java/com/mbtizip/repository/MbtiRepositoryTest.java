@@ -1,10 +1,14 @@
 package com.mbtizip.repository;
 
+import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
+import com.mbtizip.domain.person.Person;
 import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.mbti.MbtiRepository;
+import com.mbtizip.repository.test.TestJobRepository;
 import com.mbtizip.repository.test.TestMbtiRepository;
+import com.mbtizip.repository.test.TestPersonRepository;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,8 +21,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -31,10 +36,14 @@ class MbtiRepositoryTest {
     EntityManager em;
 
     TestMbtiRepository testMbtiRepository;
+    TestJobRepository testJobRepository;
+    TestPersonRepository testPersonRepository;
 
     @BeforeEach
     public void setUp(){
         testMbtiRepository = new TestMbtiRepository(em);
+        testJobRepository = new TestJobRepository(em);
+        testPersonRepository = new TestPersonRepository(em);
     }
 
     @Test
@@ -85,5 +94,15 @@ class MbtiRepositoryTest {
         });
 
     }
+
+    @Test
+    public void 목록_조회(){
+
+        //when
+        List<Mbti> mbtis = mbtiRepository.findAll();
+        //then
+        assertEquals(mbtis.size(), 16);
+    }
+
 
 }

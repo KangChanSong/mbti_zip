@@ -43,4 +43,9 @@ public class CommentRepositoryImpl implements CommentRepository{
         em.remove(comment);
     }
 
+    @Override
+    public void modifyLikes(Comment comment, Boolean isIncrease) {
+        CommonRepository.modifyLikes(em, Comment.class, comment.getId(), isIncrease);
+    }
+
 }

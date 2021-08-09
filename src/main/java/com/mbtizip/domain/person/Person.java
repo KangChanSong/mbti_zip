@@ -1,5 +1,6 @@
 package com.mbtizip.domain.person;
 
+import com.mbtizip.domain.common.CommonEntity;
 import com.mbtizip.domain.personCategory.PersonCategory;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.comment.Comment;
@@ -20,7 +21,7 @@ import java.util.List;
 @Builder
 @Getter
 @Entity
-public class Person {
+public class Person extends CommonEntity {
 
     @Id @GeneratedValue
     @Column(name ="person_id")
@@ -38,6 +39,9 @@ public class Person {
     @Column(name = "person_writer")
     private String writer;
 
+    @Column(name = "person_likes", columnDefinition = "integer default 0")
+    private int likes;
+
     @CreationTimestamp
     private LocalDateTime createDate;
     @UpdateTimestamp
@@ -52,4 +56,21 @@ public class Person {
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     private List<PersonCategory> personCategories = new ArrayList<>();
+
+    @Override
+    public void modifyLikes(Boolean isIncrease) {
+        if(isIncrease){
+            this.likes++;
+        } else {
+            if(likes > 0) this.likes --;
+        }
+    }
+
+    //== 연관관계 메서드 ==//
+    @Override
+    public void changeMbti(Mbti mbti) {
+        this.mbti = mbti;
+        mbti.getPersons().add(this);
+    }
 }
+

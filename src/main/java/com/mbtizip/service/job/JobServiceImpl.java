@@ -45,4 +45,9 @@ public class JobServiceImpl implements JobService{
 
         return jobRepository.findAllWithMbti();
     }
+
+    @Override
+    public List<Job> findAllByMbti(Mbti mbti) {
+        return jobRepository.findAllByMbti(mbti);
+    }
 }

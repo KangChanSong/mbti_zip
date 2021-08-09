@@ -1,6 +1,9 @@
 package com.mbtizip.repository.common;
 
+import com.mbtizip.domain.mbti.Mbti;
+
 import javax.persistence.EntityManager;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
 
@@ -19,4 +22,47 @@ public class CommonRepository {
                 .setParameter("id", id)
                 .getResultList();
     }
+
+    /**
+     * 엔티티의 like 증감 메소드의 이름이 modifyLikes 이고, Boolean 타입을 파라미터로 받아야함
+     */
+    public static void modifyLikes(EntityManager em , Class entityType , Long id , Boolean isIncrease){
+
+        try {
+            Object findObj = em.find(entityType, id);
+            Method method = findObj.getClass().getMethod("modifyLikes", Boolean.class);
+            method.invoke(findObj, isIncrease);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 엔티티의 MBTI 변경 메소드의 이름이 changeMbti 이어야 하고 파라미터 타입이 Mbti 이어야 함
+     */
+    public static void changeMbti(EntityManager em, Class entityType, Long id , Mbti mbti) {
+
+        try {
+            Object findObj = em.find(entityType, id);
+            Method method = findObj.getClass().getMethod("changeMbti", Mbti.class);
+            method.invoke(findObj, mbti);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void methodInvoker(){
+        try {
+            Object findObj = em.find(entityType, id);
+            Method method = findObj.getClass().getMethod("changeMbti", Mbti.class);
+            method.invoke(findObj, mbti);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

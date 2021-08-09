@@ -30,4 +30,13 @@ public class TestJobRepository {
         em.persist(job);
         return job;
     }
+
+    public Job createJobWithMbti(String title, Mbti mbti){
+        Job job = Job.builder()
+                .mbti(mbti)
+                .title(title).build();
+        em.persist(job);
+        return job;
+    }
+
 }

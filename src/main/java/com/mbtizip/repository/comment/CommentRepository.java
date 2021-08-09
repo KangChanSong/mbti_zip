@@ -14,4 +14,5 @@ public interface CommentRepository {
     List<Comment> findAllByPerson(Person person);
 
     void delete(Comment comment);
+    void modifyLikes(Comment comment, Boolean isIncrease);
 }

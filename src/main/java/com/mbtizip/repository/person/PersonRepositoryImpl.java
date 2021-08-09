@@ -2,6 +2,7 @@ package com.mbtizip.repository.person;
 
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.exception.NoEntityFoundException;
+import com.mbtizip.repository.common.CommonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -33,5 +34,10 @@ public class PersonRepositoryImpl implements PersonRepository{
         return em.createQuery("select p from Person p " +
                 "join fetch p.mbti")
                 .getResultList();
+    }
+
+    @Override
+    public void modifyLikes(Person person, Boolean isIncrease) {
+        CommonRepository.modifyLikes(em, Person.class, person.getId(), isIncrease);
     }
 }

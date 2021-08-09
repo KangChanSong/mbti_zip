@@ -11,4 +11,5 @@ public interface JobService {
     void increaseMbtiCount(Mbti mbti, Job job);
     void decreaseMbtiCount(Mbti mbti, Job job);
     List<Job> findAllWithMbti();
+    List<Job> findAllByMbti(Mbti mbti);
 }

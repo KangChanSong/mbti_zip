@@ -5,6 +5,7 @@ import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.job.JobRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
+import com.mbtizip.repository.test.TestJobRepository;
 import com.mbtizip.repository.test.TestMbtiRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,7 @@ class JobRepositoryTest {
     private MbtiRepository mbtiRepository;
 
     private TestMbtiRepository testMbtiRepository;
+    private TestJobRepository testJobRepository;
 
     @Autowired
     private EntityManager em;
@@ -38,6 +40,7 @@ class JobRepositoryTest {
     @BeforeEach
     public void setUp(){
         this.testMbtiRepository = new TestMbtiRepository(em);
+        this.testJobRepository = new TestJobRepository(em);
     }
     
     @Test 
@@ -86,6 +89,56 @@ class JobRepositoryTest {
         for(int i =0 ; i < mbtis.size() ;i++){
             assertSame(findJobs.get(i).getMbti(), mbtis.get(i));
         }
+    }
+
+    @Test
+    public void 좋아요_증감(){
+
+        //given
+        Job job = testJobRepository.createJob();
+        //when
+        jobRepository.modifyLikes(job, true);
+        jobRepository.modifyLikes(job, false);
+
+        //then
+        Job findJob = jobRepository.find(job.getId());
+        assertEquals(findJob.getLikes(), 0);
+    }
+    
+    @Test
+    public void MBTI_로_조회(){
+
+        //given
+        Mbti mbti = testMbtiRepository.findAll().get(0);
+        List<Job> jobs = new ArrayList<>();
+
+        int count = 10;
+        for(int i = 0 ; i < count ; i++){
+            jobs.add(testJobRepository.createJobWithMbti("title" + i, mbti));
+        }
+
+        //when
+        List<Job> findJobs = jobRepository.findAllByMbti(mbti);
+
+        //then
+        assertEquals(findJobs.size() , count);
+        findJobs.forEach( i -> assertSame(i.getMbti(), mbti));
+    }
+
+    @Test
+    public void MBTI_변경(){
+
+        //given
+        Mbti mbti = testMbtiRepository.findAll().get(0);
+        Mbti modifiedMbti = testMbtiRepository.findAll().get(0);
+        Job job = testJobRepository.createJobWithMbti(mbti);
+
+        //when
+        jobRepository.changeMbti(job, modifiedMbti);
+
+        //then
+        Job modifiedJob = jobRepository.find(job.getId());
+        assertSame(modifiedJob.getMbti(), modifiedMbti);
     }
 
 }

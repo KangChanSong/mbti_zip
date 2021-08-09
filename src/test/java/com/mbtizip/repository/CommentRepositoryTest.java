@@ -148,6 +148,23 @@ public class CommentRepositoryTest {
         });
     }
 
+    @Test
+    public void 좋아요_증감(){
+
+        //given
+        Mbti mbti = testMbtiRepository.findAll().get(0);
+        Job job = testJobRepository.createJob();
+        //when
+        Comment comment = createCommentWithJobAndMbti(mbti, job);
+        commentRepository.modifyLikes(comment, true);
+        commentRepository.modifyLikes(comment, false);
+
+        //then
+        Comment findComment = commentRepository.find(comment.getId());
+        assertEquals(findComment.getLikes(), 0);
+
+    }
+
     private Comment createCommentWithJobAndMbti(Mbti mbti, Job job){
         Comment comment = Comment.builder()
                 .content(COMMENT_CONTENT)
