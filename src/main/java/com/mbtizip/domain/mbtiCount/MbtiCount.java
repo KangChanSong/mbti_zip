@@ -21,6 +21,7 @@ public class MbtiCount {
     @Column(name = "mbti_count_id")
     private Long id;
 
+    @Column(columnDefinition = "integer default 0")
     private int count;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,4 +38,18 @@ public class MbtiCount {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")
     private Person person;
+
+    //== 카운트 관련 메서드 ==//
+    public void updateCount(boolean isIncrease){
+
+        if(isIncrease){
+            this.count++;
+        } else {
+            if(this.count > 0){
+                this.count--;
+            } else {
+                throw new IllegalArgumentException("count = 0 에서 더이상 감소할 수 없습니다.");
+            }
+        }
+    }
 }

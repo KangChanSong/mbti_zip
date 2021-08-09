@@ -1,0 +1,5 @@
+ * modifyCount 메서드
+    1. 카운트가 두개 이상일때 TooManyEntityException
+    2. 등록된 카운트가 없을때 제대로 데이터가 들어가나
+    3. 등록된 카운트가 있을때 제대로 수정되나
+    4. count 가 0일때 감소시킬때 IllegalArgumentException

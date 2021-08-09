@@ -16,4 +16,5 @@ public class TestMbtiRepository {
         return em.createQuery("select m from Mbti m")
                 .getResultList();
     }
+
 }

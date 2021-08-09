@@ -1,6 +1,7 @@
 package com.mbtizip.repository.mbtiCount;
 
 import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
 import com.mbtizip.domain.person.Person;
 
@@ -16,4 +17,8 @@ public interface MbtiCountRepository {
     // 최댓값 불러오는 메서드
     MbtiCount findMaxByJob(Long jobId);
     MbtiCount findMaxByPerson(Long personId);
+
+    // 카운트 증가, 감소 메서드
+    void modifyJobCount(Mbti mbti , Job job, boolean isIncrease);
+    void modifyPersonCount(Mbti mbti , Person person, boolean isIncrease);
 }

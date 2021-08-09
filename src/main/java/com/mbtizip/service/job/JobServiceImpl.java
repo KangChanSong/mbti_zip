@@ -3,6 +3,7 @@ package com.mbtizip.service.job;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.repository.job.JobRepository;
+import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ public class JobServiceImpl implements JobService{
 
     private final JobRepository jobRepository;
 
+    private final MbtiCountRepository mbtiCountRepository;
 
     @Override
     public Long register(Job job) {
@@ -30,13 +32,7 @@ public class JobServiceImpl implements JobService{
 
     @Override
     public void increaseMbtiCount(Mbti mbti, Job job) {
-
-        // mbtiCount 집계
-
-        // 최댓값을 Job.mbti 에 할당
-
-
-
+        
     }
 
     @Override

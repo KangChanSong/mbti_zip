@@ -30,4 +30,6 @@ public class Mbti {
 
     @OneToMany(mappedBy = "mbti")
     private List<Job> jobs = new ArrayList<>();
+    
+
 }
