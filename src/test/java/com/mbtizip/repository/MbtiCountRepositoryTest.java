@@ -18,8 +18,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.mbtizip.repository.test.TestJobRepository.JOB_TITLE;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -70,11 +69,17 @@ class MbtiCountRepositoryTest {
 
         //given
         Job job = testJobRepository.createJob();
+        Mbti mbti = testMbtiRepository.findAll().get(0);
 
         MbtiCount mbtiCount1 = MbtiCount.builder().job(job).count(1).build();
         MbtiCount mbtiCount2 = MbtiCount.builder().job(job).count(2).build();
         MbtiCount mbtiCount3 = MbtiCount.builder().job(job).count(3).build();
-        MbtiCount mbtiMax = MbtiCount.builder().job(job).count(4).build();
+        MbtiCount mbtiMax = MbtiCount
+                .builder()
+                .mbti(mbti)
+                .job(job)
+                .count(4)
+                .build();
 
         //when
         childMbtiCountRepository.save(mbtiCount1);
@@ -87,6 +92,7 @@ class MbtiCountRepositoryTest {
         assertTrue(maxObject.getCount() > mbtiCount1.getCount());
         assertTrue(maxObject.getCount() > mbtiCount2.getCount());
         assertTrue(maxObject.getCount() > mbtiCount3.getCount());
+        assertSame(maxObject.getMbti(), mbti);
     }
 
     @Test

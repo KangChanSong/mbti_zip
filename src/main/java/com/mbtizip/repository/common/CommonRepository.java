@@ -28,14 +28,21 @@ public class CommonRepository {
      */
     public static void modifyLikes(EntityManager em , Class entityType , Long id , Boolean isIncrease){
 
-        try {
-            Object findObj = em.find(entityType, id);
-            Method method = findObj.getClass().getMethod("modifyLikes", Boolean.class);
-            method.invoke(findObj, isIncrease);
+//        try {
+//            Object findObj = em.find(entityType, id);
+//            Method method = findObj.getClass().getMethod("modifyLikes", Boolean.class);
+//            method.invoke(findObj, isIncrease);
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        methodInvoker(em,
+                entityType,
+                id,
+                Boolean.class,
+                isIncrease,
+                "modifyLikes");
     }
 
     /**
@@ -43,21 +50,20 @@ public class CommonRepository {
      */
     public static void changeMbti(EntityManager em, Class entityType, Long id , Mbti mbti) {
 
-        try {
-            Object findObj = em.find(entityType, id);
-            Method method = findObj.getClass().getMethod("changeMbti", Mbti.class);
-            method.invoke(findObj, mbti);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        methodInvoker(em,
+                entityType,
+                id,
+                Mbti.class,
+                mbti,
+                "changeMbti");
     }
 
-    private static void methodInvoker(){
+    private static void methodInvoker(EntityManager em , Class entityType, Long id , Class parameterType,
+                                      Object parameter, String methodName){
         try {
             Object findObj = em.find(entityType, id);
-            Method method = findObj.getClass().getMethod("changeMbti", Mbti.class);
-            method.invoke(findObj, mbti);
+            Method method = findObj.getClass().getMethod(methodName, parameterType);
+            method.invoke(findObj, parameter);
 
         } catch (Exception e) {
             throw new RuntimeException(e);

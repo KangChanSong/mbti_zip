@@ -6,6 +6,7 @@ import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.mbti.MbtiRepository;
+import com.mbtizip.repository.test.MbtiRowCounter;
 import com.mbtizip.repository.test.TestJobRepository;
 import com.mbtizip.repository.test.TestMbtiRepository;
 import com.mbtizip.repository.test.TestPersonRepository;
@@ -23,6 +24,7 @@ import javax.persistence.PersistenceException;
 
 import java.util.List;
 
+import static com.mbtizip.repository.test.MbtiRowCounter.MBTI_ROW_NUMBER;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -101,7 +103,7 @@ class MbtiRepositoryTest {
         //when
         List<Mbti> mbtis = mbtiRepository.findAll();
         //then
-        assertEquals(mbtis.size(), 16);
+        assertEquals(mbtis.size(), MBTI_ROW_NUMBER);
     }
 
 

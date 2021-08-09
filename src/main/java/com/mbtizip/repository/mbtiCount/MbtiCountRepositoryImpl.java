@@ -71,6 +71,7 @@ public class MbtiCountRepositoryImpl implements MbtiCountRepository {
         String str = obj.getClass().getSimpleName().toLowerCase(Locale.ROOT) + ".";
         return (MbtiCount) em.createQuery(
                 "select c from MbtiCount c" +
+                        " left join fetch c.mbti" +
                         " where c." + str + "id =: id " +
                         " order by c.count desc")
                 .setParameter("id", id)
