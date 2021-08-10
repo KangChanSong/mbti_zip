@@ -76,7 +76,10 @@ class JobRepositoryTest {
         List<Mbti> mbtis = testMbtiRepository.findAll();
         List<Job> jobs = new ArrayList<>();
 
-        mbtis.forEach(m -> jobs.add(Job.builder().mbti(m).build()));
+        mbtis.forEach(m -> {
+                Job job = Job.builder().build();
+                job.changeMbti(m);
+                jobs.add(job);});
 
         //when
         jobs.forEach(job -> jobRepository.save(job));

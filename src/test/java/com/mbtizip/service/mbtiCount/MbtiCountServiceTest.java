@@ -2,7 +2,12 @@ package com.mbtizip.service.mbtiCount;
 
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
+import com.mbtizip.domain.mbti.MbtiEnum;
+import com.mbtizip.domain.mbtiCount.MbtiCount;
+import com.mbtizip.repository.job.JobRepository;
+import com.mbtizip.repository.mbti.MbtiRepository;
 import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
+import com.mbtizip.repository.test.TestJobRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +16,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class MbtiCountServiceTest {
@@ -18,11 +26,47 @@ public class MbtiCountServiceTest {
     MbtiCountService mbtiCountService;
 
     @Mock
-    MbtiCountRepository mbtiCountRepository;
+    MbtiCountRepository mockMbtiCountRepository;
 
+    @Mock
+    JobRepository mockJobRepository;
+
+    @Mock
+    MbtiRepository mockMbtiRepository;
+
+    /**
+     * MbtiRepository.find()를 호출했을떄 첫번째는 INFP 두번쨰는 ENTP, 세번쨰는 INTJ 반환
+     */
     @BeforeEach
     public void setUp(){
-        mbtiCountService = new MbtiCountServiceImpl(mbtiCountRepository);
+        mbtiCountService = new MbtiCountServiceImpl(mockMbtiCountRepository);
+
+        // Mock Set Up
+        when(mockJobRepository.find(anyLong())).thenReturn(Job.builder()
+                        .title(TestJobRepository.JOB_TITLE)
+                        .writer(TestJobRepository.JOB_WRITER)
+                .build());
+
+        when(mockMbtiRepository.find(anyLong()))
+                .thenReturn(Mbti.builder().name(MbtiEnum.INFP).build())
+                .thenReturn(Mbti.builder().name(MbtiEnum.ENTP).build())
+                .thenReturn(Mbti.builder().name(MbtiEnum.INTJ).build());
+    }
+
+    /**
+     * Mock 오브젝트가 잘 생성되는지에 대한 테스트
+     */
+    @Test
+    public void MOCK_오브젝트_테스트(){
+
+        //when
+        String jobTitle = mockJobRepository.find(anyLong()).getTitle();
+        MbtiEnum mbti1 = mockMbtiRepository.find(anyLong()).getName();
+        MbtiEnum mbti2 = mockMbtiRepository.find(anyLong()).getName();
+        //then
+        assertEquals(jobTitle, TestJobRepository.JOB_TITLE);
+        assertEquals(mbti1 , MbtiEnum.INFP);
+        assertEquals(mbti2, MbtiEnum.ENTP);
     }
 
     /**
@@ -33,15 +77,20 @@ public class MbtiCountServiceTest {
     public void 직업_MBTI별_투표(){
 
         //given
-
-        Mbti infp = Mbti.builder().build();
-        Mbti entp = Mbti.builder().build();
-        Job job = Job.builder().build();
+        Mbti infp =mockMbtiRepository.find(anyLong());
+        Mbti entp = mockMbtiRepository.find(anyLong());
+        Job job = mockJobRepository.find(anyLong());
 
         int infpCount = 10;
         int entpCount = 9;
 
         //when
+        MbtiCount resultInfp = MbtiCount.builder()
+                        .mbti(infp)
+                        .job(job).build();
+
+        when(mockMbtiCountRepository.findMaxByJob(job)).thenReturn(resultInfp);
+
         for(int i = 0 ; i < infpCount ; i++){
             mbtiCountService.vote(infp, job);
         }
@@ -53,24 +102,22 @@ public class MbtiCountServiceTest {
         assertEquals(job.getMbti(), infp);
     }
 
-
-    /**
-     * 직업 별 MBTI 투표 후
-     * 표 수가 증가했는지 확인
-     */
-
-    /**
-     * 직업 별 MBTI 투표 취소 후
-     * 표 수가 감소했는지 확인
-     */
-
     /**
      * 득표율이 없을때는 ?
      */
+    @Test
+    public void 득표울_0(){
+
+        //given
+        Job job = mockJobRepository.find(anyLong());
+
+        //when
+
+        //then
+    }
+
 
     /**
      * 득표율이 같은 MBTI가 있을때는?
      */
-
-    
 }

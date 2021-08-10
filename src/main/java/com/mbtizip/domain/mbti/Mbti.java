@@ -12,9 +12,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Getter
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"mbti_name"})})
@@ -35,4 +33,9 @@ public class Mbti {
     
     @OneToMany(mappedBy = "mbti")
     private List<Comment> comments = new ArrayList<>();
+
+    @Builder
+    public Mbti(MbtiEnum name){
+        this.name = name;
+    }
 }

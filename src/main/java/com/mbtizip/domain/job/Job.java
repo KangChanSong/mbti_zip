@@ -15,9 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Getter
 @Entity
 public class Job  extends CommonEntity {
@@ -28,6 +26,9 @@ public class Job  extends CommonEntity {
 
     @Column(name = "job_title")
     private String title;
+
+    @Column(name = "job_writer")
+    private String writer;
 
     @Column(name = "job_likes", columnDefinition = "integer default 0")
     private int likes;
@@ -44,9 +45,13 @@ public class Job  extends CommonEntity {
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    
+    @Builder
+    public Job(String title, String writer){
+        this.title = title;
+        this.writer = writer;
+    }
 
-    
+    //== 편의 메서드 ==//
     @Override
     public void modifyLikes(Boolean isIncrease) {
         if(isIncrease){

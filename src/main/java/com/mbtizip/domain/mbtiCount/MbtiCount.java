@@ -10,9 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Getter
 @Entity
 public class MbtiCount {
@@ -38,6 +36,13 @@ public class MbtiCount {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")
     private Person person;
+
+    @Builder
+    public MbtiCount(Mbti mbti , Job job , Person person){
+        this.mbti = mbti;
+        this.job = job;
+        this.person = person;
+    }
 
     //== 카운트 관련 메서드 ==//
     public void updateCount(boolean isIncrease){
