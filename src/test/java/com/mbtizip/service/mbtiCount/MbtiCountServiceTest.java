@@ -1,23 +1,42 @@
 package com.mbtizip.service.mbtiCount;
 
+import com.mbtizip.common.enums.TestJobEnum;
+import com.mbtizip.common.util.TestEntityGenerator;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
+import com.mbtizip.domain.person.Person;
 import com.mbtizip.repository.job.JobRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
 import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
 import com.mbtizip.repository.test.TestJobRepository;
+import org.hibernate.cache.spi.support.NaturalIdReadOnlyAccess;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.OngoingStubbing;
 
+import javax.print.attribute.standard.JobKOctets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.IntStream;
+
+import static com.mbtizip.common.enums.TestJobEnum.JOB_TITLE;
+import static com.mbtizip.common.enums.TestJobEnum.JOB_WRITER;
+import static com.mbtizip.common.util.TestEntityGenerator.*;
+import static com.mbtizip.domain.mbti.MbtiEnum.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,95 +48,177 @@ public class MbtiCountServiceTest {
     MbtiCountRepository mockMbtiCountRepository;
 
     @Mock
-    JobRepository mockJobRepository;
-
-    @Mock
     MbtiRepository mockMbtiRepository;
 
-    /**
-     * MbtiRepository.find()를 호출했을떄 첫번째는 INFP 두번쨰는 ENTP, 세번쨰는 INTJ 반환
-     */
     @BeforeEach
     public void setUp(){
-        mbtiCountService = new MbtiCountServiceImpl(mockMbtiCountRepository);
+        mbtiCountService = new MbtiCountServiceImpl( mockMbtiCountRepository,mockMbtiRepository);
 
-        // Mock Set Up
-        when(mockJobRepository.find(anyLong())).thenReturn(Job.builder()
-                        .title(TestJobRepository.JOB_TITLE)
-                        .writer(TestJobRepository.JOB_WRITER)
-                .build());
 
-        when(mockMbtiRepository.find(anyLong()))
-                .thenReturn(Mbti.builder().name(MbtiEnum.INFP).build())
-                .thenReturn(Mbti.builder().name(MbtiEnum.ENTP).build())
-                .thenReturn(Mbti.builder().name(MbtiEnum.INTJ).build());
     }
 
-    /**
-     * Mock 오브젝트가 잘 생성되는지에 대한 테스트
-     */
+    @DisplayName("직업 득표율의 수에 따라 결과가 달라져야 함 (0, 1, 2+)")
     @Test
-    public void MOCK_오브젝트_테스트(){
+    public void 직업_투표수_반영(){
 
-        //when
-        String jobTitle = mockJobRepository.find(anyLong()).getTitle();
-        MbtiEnum mbti1 = mockMbtiRepository.find(anyLong()).getName();
-        MbtiEnum mbti2 = mockMbtiRepository.find(anyLong()).getName();
-        //then
-        assertEquals(jobTitle, TestJobRepository.JOB_TITLE);
-        assertEquals(mbti1 , MbtiEnum.INFP);
-        assertEquals(mbti2, MbtiEnum.ENTP);
+        jobResultNumberTest(0, NONE);
+        jobResultNumberTest(1, ENTP);
+        jobResultNumberTest(2, DRAW);
     }
 
-    /**
-     * 직업 MBTI 별 투표수 조회 후
-     *  득표율이 가장 높은 MBTI를 해당 직업의 MBTI 칼럼으로 수정
-     */
+    @DisplayName("인물 득표율의 수에 따라 결과가 달라져야 함 (0, 1, 2+)")
     @Test
-    public void 직업_MBTI별_투표(){
+    public void 인물_투표수_반영(){
+
+        personResultNumberTest(0 ,NONE);
+        personResultNumberTest(1, ENTP);
+        personResultNumberTest(2, DRAW);
+    }
+
+    @DisplayName("NONE 이나 DRAW에게 투표했을 시 예외가 던저지는 테스트")
+    @Test
+    public void 잘못된_투표(){
 
         //given
-        Mbti infp =mockMbtiRepository.find(anyLong());
-        Mbti entp = mockMbtiRepository.find(anyLong());
-        Job job = mockJobRepository.find(anyLong());
-
-        int infpCount = 10;
-        int entpCount = 9;
-
-        //when
-        MbtiCount resultInfp = MbtiCount.builder()
-                        .mbti(infp)
-                        .job(job).build();
-
-        when(mockMbtiCountRepository.findMaxByJob(job)).thenReturn(resultInfp);
-
-        for(int i = 0 ; i < infpCount ; i++){
-            mbtiCountService.vote(infp, job);
-        }
-        for(int i = 0 ; i < entpCount ; i++){
-            mbtiCountService.vote(entp, job);
-        }
-
+        Job job = createJob();
+        Mbti none = createMbti(NONE);
+        Mbti draw = createMbti(DRAW);
         //then
-        assertEquals(job.getMbti(), infp);
+        assertThrows(IllegalArgumentException.class , () -> mbtiCountService.vote(none, job));
+        assertThrows(IllegalArgumentException.class , () -> mbtiCountService.vote(draw, job));
+
     }
 
-    /**
-     * 득표율이 없을때는 ?
-     */
+    @DisplayName("직업 투표를 취소하는 테스트")
     @Test
-    public void 득표울_0(){
+    public void 직업_투표_취소(){
 
         //given
-        Job job = mockJobRepository.find(anyLong());
-
+        Job job = createJob();
         //when
+        commonCancleVote(job);
+        //then
+        assertEquals(job.getMbti().getName(), NONE);
+
+    }
+    
+    @DisplayName("인물 투표를 취소하는 테스트")
+    @Test
+    public void 인물_투표_취소(){
+
+        //given
+        Person person = createPerson();
+        //when
+        commonCancleVote(person);
+        //then
+        assertEquals(person.getMbti().getName(), NONE);
+    }
+
+    private void commonCancleVote(Object obj){
+        Mbti mbti = createMbti(INFP);
+        when(mockMbtiRepository.findByName(NONE))
+                .thenReturn(Mbti.builder().name(NONE).build());
+
+        mbtiCountService.cancelVote(mbti, obj);
+    }
+
+    /**
+     * MbtiCount 에 직업에 대한 MBTI 가 아예 존재하지 않으면 득표수 0 으로 치환
+     */
+    @DisplayName("한 직업의 모든 MBTI 의 투표수를 가져오는 테스트")
+    @Test
+    public void 직업_목록_조회(){
+        //given
+        Job job = createJob();
+        OngoingStubbing stubbing = when(mockMbtiCountRepository.findAllByJob(job));
+        Supplier supplier = () -> mbtiCountService.getVotesByJob(job);
 
         //then
+        getListTest(stubbing, supplier);
+
+    }
+    
+    @DisplayName("한 인물의 모든 MBTI의 투표수를 가져오는 테스트")
+    @Test
+    public void 인물_목록_조회(){
+        //given
+        Person person = createPerson();
+        OngoingStubbing stubbing = when(mockMbtiCountRepository.findAllByPerson(person));
+        Supplier supplier = () -> mbtiCountService.getVotesByPerson(person);
+
+        //then
+        getListTest(stubbing, supplier);
+    }
+
+    //== private 메서드 ==//
+
+    private void getListTest(OngoingStubbing stubbing, Supplier supplier){
+        //given
+        MbtiCount infp = createMbtiCount(INFP);
+        MbtiCount entp = createMbtiCount(ENTP);
+        MbtiCount intj = createMbtiCount(INTJ);
+        intj.updateCount(true);
+
+        List<MbtiCount> mbtiCounts = new ArrayList<>();
+        mbtiCounts.add(infp);
+        mbtiCounts.add(entp);
+        mbtiCounts.add(intj);
+
+        //when
+        stubbing.thenReturn(mbtiCounts);
+
+        Map<String, Integer> resultMap = (Map<String, Integer>) supplier.get();
+
+        //then
+        assertEquals(resultMap.get(INFP.getText()), 0);
+        assertEquals(resultMap.get(ENTP.getText()), 0);
+        assertEquals(resultMap.get(INTJ.getText()), 1);
+    }
+
+    private void jobResultNumberTest(int resultNumber, MbtiEnum resultMbtiName){
+
+        //given
+        Mbti mbti = createMbti(INFP);
+        Job job = createJob();
+        //when
+        commonResultNumberTest(resultNumber, resultMbtiName, job,
+                when(mockMbtiCountRepository.findMaxByJob(job)));
+        //then
+        assertEquals(job.getMbti().getName(), resultMbtiName);
+    }
+
+    private void personResultNumberTest(int resultNumber, MbtiEnum resultMbtiName){
+        //given
+        Person person = createPerson();
+        //when
+        commonResultNumberTest(resultNumber, resultMbtiName, person,
+                when(mockMbtiCountRepository.findMaxByPerson(person))
+        );
+        //then
+        assertEquals(person.getMbti().getName(), resultMbtiName);
+    }
+
+    private void commonResultNumberTest(int resultNumber, MbtiEnum resultMbtiName, Object obj,
+                                        OngoingStubbing stubbing){
+        //when
+        Mbti mbti = createMbti(INFP);
+        List<MbtiCount> mbtiCounts = new ArrayList<>();
+
+        if(resultNumber == 1){
+            mbtiCounts.add(MbtiCount.builder()
+                    .mbti(createMbti(resultMbtiName)).build());
+            resultMbtiName = INFP;
+        } else {
+            IntStream.range(0, resultNumber).forEach(i -> mbtiCounts.add(MbtiCount.builder().build()));
+        }
+
+        stubbing.thenReturn(mbtiCounts);
+
+        lenient().when(mockMbtiRepository.findByName(resultMbtiName))
+                .thenReturn(createMbti(resultMbtiName));
+
+        mbtiCountService.vote(mbti, obj);
     }
 
 
-    /**
-     * 득표율이 같은 MBTI가 있을때는?
-     */
 }

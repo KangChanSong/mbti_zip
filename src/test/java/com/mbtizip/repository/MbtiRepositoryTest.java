@@ -106,5 +106,16 @@ class MbtiRepositoryTest {
         assertEquals(mbtis.size(), MBTI_ROW_NUMBER);
     }
 
+    @Test
+    public void 이름으로_찾기(){
+
+        //given
+        MbtiEnum infp = MbtiEnum.INFP;
+        //when
+        Mbti findMbti = mbtiRepository.findByName(infp);
+        //then
+        assertEquals(findMbti.getName(), infp);
+    }
+
 
 }

@@ -3,6 +3,7 @@ package com.mbtizip.domain.job;
 import com.mbtizip.domain.common.CommonEntity;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.comment.Comment;
+import com.mbtizip.domain.mbti.MbtiEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,7 +41,7 @@ public class Job  extends CommonEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mbti_id")
-    private Mbti mbti;
+    private Mbti mbti = Mbti.builder().name(MbtiEnum.NONE).build();
 
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();

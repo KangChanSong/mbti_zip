@@ -30,12 +30,12 @@ public class MbtiCountRepositoryImpl implements MbtiCountRepository {
     }
 
     @Override
-    public MbtiCount findMaxByJob(Job job) {
+    public List<MbtiCount> findMaxByJob(Job job) {
         return findMaxByObject(job, job.getId());
     }
 
     @Override
-    public MbtiCount findMaxByPerson(Person person) {
+    public List<MbtiCount> findMaxByPerson(Person person) {
         return findMaxByObject(person, person.getId());
     }
 
@@ -67,15 +67,16 @@ public class MbtiCountRepositoryImpl implements MbtiCountRepository {
 
     // == private 메서드 == //
 
-    private MbtiCount findMaxByObject(Object obj , Long id){
+    private List<MbtiCount> findMaxByObject(Object obj , Long id){
         String str = obj.getClass().getSimpleName().toLowerCase(Locale.ROOT) + ".";
-        return (MbtiCount) em.createQuery(
-                "select c from MbtiCount c" +
-                        " left join fetch c.mbti" +
-                        " where c." + str + "id =: id " +
-                        " order by c.count desc")
+        return em.createQuery(
+                            "select c from MbtiCount c " +
+                                    " where c." + str + "id =: id and c.count in" +
+                "  (select max(c.count) from MbtiCount c" +
+                        " join c.mbti" +
+                        " where c." + str + "id =: id) ")
                 .setParameter("id", id)
-                .getResultList().get(0);
+                .getResultList();
     }
 
     private void checkAndUpdate(List<MbtiCount> mbtiCounts, CountGeneratorFunc func , boolean isIncrease){

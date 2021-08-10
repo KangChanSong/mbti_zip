@@ -16,9 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Getter
 @Entity
 public class Person extends CommonEntity {
@@ -31,7 +29,7 @@ public class Person extends CommonEntity {
     private String name;
 
     @Column(name = "person_gender")
-    private String gender;
+    private Gender gender;
 
     @Column(name = "person_description")
     private String description;
@@ -56,6 +54,14 @@ public class Person extends CommonEntity {
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     private List<PersonCategory> personCategories = new ArrayList<>();
+
+    @Builder
+    public Person(String name, String description, String writer, Gender gender){
+        this.name = name;
+        this.description = description;
+        this.writer = writer;
+        this.gender = gender;
+    }
 
     @Override
     public void modifyLikes(Boolean isIncrease) {

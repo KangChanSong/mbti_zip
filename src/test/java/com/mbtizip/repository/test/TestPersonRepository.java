@@ -30,8 +30,8 @@ public class TestPersonRepository {
 
     public Person createPersonWithMbti(Mbti mbti){
         Person person = Person.builder()
-                .mbti(mbti)
                 .name(PERSON_NAME).build();
+        person.changeMbti(mbti);
         em.persist(person);
         return person;
     }

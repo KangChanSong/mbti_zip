@@ -1,7 +1,9 @@
 package com.mbtizip.repository;
 
+import com.mbtizip.common.enums.TestJobEnum;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
+import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.job.JobRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
@@ -142,6 +144,25 @@ class JobRepositoryTest {
         //then
         Job modifiedJob = jobRepository.find(job.getId());
         assertSame(modifiedJob.getMbti(), modifiedMbti);
+    }
+
+    @Test
+    public void MBTI_디폴트_값_테스트(){
+
+        //given
+        Mbti mbti  = testMbtiRepository.findAll().get(0);
+        Job job = Job.builder().title(TestJobEnum.JOB_TITLE.getText()).build();
+        //when
+        Long saveId = jobRepository.save(job);
+
+        //then
+
+        Job findJob1 = jobRepository.find(saveId);
+        assertEquals(findJob1.getMbti().getName(), MbtiEnum.NONE);
+
+        job.changeMbti(mbti);
+        Job findJob2 = jobRepository.find(saveId);
+        assertEquals(findJob2.getMbti(), mbti);
     }
 
 }

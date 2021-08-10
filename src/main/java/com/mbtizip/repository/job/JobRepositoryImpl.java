@@ -2,8 +2,11 @@ package com.mbtizip.repository.job;
 
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
+import com.mbtizip.domain.mbtiCount.MbtiCount;
+import com.mbtizip.domain.person.Person;
 import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.common.CommonRepository;
+import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -54,6 +57,4 @@ public class JobRepositoryImpl implements JobRepository{
     public void changeMbti(Job job, Mbti mbti) {
         CommonRepository.changeMbti(em, Job.class, job.getId(), mbti);
     }
-
-
 }

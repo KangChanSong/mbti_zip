@@ -1,6 +1,7 @@
 package com.mbtizip.repository.mbti;
 
 import com.mbtizip.domain.mbti.Mbti;
+import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.exception.NoEntityFoundException;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,14 @@ public class MbtiRepositoryImpl implements MbtiRepository{
         Mbti mbti = em.find(Mbti.class, id);
         if(mbti == null) throw new NoEntityFoundException("MBTI 엔티티가 존재하지 않습니다. id = " + id);
         return mbti;
+    }
+
+    @Override
+    public Mbti findByName(MbtiEnum name) {
+        return (Mbti) em.createQuery("select m from Mbti m " +
+                "where m.name =: name")
+                .setParameter("name", name)
+                .getResultList().get(0);
     }
 
     @Override
