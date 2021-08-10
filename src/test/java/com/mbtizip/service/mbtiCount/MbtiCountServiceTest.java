@@ -2,15 +2,17 @@ package com.mbtizip.service.mbtiCount;
 
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
-import com.mbtizip.domain.mbtiCount.MbtiCount;
 import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ExtendWith(MockitoExtension.class)
 public class MbtiCountServiceTest {
 
     MbtiCountService mbtiCountService;
@@ -31,6 +33,7 @@ public class MbtiCountServiceTest {
     public void 직업_MBTI별_투표(){
 
         //given
+
         Mbti infp = Mbti.builder().build();
         Mbti entp = Mbti.builder().build();
         Job job = Job.builder().build();
