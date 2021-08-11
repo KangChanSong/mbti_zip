@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"category_name"})})
@@ -25,5 +23,10 @@ public class Category {
 
     @OneToMany(mappedBy = "category")
     private List<PersonCategory> personCategories = new ArrayList<>();
+
+    @Builder
+    public Category(String name){
+        this.name = name;
+    }
 
 }

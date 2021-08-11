@@ -78,5 +78,6 @@ public class Person extends CommonEntity {
         this.mbti = mbti;
         mbti.getPersons().add(this);
     }
+
 }
 

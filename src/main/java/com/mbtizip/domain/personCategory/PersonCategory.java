@@ -8,9 +8,7 @@ import javax.persistence.*;
 
 
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 @Entity
 public class PersonCategory {
@@ -26,4 +24,12 @@ public class PersonCategory {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")
     private Person person;
+
+    @Builder
+    public PersonCategory(Person person, Category category){
+        this.person = person;
+        person.getPersonCategories().add(this);
+        this.category = category;
+        category.getPersonCategories().add(this);
+    }
 }

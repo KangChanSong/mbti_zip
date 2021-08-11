@@ -1,6 +1,8 @@
 package com.mbtizip.common.util;
 
+import com.mbtizip.common.enums.TestCategoryEnum;
 import com.mbtizip.common.enums.TestPersonEnum;
+import com.mbtizip.domain.category.Category;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
@@ -38,5 +40,18 @@ public class TestEntityGenerator {
         return Person.builder()
                 .name(PERSON_NAME.getText())
                 .description(PERSON_DESCRIPTION.getText()).build();
+    }
+
+    public static Person createPerson(String name){
+        return Person.builder()
+                .name(name)
+                .description(PERSON_DESCRIPTION.getText()).build();
+    }
+
+
+    public static Category createCategory(TestCategoryEnum name){
+        return Category.builder()
+                .name(name.getText())
+                .build();
     }
 }

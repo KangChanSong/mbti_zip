@@ -38,15 +38,10 @@ public class MbtiCount {
     private Person person;
 
     @Builder
-    public MbtiCount(Mbti mbti , Job job){
-        this.mbti = mbti;
-        this.job = job;
-    }
-
-    @Builder
-    public MbtiCount(Mbti mbti, Person person){
+    public MbtiCount(Mbti mbti , Job job, Person person){
         this.mbti = mbti;
         this.person = person;
+        this.job = job;
     }
 
     //== 카운트 관련 메서드 ==//

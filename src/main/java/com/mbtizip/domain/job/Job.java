@@ -41,7 +41,7 @@ public class Job  extends CommonEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mbti_id")
-    private Mbti mbti = Mbti.builder().name(MbtiEnum.NONE).build();
+    private Mbti mbti;
 
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
