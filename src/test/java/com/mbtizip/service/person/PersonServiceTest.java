@@ -1,35 +1,26 @@
 package com.mbtizip.service.person;
 
-import com.mbtizip.common.enums.TestCategoryEnum;
-import com.mbtizip.common.enums.TestPersonEnum;
 import com.mbtizip.domain.category.Category;
-import com.mbtizip.domain.mbti.Mbti;
-import com.mbtizip.domain.mbti.MbtiEnum;
-import com.mbtizip.domain.person.Person;
-import com.mbtizip.domain.personCategory.PersonCategory;
+import com.mbtizip.domain.common.Page;
+import com.mbtizip.domain.person.QPerson;
 import com.mbtizip.repository.person.PersonRepository;
 import com.mbtizip.repository.personCategory.PersonCategoryRepository;
-import org.apache.catalina.LifecycleState;
-import org.junit.jupiter.api.Assertions;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.mbtizip.common.enums.TestCategoryEnum.*;
-import static com.mbtizip.common.enums.TestPersonEnum.PERSON_DESCRIPTION;
-import static com.mbtizip.common.enums.TestPersonEnum.PERSON_NAME;
-import static com.mbtizip.common.util.TestEntityGenerator.*;
-import static com.mbtizip.domain.mbti.MbtiEnum.INFP;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static com.mbtizip.common.util.TestEntityGenerator.createCategory;
+import static com.mbtizip.common.util.TestEntityGenerator.createPerson;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class PersonServiceTest {
@@ -57,48 +48,21 @@ public class PersonServiceTest {
 
 
     }
-
-    
-    @DisplayName("인물을 MBTI와 함께 조회하는 테스트")
+    @DisplayName("페이징 목록 조회 테스트 ")
     @Test
-    public void 인물_조회(){
+    public void findAll_파라미터(){
 
         //given
-        Person person = createPerson();
-        Mbti mbti = createMbti(INFP);
-        person.changeMbti(mbti);
-
-        when(mockPersonRepository.findWithMbti(anyLong())).thenReturn(person);
-        //when
-        Person findPerson = personService.getById(anyLong());
-        //then
-        assertEquals(findPerson.getMbti(), mbti);
-    }
-
-    @DisplayName("인물 목록을 조회하는 테스트")
-    public void 인물_목록_조회(){
-
-        //given
-
-        //when
-
+        Page page = Page.builder().start(11).end(20).build();
+        OrderSpecifier sort = QPerson.person.likes.desc();
+        BooleanExpression keyword = QPerson.person.name.eq("송강찬");
 
         //then
-    }
-
-    @DisplayName("MBTI 로 인물 목록을 조회하는 테스트 ")
-    public void MBTI_인물_목록_조회(){
-
-    }
-
-    @DisplayName("인물을 수정하는 테스트")
-    public void 인물_수정(){
-
-    }
-    
-    @DisplayName("인물을 삭제하는 테스트")
-    public void 인물_삭제(){
-
+        personService.findAll(null, null, null);
+        personService.findAll(page, null, null);
+        personService.findAll(page, sort , null);
+        personService.findAll(page, sort, keyword);
+        personService.findAll(page, null, keyword);
     }
 
     //== 편의 메서드 ==//

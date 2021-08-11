@@ -1,11 +1,19 @@
 package com.mbtizip.repository.person;
 
-import com.mbtizip.domain.comment.Page;
+import com.mbtizip.domain.category.QCategory;
+import com.mbtizip.domain.common.Page;
+import com.mbtizip.domain.mbti.MbtiEnum;
+import com.mbtizip.domain.mbti.QMbti;
 import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.person.QPerson;
+import com.mbtizip.domain.personCategory.QPersonCategory;
 import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.common.CommonRepository;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanOperation;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.TypeCache;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -16,7 +24,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PersonRepositoryImpl implements PersonRepository{
 
+    private final JPAQueryFactory queryFactory;
+
     private final EntityManager em;
+
+    private QPerson qPerson = QPerson.person;
+    private QMbti qMbti = QMbti.mbti;
+    private QPersonCategory qPersonCategory = QPersonCategory.personCategory;
 
     @Override
     public Long save(Person person) {
@@ -34,22 +48,52 @@ public class PersonRepositoryImpl implements PersonRepository{
     @Override
     public List<Person> findAll() {
         return em.createQuery("select p from Person p " +
-                "join fetch p.mbti")
+                        "join fetch p.mbti")
                 .getResultList();
     }
 
     @Override
-    public List<Person> findAllWithPaging(Page page) {
-        return em.createQuery("select p from Person p" +
-                " left join fetch p.mbti m")
-                .setFirstResult(page.getStart())
-                .setMaxResults(page.getEnd())
-                .getResultList();
+    public List<Person> findAll(Page page) {
+        return queryFactory.selectFrom(qPerson)
+                .leftJoin(qPerson.mbti, qMbti)
+                .leftJoin(qPerson.personCategories, qPersonCategory)
+                .offset(page.getStart())
+                .limit(page.getEnd())
+                .fetch();
     }
+
+    @Override
+    public List<Person> findAll(Page page, OrderSpecifier sort) {
+        return queryFactory.selectFrom(qPerson)
+                .leftJoin(qPerson.mbti, qMbti)
+                .leftJoin(qPerson.personCategories, qPersonCategory)
+                .orderBy(sort)
+                .offset(page.getStart())
+                .limit(page.getEnd())
+                .fetch();
+    }
+
+    @Override
+    public List<Person> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword) {
+        return queryFactory.selectFrom(qPerson)
+                .leftJoin(qPerson.mbti, qMbti)
+                .leftJoin(qPerson.personCategories, qPersonCategory)
+                .where(keyword)
+                .orderBy(sort)
+                .offset(page.getStart())
+                .limit(page.getEnd()).fetch();
+
+    }
+
 
     @Override
     public void modifyLikes(Person person, Boolean isIncrease) {
         CommonRepository.modifyLikes(em, Person.class, person.getId(), isIncrease);
+    }
+
+    @Override
+    public void remove(Person person) {
+        em.remove(person);
     }
 
     @Override

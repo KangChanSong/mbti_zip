@@ -44,15 +44,15 @@ public class MbtiCountServiceImpl implements MbtiCountService{
 
     @Override
     public Map<String, Integer> getVotesByJob(Job job) {
-        return getListByObject(job);
+        return getVotesByObject(job);
     }
 
     @Override
     public Map<String, Integer> getVotesByPerson(Person person) {
-        return getListByObject(person);
+        return getVotesByObject(person);
     }
 
-    private Map<String , Integer> getListByObject(Object obj){
+    private Map<String , Integer> getVotesByObject(Object obj){
         checkInstance(obj);
         Map<String, Integer> map = new HashMap<>();
         List<MbtiCount> findCounts = new ArrayList<>();

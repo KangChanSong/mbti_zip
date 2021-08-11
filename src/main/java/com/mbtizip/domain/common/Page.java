@@ -1,4 +1,4 @@
-package com.mbtizip.domain.comment;
+package com.mbtizip.domain.common;
 
 import lombok.*;
 
@@ -10,6 +10,12 @@ public class Page {
 
     @Builder
     public Page(int start, int end){
+        if(start == 0){
+            start = 1;
+        }
+        if(end == 0){
+            end = 10;
+        }
         this.start = start;
         this.end =end;
     }

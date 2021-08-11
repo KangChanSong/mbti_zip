@@ -1,12 +1,16 @@
 package com.mbtizip.repository;
 
-import com.mbtizip.domain.comment.Page;
+import com.mbtizip.domain.common.Page;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.person.QPerson;
 import com.mbtizip.repository.person.PersonRepository;
 import com.mbtizip.repository.test.TestMbtiRepository;
 import com.mbtizip.repository.test.TestPersonRepository;
-import org.junit.jupiter.api.Assertions;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanOperation;
+import javassist.compiler.ast.Keyword;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +21,7 @@ import javax.persistence.EntityManager;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -103,17 +106,58 @@ public class PersonRepositoryTest {
     public void 인물_목록_페이징(){
 
         //given
+        insertMultiplePerson(10);
         Page page = Page.builder().start(1).end(5).build();
-        Mbti mbti = testMbtiRepository.findAll().get(0);
-
-        for(int i = 0 ; i < 10 ; i++){
-            testPersonRepository.createPersonWithMbti(mbti);
-        }
 
         //when
-        List<Person> findPersons = personRepository.findAllWithPaging(page);
+        List<Person> findPersons = personRepository.findAll(page);
 
         //then
         assertEquals(findPersons.size(), 5);
+    }
+
+    @Test
+    public void 인물_목록_페이징_정렬(){
+
+
+        //given
+        insertMultiplePerson(10);
+        Page page = Page.builder().start(1).end(5).build();
+
+        QPerson qPerson = QPerson.person;
+        OrderSpecifier sort = qPerson.id.asc();
+
+        //when
+        List<Person> findPersons = personRepository.findAll(page, sort);
+        //then
+        Person firstOne = findPersons.get(0);
+        findPersons.forEach( person -> assertTrue(firstOne.getId() <= person.getId()));
+
+    }
+
+    @Test
+    public void 인물_목록_페이징_정렬_검색(){
+
+        //given
+        insertMultiplePerson(50);
+        Page page = Page.builder().start(1).end(10).build();
+
+        QPerson qPerson = QPerson.person;
+        OrderSpecifier sort = qPerson.id.desc();
+        BooleanExpression keyword = qPerson.mbti.eq(testMbtiRepository.findAll().get(1));
+
+        //when
+        List<Person> findPersons = personRepository.findAll(page, sort, keyword);
+
+        //then
+        assertEquals(findPersons.size(), 0);
+
+    }
+
+    private void insertMultiplePerson(int count){
+        Mbti mbti = testMbtiRepository.findAll().get(0);
+        for(int i=0; i<count; i++){
+            testPersonRepository.createPersonWithMbti(mbti);
+        }
     }
 }
