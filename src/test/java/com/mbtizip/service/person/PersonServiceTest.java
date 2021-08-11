@@ -3,6 +3,7 @@ package com.mbtizip.service.person;
 import com.mbtizip.domain.category.Category;
 import com.mbtizip.domain.common.Page;
 import com.mbtizip.domain.person.QPerson;
+import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
 import com.mbtizip.repository.person.PersonRepository;
 import com.mbtizip.repository.personCategory.PersonCategoryRepository;
 import com.querydsl.core.types.OrderSpecifier;
@@ -53,7 +54,7 @@ public class PersonServiceTest {
     public void findAll_파라미터(){
 
         //given
-        Page page = Page.builder().start(11).end(20).build();
+        Page page = Page.builder().pageNum(11).amount(20).build();
         OrderSpecifier sort = QPerson.person.likes.desc();
         BooleanExpression keyword = QPerson.person.name.eq("송강찬");
 

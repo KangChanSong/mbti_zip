@@ -2,21 +2,26 @@ package com.mbtizip.domain.common;
 
 import lombok.*;
 
+@ToString
 @Getter
 @NoArgsConstructor
 public class Page {
-    private int start;
-    private int end;
+    private int pageNum;
+    private int amount;
+    private int offset;
 
     @Builder
-    public Page(int start, int end){
-        if(start == 0){
-            start = 1;
+    public Page(int pageNum, int amount){
+
+        if(pageNum <= 0){
+            pageNum = 1;
         }
-        if(end == 0){
-            end = 10;
+
+        if(amount == 0){
+            amount = 10;
         }
-        this.start = start;
-        this.end =end;
+        this.pageNum = pageNum;
+        this.amount =amount;
+        this.offset = (pageNum-1) * amount;
     }
 }

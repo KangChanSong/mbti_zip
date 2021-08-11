@@ -1,14 +1,20 @@
 package com.mbtizip.repository;
 
 import com.mbtizip.common.enums.TestJobEnum;
+import com.mbtizip.domain.common.Page;
 import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.job.QJob;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
+import com.mbtizip.domain.mbti.QMbti;
 import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.job.JobRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
 import com.mbtizip.repository.test.TestJobRepository;
 import com.mbtizip.repository.test.TestMbtiRepository;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import org.hibernate.cfg.annotations.MapBinder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +27,8 @@ import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mbtizip.domain.mbti.MbtiEnum.ENTP;
+import static com.mbtizip.domain.mbti.MbtiEnum.INFP;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -72,28 +80,55 @@ class JobRepositoryTest {
     }
 
     @Test
-    public void 직업_목록_조회() {
+    public void 직업_페이징(){
 
         //given
-        List<Mbti> mbtis = testMbtiRepository.findAll();
-        List<Job> jobs = new ArrayList<>();
-
-        mbtis.forEach(m -> {
-                Job job = Job.builder().build();
-                job.changeMbti(m);
-                jobs.add(job);});
-
+        Page page = Page.builder().pageNum(0).amount(10).build();
+        insertMultipleJobs();
+        System.out.println(page.toString());
         //when
-        jobs.forEach(job -> jobRepository.save(job));
-
+        List<Job> findJobs = jobRepository.findAll(page);
         //then
-        List<Job> findJobs = jobRepository.findAllWithMbti();
+        assertEquals(findJobs.size(), 10);
+    }
 
-        assertEquals(findJobs.size() , mbtis.size());
+    @Test
+    public void 직업_정렬(){
 
-        for(int i =0 ; i < mbtis.size() ;i++){
-            assertSame(findJobs.get(i).getMbti(), mbtis.get(i));
-        }
+        //given
+        Page page = Page.builder().pageNum(0).amount(10).build();
+        OrderSpecifier sort = QJob.job.id.desc();
+
+        insertMultipleJobs();
+        //when
+        List<Job> findJobs = jobRepository.findAll(page, sort);
+        //then
+        Job firstOne = findJobs.get(0);
+        findJobs.forEach(job -> assertTrue(firstOne.getId() >= job.getId()));
+    }
+
+    @Test
+    public void 직업_검색(){
+
+        //given
+        Page page = Page.builder().pageNum(0).amount(10).build();
+        OrderSpecifier sort = QJob.job.id.desc();
+        MbtiEnum filter = testMbtiRepository.findAll().get(0).getName();
+        BooleanExpression keyword = QMbti.mbti.name.eq(filter);
+
+        insertMultipleJobs();
+        //when
+        List<Job> findJobs = jobRepository.findAll(page, sort ,keyword);
+        //then
+        assertEquals(findJobs.size(), 1);
+        assertEquals(findJobs.get(0).getMbti().getName(), filter);
+    }
+
+    private void insertMultipleJobs(){
+        testMbtiRepository.findAll().forEach(
+                        mbti -> {
+                            testJobRepository.createJobWithMbti(mbti);}
+        );
     }
 
     @Test
@@ -103,32 +138,18 @@ class JobRepositoryTest {
         Job job = testJobRepository.createJob();
         //when
         jobRepository.modifyLikes(job, true);
+
+        //then
+        Job findJob1 = jobRepository.find(job.getId());
+        assertEquals(findJob1.getLikes(), 1);
+        //when
         jobRepository.modifyLikes(job, false);
 
         //then
-        Job findJob = jobRepository.find(job.getId());
-        assertEquals(findJob.getLikes(), 0);
+        Job findJob2 = jobRepository.find(job.getId());
+        assertEquals(findJob2.getLikes(), 0);
     }
-    
-    @Test
-    public void MBTI_로_조회(){
 
-        //given
-        Mbti mbti = testMbtiRepository.findAll().get(0);
-        List<Job> jobs = new ArrayList<>();
-
-        int count = 10;
-        for(int i = 0 ; i < count ; i++){
-            jobs.add(testJobRepository.createJobWithMbti("title" + i, mbti));
-        }
-
-        //when
-        List<Job> findJobs = jobRepository.findAllByMbti(mbti);
-
-        //then
-        assertEquals(findJobs.size() , count);
-        findJobs.forEach( i -> assertSame(i.getMbti(), mbti));
-    }
 
     @Test
     public void MBTI_변경(){

@@ -2,9 +2,11 @@ package com.mbtizip.service.person;
 
 import com.mbtizip.domain.category.Category;
 import com.mbtizip.domain.common.Page;
+import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.domain.person.QPerson;
 import com.mbtizip.domain.personCategory.PersonCategory;
+import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
 import com.mbtizip.repository.person.PersonRepository;
 import com.mbtizip.repository.personCategory.PersonCategoryRepository;
 import com.querydsl.core.types.OrderSpecifier;
@@ -20,8 +22,6 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService{
-
-
 
     private final PersonRepository personRepository;
     private final PersonCategoryRepository personCategoryRepository;
@@ -53,7 +53,7 @@ public class PersonServiceImpl implements PersonService{
     public List<Person> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword) {
 
         if(page == null){
-            page = Page.builder().start(1).end(10).build();
+            page = Page.builder().pageNum(1).amount(10).build();
         }
         if(sort == null){
             sort = QPerson.person.createDate.desc();
@@ -69,6 +69,4 @@ public class PersonServiceImpl implements PersonService{
     public void delete(Person person) {
         personRepository.remove(person);
     }
-
-
 }

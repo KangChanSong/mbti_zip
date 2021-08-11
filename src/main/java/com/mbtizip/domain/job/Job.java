@@ -4,6 +4,7 @@ import com.mbtizip.domain.common.CommonEntity;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.mbti.MbtiEnum;
+import com.querydsl.core.annotations.Config;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

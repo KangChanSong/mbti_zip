@@ -3,6 +3,7 @@ package com.mbtizip.domain.mbti;
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.person.Person;
+import com.querydsl.core.annotations.Config;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

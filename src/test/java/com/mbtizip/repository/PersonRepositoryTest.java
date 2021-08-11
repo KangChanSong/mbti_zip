@@ -107,7 +107,7 @@ public class PersonRepositoryTest {
 
         //given
         insertMultiplePerson(10);
-        Page page = Page.builder().start(1).end(5).build();
+        Page page = Page.builder().pageNum(1).amount(5).build();
 
         //when
         List<Person> findPersons = personRepository.findAll(page);
@@ -122,7 +122,7 @@ public class PersonRepositoryTest {
 
         //given
         insertMultiplePerson(10);
-        Page page = Page.builder().start(1).end(5).build();
+        Page page = Page.builder().pageNum(1).amount(5).build();
 
         QPerson qPerson = QPerson.person;
         OrderSpecifier sort = qPerson.id.asc();
@@ -140,7 +140,7 @@ public class PersonRepositoryTest {
 
         //given
         insertMultiplePerson(50);
-        Page page = Page.builder().start(1).end(10).build();
+        Page page = Page.builder().pageNum(1).amount(10).build();
 
         QPerson qPerson = QPerson.person;
         OrderSpecifier sort = qPerson.id.desc();

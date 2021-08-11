@@ -49,5 +49,8 @@ class JobServiceTest {
     }
 
     //== private 메서드 ==//
+    private void insertMultipleJobs(){
+
+    }
 
 }

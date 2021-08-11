@@ -1,12 +1,20 @@
 package com.mbtizip.repository.job;
 
+import com.mbtizip.domain.common.Page;
 import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.job.QJob;
 import com.mbtizip.domain.mbti.Mbti;
+import com.mbtizip.domain.mbti.MbtiEnum;
+import com.mbtizip.domain.mbti.QMbti;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.common.CommonRepository;
 import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +26,8 @@ import java.util.List;
 public class JobRepositoryImpl implements JobRepository{
 
     private final EntityManager em;
+
+    private final JPAQueryFactory queryFactory;
 
     @Override
     public Long save(Job job) {
@@ -33,19 +43,37 @@ public class JobRepositoryImpl implements JobRepository{
     }
 
     @Override
-    public List<Job> findAllWithMbti() {
-        return em.createQuery("select j from Job j " +
-                "join fetch j.mbti")
-                .getResultList();
+    public List<Job> findAll(Page page) {
+        return joinQuery()
+                .offset(page.getOffset())
+                .limit(page.getAmount())
+                .fetch();
     }
 
     @Override
-    public List<Job> findAllByMbti(Mbti mbti) {
-        return em.createQuery("select j from Job j" +
-                        " join fetch j.mbti" +
-                        " where j.mbti.id =: mbtiId")
-                .setParameter("mbtiId", mbti.getId())
-                .getResultList();
+    public List<Job> findAll(Page page, OrderSpecifier sort) {
+        return joinQuery()
+                .orderBy(sort)
+                .offset(page.getOffset())
+                .limit(page.getAmount())
+                .fetch();
+    }
+
+    @Override
+    public List<Job> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword) {
+        return joinQuery()
+                .where(keyword)
+                .orderBy(sort)
+                .offset(page.getOffset())
+                .limit(page.getAmount())
+                .fetch();
+    }
+
+    private JPAQuery<Job> joinQuery(){
+        QJob job = QJob.job;
+        QMbti mbti = QMbti.mbti;
+        return queryFactory.selectFrom(job)
+                .leftJoin(job.mbti, mbti);
     }
 
     @Override

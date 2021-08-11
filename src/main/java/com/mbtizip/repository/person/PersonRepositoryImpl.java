@@ -12,6 +12,7 @@ import com.mbtizip.repository.common.CommonRepository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanOperation;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -54,35 +55,35 @@ public class PersonRepositoryImpl implements PersonRepository{
 
     @Override
     public List<Person> findAll(Page page) {
-        return queryFactory.selectFrom(qPerson)
-                .leftJoin(qPerson.mbti, qMbti)
-                .leftJoin(qPerson.personCategories, qPersonCategory)
-                .offset(page.getStart())
-                .limit(page.getEnd())
+        return joinQuery()
+                .offset(page.getOffset())
+                .limit(page.getAmount())
                 .fetch();
     }
 
     @Override
     public List<Person> findAll(Page page, OrderSpecifier sort) {
-        return queryFactory.selectFrom(qPerson)
-                .leftJoin(qPerson.mbti, qMbti)
-                .leftJoin(qPerson.personCategories, qPersonCategory)
+        return joinQuery()
                 .orderBy(sort)
-                .offset(page.getStart())
-                .limit(page.getEnd())
+                .offset(page.getOffset())
+                .limit(page.getAmount())
                 .fetch();
     }
 
     @Override
     public List<Person> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword) {
-        return queryFactory.selectFrom(qPerson)
-                .leftJoin(qPerson.mbti, qMbti)
-                .leftJoin(qPerson.personCategories, qPersonCategory)
+        return joinQuery()
                 .where(keyword)
                 .orderBy(sort)
-                .offset(page.getStart())
-                .limit(page.getEnd()).fetch();
+                .offset(page.getOffset())
+                .limit(page.getAmount()).fetch();
 
+    }
+
+    private JPAQuery<Person> joinQuery(){
+        return queryFactory.selectFrom(qPerson)
+                .leftJoin(qPerson.mbti, qMbti)
+                .leftJoin(qPerson.personCategories, qPersonCategory);
     }
 
 

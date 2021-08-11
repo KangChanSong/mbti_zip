@@ -16,8 +16,14 @@ class PageTest {
         Page page = Page.builder().build();
 
         //then
-        assertEquals(page.getStart(), 1);
-        assertEquals(page.getEnd(), 10);
+        assertEquals(page.getPageNum(), 1);
+        assertEquals(page.getAmount(), 10);
+
+        //given
+        Page page1 = Page.builder().pageNum(3).build();
+        //then
+        assertEquals(page1.getOffset(), 20);
+        assertEquals(page1.getAmount(), 10);
     }
 
 }

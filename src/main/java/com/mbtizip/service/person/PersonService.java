@@ -2,6 +2,7 @@ package com.mbtizip.service.person;
 
 import com.mbtizip.domain.category.Category;
 import com.mbtizip.domain.common.Page;
+import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.person.Person;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;

@@ -9,6 +9,7 @@ import com.mbtizip.domain.mbti.QMbti;
 import com.mbtizip.repository.test.TestJobRepository;
 import com.mbtizip.repository.test.TestMbtiRepository;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -142,5 +143,61 @@ public class QuerydslTest {
                 )).fetchOne();
         //then
         assertEquals(findJob.getLikes(), 3);
+    }
+
+    @Test
+    public void 연관된_객체_프로퍼티로_검색() {
+
+        //given
+        List<Mbti> mbtis = testMbtiRepository.findAll();
+        Job job1 = testJobRepository.createJobWithMbti(mbtis.get(0));
+        Job job1_1 = testJobRepository.createJobWithMbti(mbtis.get(0));
+        Job job1_2 = testJobRepository.createJobWithMbti(mbtis.get(0));
+        Job job2 = testJobRepository.createJobWithMbti(mbtis.get(1));
+        Job job3 = testJobRepository.createJobWithMbti(mbtis.get(2));
+
+        //when
+        QJob job = QJob.job;
+        MbtiEnum filterName = mbtis.get(0).getName();
+
+        BooleanExpression keyword = QMbti.mbti.name.eq(filterName);
+
+        List<Job> findJob = joinQuery()
+                .where(keyword)
+                .offset(0)
+                .limit(5)
+                .fetch();
+
+        System.out.println(findJob.get(0).getMbti().getName());
+        assertEquals(findJob.get(0).getMbti().getName(), filterName);
+        assertEquals(findJob.size(), 3);
+        //then
+    }
+
+    @Test
+    public void OFFSET_LIMIT(){
+
+        //given
+        List<Mbti> mbtis = testMbtiRepository.findAll();
+        mbtis.forEach( mbti -> testJobRepository.createJobWithMbti(mbti));
+
+        //when
+        QJob job = QJob.job;
+
+
+        List<Job> findJob = joinQuery()
+                .offset(10)
+                .limit(20)
+                .fetch();
+
+        assertEquals(findJob.size(), 6);
+        //then
+    }
+
+    private JPAQuery<Job> joinQuery() {
+        QJob job = QJob.job;
+        QMbti mbti = QMbti.mbti;
+        return queryFactory.selectFrom(job)
+                .leftJoin(job.mbti, mbti);
     }
 }
