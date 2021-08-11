@@ -1,10 +1,20 @@
 package com.mbtizip.repository.comment;
 
 import com.mbtizip.domain.comment.Comment;
+import com.mbtizip.domain.comment.QComment;
+import com.mbtizip.domain.common.Page;
 import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.job.QJob;
+import com.mbtizip.domain.mbti.QMbti;
 import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.person.QPerson;
 import com.mbtizip.repository.common.CommonRepository;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.TypeCache;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -16,6 +26,8 @@ import java.util.Locale;
 public class CommentRepositoryImpl implements CommentRepository{
 
     private final EntityManager em;
+
+    private final JPAQueryFactory queryFactory;
 
     @Override
     public Long save(Comment comment) {
@@ -29,14 +41,32 @@ public class CommentRepositoryImpl implements CommentRepository{
     }
 
     @Override
-    public List<Comment> findAllByJob(Job job) {
-        return (List<Comment>) CommonRepository.findAllByObject(em, Comment.class, Job.class, job.getId());
+    public List<Comment> findAll(Page page, OrderSpecifier sort) {
+        return joinQuery()
+                .orderBy(sort)
+                .offset(page.getOffset())
+                .limit(page.getAmount())
+                .fetch();
     }
 
     @Override
-    public List<Comment> findAllByPerson(Person person) {
-        return (List<Comment>) CommonRepository.findAllByObject(em, Comment.class, Person.class, person.getId());
+    public List<Comment> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword) {
+        return joinQuery()
+                .where(keyword)
+                .orderBy(sort)
+                .offset(page.getOffset())
+                .limit(page.getAmount())
+                .fetch();
     }
+
+    private JPAQuery<Comment> joinQuery(){
+        QComment qComment = QComment.comment;
+        return queryFactory.selectFrom(qComment)
+                .leftJoin(qComment.mbti, QMbti.mbti)
+                .leftJoin(qComment.person, QPerson.person)
+                .leftJoin(qComment.job, QJob.job);
+    }
+
 
     @Override
     public void delete(Comment comment) {

@@ -1,5 +1,8 @@
 package com.mbtizip.repository;
 
+import com.mbtizip.common.util.TestEntityGenerator;
+import com.mbtizip.domain.comment.QComment;
+import com.mbtizip.domain.common.Page;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.mbti.Mbti;
@@ -8,6 +11,8 @@ import com.mbtizip.repository.comment.CommentRepository;
 import com.mbtizip.repository.test.TestJobRepository;
 import com.mbtizip.repository.test.TestMbtiRepository;
 import com.mbtizip.repository.test.TestPersonRepository;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +23,8 @@ import javax.persistence.EntityManager;
 
 import java.util.List;
 
+import static com.mbtizip.common.util.TestEntityGenerator.createComment;
+import static com.mbtizip.common.util.TestEntityGenerator.createJob;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -50,10 +57,13 @@ public class CommentRepositoryTest {
         //given
         Job job = testJobRepository.createJob();
         Mbti mbti = testMbtiRepository.findAll().get(0);
-        Comment comment = createCommentWithJobAndMbti(mbti, job);
+        Comment comment = createComment();
 
         //when
         Long saveId = commentRepository.save(comment);
+        comment.setJob(job);
+        comment.setMbti(mbti);
+
         Comment findComment = commentRepository.find(saveId);
         //then
 
@@ -71,12 +81,20 @@ public class CommentRepositoryTest {
         Job job = testJobRepository.createJob();
         int count = 10;
 
+        Page page = Page.builder().pageNum(1).amount(10).build();
+        OrderSpecifier sort = QComment.comment.content.desc();
+
         //when
         for(int i = 0; i < count ; i++){
-            createCommentWithJobAndMbti(mbti, job);
+            Comment comment = createComment();
+            commentRepository.save(comment);
+            comment.setJob(job);
+            comment.setMbti(mbti);
         }
+
         //then
-        List<Comment> comments = commentRepository.findAllByJob(job);
+
+        List<Comment> comments = commentRepository.findAll(page, sort);
 
         assertEquals(comments.size(), count);
         comments.forEach( i -> assertSame(i.getJob(), job));
@@ -92,10 +110,17 @@ public class CommentRepositoryTest {
         int count = 10;
         //when
         for(int i = 0 ; i < count ; i++){
-            createCommentWithPersonAndMbti(mbti, person);
+            Comment comment = createComment();
+            comment.setPerson(person);
+            comment.setMbti(mbti);
         }
+
+        Page page = Page.builder().pageNum(1).amount(10).build();
+        OrderSpecifier sort = QComment.comment.id.desc();
+        BooleanExpression keyword = QComment.comment.person.eq(person);
+
         //then
-        List<Comment> comments = commentRepository.findAllByPerson(person);
+        List<Comment> comments = commentRepository.findAll(page, sort, keyword);
 
         assertEquals(comments.size(), count);
         comments.forEach( i -> assertSame(i.getPerson(), person));
@@ -108,12 +133,14 @@ public class CommentRepositoryTest {
         //given
         Job job = testJobRepository.createJob();
         Mbti mbti = testMbtiRepository.findAll().get(0);
-        Comment comment = createCommentWithJobAndMbti(mbti, job);
+        Comment comment = createComment();
+        commentRepository.save(comment);
+        comment.setJob(job);
+        comment.setMbti(mbti);
 
         String modifiedContent = "수정된내용";
 
         Comment modify = Comment.builder()
-                .id(comment.getId())
                 .content(modifiedContent)
                 .build();
 
@@ -134,14 +161,13 @@ public class CommentRepositoryTest {
     public void 직업_댓글_삭제(){
 
         //given
-        Mbti mbti = testMbtiRepository.findAll().get(0);
-        Job job = testJobRepository.createJob();
+        Comment comment = createComment();
+        commentRepository.save(comment);
         //when
-        Comment comment = createCommentWithJobAndMbti(mbti, job);
         commentRepository.delete(comment);
 
         //then
-        List<Comment> findComments = commentRepository.findAllByJob(job);
+        List<Comment> findComments = commentRepository.findAll(Page.builder().build(), QComment.comment.id.desc());
         assertEquals(findComments.size(), 0);
         assertThrows(IndexOutOfBoundsException.class, ()->{
            findComments.get(0);
@@ -151,11 +177,9 @@ public class CommentRepositoryTest {
     @Test
     public void 좋아요_증감(){
 
-        //given
-        Mbti mbti = testMbtiRepository.findAll().get(0);
-        Job job = testJobRepository.createJob();
         //when
-        Comment comment = createCommentWithJobAndMbti(mbti, job);
+        Comment comment = createComment();
+        commentRepository.save(comment);
         commentRepository.modifyLikes(comment, true);
         commentRepository.modifyLikes(comment, false);
 
@@ -165,26 +189,4 @@ public class CommentRepositoryTest {
 
     }
 
-    private Comment createCommentWithJobAndMbti(Mbti mbti, Job job){
-        Comment comment = Comment.builder()
-                .content(COMMENT_CONTENT)
-                .mbti(mbti)
-                .job(job)
-                .build();
-        commentRepository.save(comment);
-
-        return comment;
-    }
-
-    private Comment createCommentWithPersonAndMbti(Mbti mbti, Person person){
-
-        Comment comment = Comment.builder()
-                .content(COMMENT_CONTENT)
-                .mbti(mbti)
-                .person(person)
-                .build();
-        commentRepository.save(comment);
-
-        return comment;
-    }
 }
