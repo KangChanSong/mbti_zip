@@ -81,4 +81,9 @@ public class JobRepositoryImpl implements JobRepository{
     public void changeMbti(Job job, Mbti mbti) {
         CommonRepository.changeMbti(em, Job.class, job.getId(), mbti);
     }
+
+    @Override
+    public void remove(Job job) {
+        em.remove(job);
+    }
 }

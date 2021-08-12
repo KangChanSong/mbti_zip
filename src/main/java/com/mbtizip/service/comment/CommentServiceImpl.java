@@ -68,6 +68,11 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findAll(page, sort , keyword);
     }
 
+    @Override
+    public void delete(Comment comment) {
+        commentRepository.remove(comment);
+    }
+
     private void checkIfPersisted(Long id){
         if(id == null) throw new IllegalArgumentException("객체가 영속상태여야 합니다. id : " + id);
     }

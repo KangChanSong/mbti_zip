@@ -69,7 +69,7 @@ public class CommentRepositoryImpl implements CommentRepository{
 
 
     @Override
-    public void delete(Comment comment) {
+    public void remove(Comment comment) {
         em.remove(comment);
     }
 

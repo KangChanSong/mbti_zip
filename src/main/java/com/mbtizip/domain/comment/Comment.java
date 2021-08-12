@@ -1,6 +1,7 @@
 package com.mbtizip.domain.comment;
 
 import com.mbtizip.domain.common.CommonEntity;
+import com.mbtizip.domain.common.InterfaceForPageSortFilter;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.person.Person;
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 @Entity
-public class Comment extends CommonEntity{
+public class Comment extends CommonEntity implements InterfaceForPageSortFilter {
 
     @Id @GeneratedValue
     @Column(name = "comment_id")

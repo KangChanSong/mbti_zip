@@ -6,6 +6,7 @@ import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.domain.person.QPerson;
 import com.mbtizip.domain.personCategory.PersonCategory;
+import com.mbtizip.repository.category.CategoryRepository;
 import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
 import com.mbtizip.repository.person.PersonRepository;
 import com.mbtizip.repository.personCategory.PersonCategoryRepository;
@@ -15,6 +16,7 @@ import com.querydsl.core.types.dsl.BooleanOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 
 import java.util.List;
 
@@ -25,14 +27,18 @@ public class PersonServiceImpl implements PersonService{
 
     private final PersonRepository personRepository;
     private final PersonCategoryRepository personCategoryRepository;
+    private final CategoryRepository categoryRepository;
 
+    @Transactional
     @Override
-    public Long registerWithCategory(Person person, List<Category> categories) {
+    public Boolean registerWithCategory(Person person, List<Long> categoryIds) {
 
-        personRepository.save(person);
-        categories.forEach( category -> {
+        Long saveId = personRepository.save(person);
+        categoryIds.forEach( categoryId -> {
+            Category category = categoryRepository.find(categoryId);
 
-            if(category.getId() == null) throw new IllegalArgumentException("Category는 영속 상태여야 합니다.");
+            if(category == null) throw new IllegalArgumentException("카테고리를 찾을 수 없습니다. id : " + categoryId);
+
             PersonCategory personCategory = PersonCategory.builder()
                                     .person(person)
                                     .category(category).build();
@@ -40,7 +46,7 @@ public class PersonServiceImpl implements PersonService{
             personCategoryRepository.save(personCategory);
         });
 
-        return person.getId();
+        return saveId == null ? false : true;
     }
 
     @Override
@@ -65,8 +71,11 @@ public class PersonServiceImpl implements PersonService{
         return personRepository.findAll(page, sort, keyword);
     }
 
+    @Transactional
     @Override
-    public void delete(Person person) {
+    public Boolean delete(Person person) {
+
         personRepository.remove(person);
+        return true;
     }
 }

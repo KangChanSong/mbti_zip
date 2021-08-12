@@ -1,10 +1,10 @@
 package com.mbtizip.domain.person;
 
 import com.mbtizip.domain.common.CommonEntity;
+import com.mbtizip.domain.common.InterfaceForPageSortFilter;
 import com.mbtizip.domain.personCategory.PersonCategory;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.comment.Comment;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Entity
-public class Person extends CommonEntity {
+public class Person extends CommonEntity implements InterfaceForPageSortFilter {
 
     @Id @GeneratedValue
     @Column(name ="person_id")

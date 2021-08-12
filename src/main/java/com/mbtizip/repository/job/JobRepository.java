@@ -17,4 +17,5 @@ public interface JobRepository {
     List<Job> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword);
     void modifyLikes(Job job, Boolean isIncrease);
     void changeMbti(Job job, Mbti mbti);
+    void remove(Job job);
 }

@@ -163,7 +163,7 @@ public class CommentRepositoryTest {
         Comment comment = createComment();
         commentRepository.save(comment);
         //when
-        commentRepository.delete(comment);
+        commentRepository.remove(comment);
 
         //then
         List<Comment> findComments = commentRepository.findAll(Page.builder().build(), QComment.comment.id.desc());

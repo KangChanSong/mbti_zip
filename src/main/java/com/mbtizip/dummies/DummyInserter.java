@@ -13,9 +13,15 @@ import javax.annotation.PostConstruct;
 public class DummyInserter {
 
     private final MbtiDummyRepository dummyRepository;
+    private final CategoryDummyRepository categoryDummyRepository;
 
     @PostConstruct
-    public void insertMbtis(){
+    public void insertDummies(){
+        insertMbtis();
+        insertCategoies();
+    }
+
+    private void insertMbtis(){
         dummyRepository.save(MbtiEnum.INFJ);
         dummyRepository.save(MbtiEnum.INFP);
         dummyRepository.save(MbtiEnum.INTJ);
@@ -32,5 +38,16 @@ public class DummyInserter {
         dummyRepository.save(MbtiEnum.ESFP);
         dummyRepository.save(MbtiEnum.ESTJ);
         dummyRepository.save(MbtiEnum.ESTP);
+    }
+
+    private void insertCategoies(){
+        
+        String[] names = new String[]{
+                "음악가","정치인","연예인","애니주인공","연기자", "개발자"
+        };
+
+        for(int i = 0 ; i < names.length ; i++){
+            categoryDummyRepository.save(names[i]);
+        }
     }
 }

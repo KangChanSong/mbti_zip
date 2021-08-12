@@ -2,6 +2,7 @@ package com.mbtizip.domain.job;
 
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.common.CommonEntity;
+import com.mbtizip.domain.common.InterfaceForPageSortFilter;
 import com.mbtizip.domain.mbti.Mbti;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Entity
-public class Job  extends CommonEntity {
+public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
 
     @Id @GeneratedValue
     @Column(name = "job_id")

@@ -53,7 +53,7 @@ public class JobServiceImpl implements JobService{
 
     @Override
     public void delete(Job job) {
-
+        jobRepository.remove(job);
     }
 
 

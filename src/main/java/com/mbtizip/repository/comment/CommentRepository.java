@@ -15,6 +15,6 @@ public interface CommentRepository {
     List<Comment> findAll(Page page, OrderSpecifier sort);
     List<Comment> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword);
 
-    void delete(Comment comment);
+    void remove(Comment comment);
     void modifyLikes(Comment comment, Boolean isIncrease);
 }

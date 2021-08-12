@@ -59,6 +59,12 @@ public class TestEntityGenerator {
                 .build();
     }
 
+    public static Category createCategory(String name){
+        return Category.builder()
+                .name(name)
+                .build();
+    }
+
     public static Comment createComment(){
         return Comment.builder()
                 .writer(COMMENT_WRITER.getText())

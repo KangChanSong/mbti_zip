@@ -11,8 +11,8 @@ import com.querydsl.core.types.dsl.BooleanOperation;
 import java.util.List;
 
 public interface PersonService {
-    Long registerWithCategory(Person person, List<Category> categories);
+    Boolean registerWithCategory(Person person, List<Long> categoryId);
     Person getById(Long saveId);
     List<Person> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword);
-    void delete(Person person);
+    Boolean delete(Person person);
 }

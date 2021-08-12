@@ -14,4 +14,6 @@ public interface CommentService {
 
     List<Comment> findAllByPerson(Person person, Page page, OrderSpecifier sort);
     List<Comment> findAllByJob(Job job, Page page, OrderSpecifier sort);
+
+    void delete(Comment comment);
 }

@@ -3,6 +3,7 @@ package com.mbtizip.service.person;
 import com.mbtizip.domain.category.Category;
 import com.mbtizip.domain.common.Page;
 import com.mbtizip.domain.person.QPerson;
+import com.mbtizip.repository.category.CategoryRepository;
 import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
 import com.mbtizip.repository.person.PersonRepository;
 import com.mbtizip.repository.personCategory.PersonCategoryRepository;
@@ -34,10 +35,14 @@ public class PersonServiceTest {
     @Mock
     private PersonCategoryRepository mockPersonCategoryRepository;
 
+    @Mock
+    private CategoryRepository mockCategoryRepository;
+
     @BeforeEach
     public void setup(){
         this.personService = new PersonServiceImpl(mockPersonRepository,
-                                                mockPersonCategoryRepository);
+                                                mockPersonCategoryRepository,
+                                                    mockCategoryRepository);
     }
 
     @DisplayName("인물을 카테고리와 함께 등록 시 카테고리가 영속성 컨텍스트에 없으면 예외 처리")
@@ -67,11 +72,11 @@ public class PersonServiceTest {
     }
 
     //== 편의 메서드 ==//
-    private List<Category> createCategoryList(){
-        List<Category> categories = new ArrayList<>();
-        categories.add(createCategory(CATEGORY_NAME_1));
-        categories.add(createCategory(CATEGORY_NAME_2));
-        categories.add(createCategory(CATEGORY_NAME_3));
+    private List<Long> createCategoryList(){
+        List<Long> categories = new ArrayList<>();
+        categories.add(createCategory(CATEGORY_NAME_1).getId());
+        categories.add(createCategory(CATEGORY_NAME_2).getId());
+        categories.add(createCategory(CATEGORY_NAME_3).getId());
         return categories;
     }
 
