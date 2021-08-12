@@ -28,7 +28,7 @@ public class PersonGetDto {
     private List<String> categories;
     private String mbti;
 
-    public static PersonGetDto toDto(Person person){
+    public static PersonGetDto toDto(Person person, List<Category> categories){
 
         return PersonGetDto.builder()
                 .name(person.getName())
@@ -40,7 +40,7 @@ public class PersonGetDto {
                 .updateDate(person.getUpdateDate())
 
                 .mbti(validateAndReturnMbti(person))
-                .categories(extractCategoryNames(person))
+                .categories(extractCategoryNames(categories))
                 .build();
     }
 
@@ -52,16 +52,13 @@ public class PersonGetDto {
         }
     }
 
-    private static List<String> extractCategoryNames(Person person){
-        List<String> categories = new ArrayList<>();
-        person.getPersonCategories().forEach(
-                personCategory -> {
-                    String categoryName = personCategory.getCategory().getName();
-                    categories.add(categoryName);
-                }
-        );
+    private static List<String> extractCategoryNames(List<Category> categories){
 
-        return categories;
+        List<String> names = new ArrayList<>();
+        if(categories != null && categories.size() != 0) {
+            categories.forEach(category -> names.add(category.getName()));
+        }
+        return names;
     }
 
 }

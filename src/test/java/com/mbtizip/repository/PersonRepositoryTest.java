@@ -2,6 +2,7 @@ package com.mbtizip.repository;
 
 import com.mbtizip.domain.common.Page;
 import com.mbtizip.domain.mbti.Mbti;
+import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.domain.person.QPerson;
 import com.mbtizip.repository.person.PersonRepository;
@@ -152,6 +153,23 @@ public class PersonRepositoryTest {
         //then
         assertEquals(findPersons.size(), 0);
 
+    }
+
+    @Test
+    public void 인물_목록_조회_MBTI(){
+
+        //given
+        insertMultiplePerson(10);
+        //when
+        Page page = Page.builder().build();
+        OrderSpecifier sort = QPerson.person.createDate.desc();
+
+        MbtiEnum name = testMbtiRepository.findAll().get(0).getName();
+        BooleanExpression keyword = QPerson.person.mbti.name.eq(name);
+        List<Person> findPersons = personRepository.findAll(page, sort, keyword);
+        //then
+        assertEquals(findPersons.size(), 10);
+        findPersons.forEach( person -> assertEquals(person.getMbti().getName() , name));
     }
 
     private void insertMultiplePerson(int count){

@@ -2,6 +2,7 @@ package com.mbtizip.service.job;
 
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.repository.job.JobRepository;
+import com.mbtizip.repository.mbti.MbtiRepository;
 import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,13 +18,13 @@ class JobServiceTest {
     JobRepository jobRepository;
 
     @Mock
-    MbtiCountRepository mbtiCountRepository;
+    MbtiRepository mbtiRepository;
 
 
 
     @BeforeEach
     public void setUp(){
-        jobService = new JobServiceImpl(jobRepository, mbtiCountRepository);
+        jobService = new JobServiceImpl(jobRepository, mbtiRepository);
     }
 
     @DisplayName("직업 등록 테스트")

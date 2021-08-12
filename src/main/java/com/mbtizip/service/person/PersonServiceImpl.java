@@ -3,23 +3,32 @@ package com.mbtizip.service.person;
 import com.mbtizip.domain.category.Category;
 import com.mbtizip.domain.common.Page;
 import com.mbtizip.domain.mbti.Mbti;
+import com.mbtizip.domain.mbti.MbtiEnum;
+import com.mbtizip.domain.mbti.QMbti;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.domain.person.QPerson;
 import com.mbtizip.domain.personCategory.PersonCategory;
 import com.mbtizip.repository.category.CategoryRepository;
+import com.mbtizip.repository.mbti.MbtiRepository;
 import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
 import com.mbtizip.repository.person.PersonRepository;
 import com.mbtizip.repository.personCategory.PersonCategoryRepository;
+import com.mbtizip.service.mbtiCount.MbtiCountService;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -28,6 +37,8 @@ public class PersonServiceImpl implements PersonService{
     private final PersonRepository personRepository;
     private final PersonCategoryRepository personCategoryRepository;
     private final CategoryRepository categoryRepository;
+    private final MbtiRepository mbtiRepository;
+    private final MbtiCountService mbtiCountService;
 
     @Transactional
     @Override
@@ -56,26 +67,72 @@ public class PersonServiceImpl implements PersonService{
     }
 
     @Override
-    public List<Person> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword) {
+    public Map<Person, List<Category>> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword) {
 
-        if(page == null){
-            page = Page.builder().pageNum(1).amount(10).build();
-        }
-        if(sort == null){
-            sort = QPerson.person.createDate.desc();
-        }
+        List<Person> findPersons = null;
         if(keyword == null){
-            return personRepository.findAll(page, sort);
+            findPersons = personRepository.findAll(page, sort);
+        } else {
+            findPersons = personRepository.findAll(page, sort, keyword);
         }
+        return  createPersonMapWithCategories(findPersons);
+    }
 
-        return personRepository.findAll(page, sort, keyword);
+
+
+    @Override
+    public Map<Person, List<Category>> findAllWithMbti(Page page, OrderSpecifier sort, Long mbtiId) {
+        MbtiEnum mbti = mbtiRepository.find(mbtiId).getName();
+        BooleanExpression keyword = QMbti.mbti.name.eq(mbti);
+        List<Person> findPersons = personRepository.findAll(page, sort, keyword);
+        return createPersonMapWithCategories(findPersons);
+    }
+
+
+    @Transactional
+    @Override
+    public Boolean delete(Long id) {
+        Person person = personRepository.find(id);
+        personRepository.remove(person);
+        return true;
     }
 
     @Transactional
     @Override
-    public Boolean delete(Person person) {
+    public Boolean vote(Long personId, Long mbtiId) {
+        Mbti mbti = mbtiRepository.find(mbtiId);
+        Person person = personRepository.find(personId);
+        checkIfNull(mbti, person);
 
-        personRepository.remove(person);
+        mbtiCountService.vote(mbti, person);
+
         return true;
+    }
+
+
+    private Map<Person, List<Category>> createPersonMapWithCategories(List<Person> findPersons) {
+        Map<Person, List<Category>> map = new HashMap<>();
+
+        findPersons.forEach(person -> {
+            if(person.getPersonCategories() == null
+                    || person.getPersonCategories().size()==0){
+                map.put(person, null);
+            } else {
+                person.getPersonCategories().forEach(
+                        personCategory -> {
+                            List<Category> categories = new ArrayList<>();
+                            categories.add(personCategory.getCategory());
+                            map.put(person, categories);
+                        }
+                );
+            }
+        });
+        return map;
+    }
+
+
+    private void checkIfNull(Mbti mbti, Person person){
+        if(mbti == null) throw new IllegalArgumentException(" MBTI가 존재하지 않습니다.");
+        if(person == null) throw new IllegalArgumentException(" Person이 존재하지 않습니다.");
     }
 }

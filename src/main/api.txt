@@ -18,7 +18,7 @@ PERSON
     POST /person/register ->
     GET  /person/get/{personId} ->
     GET  /person/list ->
-    PUT  /person/update/{personId} ->
+    PUT  /person/update/{personId} -> 임시로 제외ㅣ
     DELETE /person/delete/{personId} ->
 
     MBTI
@@ -35,7 +35,7 @@ JOB
     POST /job/register ->
     GET  /job/get/{jobId} ->
     GET  /job/list ->
-    PUT  /job/update/{jobId} ->
+    PUT  /job/update/{jobId} -> 임시로 제외ㅣ
     DELETE /job/delete/{jobId} ->
 
     MBTI

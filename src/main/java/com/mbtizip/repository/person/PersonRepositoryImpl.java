@@ -82,8 +82,7 @@ public class PersonRepositoryImpl implements PersonRepository{
 
     private JPAQuery<Person> joinQuery(){
         return queryFactory.selectFrom(qPerson)
-                .leftJoin(qPerson.mbti, qMbti)
-                .leftJoin(qPerson.personCategories, qPersonCategory);
+                .leftJoin(qPerson.mbti, qMbti);
     }
 
 

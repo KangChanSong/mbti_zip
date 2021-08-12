@@ -54,6 +54,18 @@ public class MbtiCountServiceImpl implements MbtiCountService{
         return getVotesByObject(person);
     }
 
+    @Override
+    public void deleteAllByPerson(Person person) {
+        mbtiCountRepository.removeAllByPerson(person);
+    }
+
+    @Override
+    public void deleteAllByJob(Job job) {
+        mbtiCountRepository.removeAllByJob(job);
+    }
+
+    //== private method ==//
+
     private Map<String , Integer> getVotesByObject(Object obj){
         checkInstance(obj);
         Map<String, Integer> map = new HashMap<>();

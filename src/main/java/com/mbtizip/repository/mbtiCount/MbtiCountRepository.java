@@ -20,4 +20,7 @@ public interface MbtiCountRepository {
     void modifyJobCount(Mbti mbti , Job job, boolean isIncrease);
     void modifyPersonCount(Mbti mbti , Person person, boolean isIncrease);
 
+    void removeAllByPerson(Person person);
+    void removeAllByJob(Job job);
+
 }

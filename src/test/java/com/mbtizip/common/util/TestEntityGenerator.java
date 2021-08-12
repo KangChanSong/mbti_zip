@@ -9,6 +9,7 @@ import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
+import com.mbtizip.domain.person.Gender;
 import com.mbtizip.domain.person.Person;
 
 import static com.mbtizip.common.enums.TestCommentEnum.COMMENT_CONTENT;
@@ -43,6 +44,7 @@ public class TestEntityGenerator {
     public static Person createPerson(){
         return Person.builder()
                 .name(PERSON_NAME.getText())
+                .gender(Gender.MALE)
                 .description(PERSON_DESCRIPTION.getText()).build();
     }
 

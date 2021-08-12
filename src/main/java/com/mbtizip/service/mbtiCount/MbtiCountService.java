@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 public interface MbtiCountService {
-    void vote(Mbti mbti, Object obj);
+    void vote(Mbti mbti, Object objz);
     void cancelVote(Mbti mbti, Object obj);
     Map<String, Integer> getVotesByJob(Job job);
     Map<String, Integer> getVotesByPerson(Person person);
+    void deleteAllByPerson(Person person);
+    void deleteAllByJob(Job job);
 }

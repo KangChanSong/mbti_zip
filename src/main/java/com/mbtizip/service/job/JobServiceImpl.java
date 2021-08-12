@@ -4,8 +4,11 @@ import com.mbtizip.domain.common.Page;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.job.QJob;
 import com.mbtizip.domain.mbti.Mbti;
+import com.mbtizip.domain.mbti.MbtiEnum;
+import com.mbtizip.domain.person.Person;
 import com.mbtizip.domain.person.QPerson;
 import com.mbtizip.repository.job.JobRepository;
+import com.mbtizip.repository.mbti.MbtiRepository;
 import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -21,8 +24,7 @@ import java.util.List;
 public class JobServiceImpl implements JobService{
 
     private final JobRepository jobRepository;
-
-    private final MbtiCountRepository mbtiCountRepository;
+    private final MbtiRepository mbtiRepository;
 
     @Transactional
     @Override
@@ -48,6 +50,13 @@ public class JobServiceImpl implements JobService{
             return jobRepository.findAll(page, sort);
         }
 
+        return jobRepository.findAll(page, sort, keyword);
+    }
+
+    @Override
+    public List<Job> findAllWithMbti(Page page, OrderSpecifier sort, Long mbtiId) {
+        MbtiEnum mbti = mbtiRepository.find(mbtiId).getName();
+        BooleanExpression keyword = QJob.job.mbti.name.eq(mbti);
         return jobRepository.findAll(page, sort, keyword);
     }
 

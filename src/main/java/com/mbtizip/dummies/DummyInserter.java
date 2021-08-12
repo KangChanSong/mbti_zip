@@ -38,6 +38,8 @@ public class DummyInserter {
         dummyRepository.save(MbtiEnum.ESFP);
         dummyRepository.save(MbtiEnum.ESTJ);
         dummyRepository.save(MbtiEnum.ESTP);
+        dummyRepository.save(MbtiEnum.NONE);
+        dummyRepository.save(MbtiEnum.DRAW);
     }
 
     private void insertCategoies(){

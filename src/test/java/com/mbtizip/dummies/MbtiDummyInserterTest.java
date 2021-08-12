@@ -25,7 +25,7 @@ class MbtiDummyInserterTest {
         //then
         List<Mbti> mbtis = em.createQuery("select m from Mbti m").getResultList();
 
-        assertEquals(mbtis.size(), 16);
+        assertEquals(mbtis.size(), 18);
     }
 
 }

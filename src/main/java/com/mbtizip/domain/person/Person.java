@@ -63,6 +63,15 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
         this.gender = gender;
     }
 
+    //== 연관관계 메서드 ==//
+    @Override
+    public void changeMbti(Mbti mbti) {
+        this.mbti = mbti;
+        mbti.getPersons().add(this);
+    }
+
+    //== 편의 메서드 ==//
+
     @Override
     public void modifyLikes(Boolean isIncrease) {
         if(isIncrease){
@@ -71,13 +80,5 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
             if(likes > 0) this.likes --;
         }
     }
-
-    //== 연관관계 메서드 ==//
-    @Override
-    public void changeMbti(Mbti mbti) {
-        this.mbti = mbti;
-        mbti.getPersons().add(this);
-    }
-
 }
 

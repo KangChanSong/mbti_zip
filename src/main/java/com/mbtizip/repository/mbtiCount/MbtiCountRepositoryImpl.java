@@ -65,9 +65,29 @@ public class MbtiCountRepositoryImpl implements MbtiCountRepository {
 
     }
 
+    @Override
+    public void removeAllByPerson(Person person) {
+        removeAllByObject(person, person.getId());
+    }
+
+    @Override
+    public void removeAllByJob(Job job) {
+        removeAllByObject(job, job.getId());
+    }
+
+    private void removeAllByObject(Object obj, Long id){
+        checkType(obj);
+        String str = obj.getClass().getSimpleName().toLowerCase(Locale.ROOT) + ".";
+        em.createQuery("delete from MbtiCount  m" +
+                " where m. "+ str + "id =: id")
+                .setParameter("id", id)
+                .executeUpdate();
+    }
+
     // == private 메서드 == //
 
     private List<MbtiCount> findMaxByObject(Object obj , Long id){
+        checkType(obj);
         String str = obj.getClass().getSimpleName().toLowerCase(Locale.ROOT) + ".";
         return em.createQuery(
                             "select c from MbtiCount c " +
@@ -109,6 +129,13 @@ public class MbtiCountRepositoryImpl implements MbtiCountRepository {
 
     private void save(MbtiCount mbtiCount){
         em.persist(mbtiCount);
+    }
+
+    private void checkType(Object obj){
+        Class cls = obj.getClass();
+        if(cls != Person.class && cls != Job.class){
+            throw new IllegalArgumentException("인스턴스 타입이 맞지 않습니다,");
+        }
     }
 
     //== static 클래스 ==//

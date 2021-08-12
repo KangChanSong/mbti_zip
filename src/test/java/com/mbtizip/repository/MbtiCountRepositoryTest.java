@@ -1,5 +1,6 @@
 package com.mbtizip.repository;
 
+import com.mbtizip.domain.category.Category;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
@@ -221,13 +222,31 @@ class MbtiCountRepositoryTest {
 
         int count = 10;
         //when
-        for(int i = 0 ; i < 10 ; i++){
-            childMbtiCountRepository.modifyJobCount(mbti, job , true);
-        }
+        IntStream.range(0, count)
+                .forEach( i->
+                        childMbtiCountRepository.modifyJobCount(mbti, job, true));
 
         //then
         MbtiCount max = childMbtiCountRepository.findMaxByJob(job).get(0);
         assertEquals(max.getCount(), count);
+    }
+
+    @Test
+    public void 직업으로_목록_조회(){
+
+        //given
+        Mbti mbti = testMbtiRepository.findAll().get(0);
+        Job job = testJobRepository.createJobWithMbti(mbti);
+
+        int count = 10;
+        //when
+        IntStream.range(0, count)
+                .forEach(
+                        i-> childMbtiCountRepository.modifyJobCount(mbti, job, true));
+        //then
+        childMbtiCountRepository.removeAllByJob(job);
+        List<MbtiCount> findJobs = childMbtiCountRepository.findAllByJob(job);
+        assertEquals(findJobs.size(), 0);
     }
 
     /**
