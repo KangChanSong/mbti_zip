@@ -75,14 +75,13 @@ public class CommentRepositoryTest {
 
     @Test
     public void 직업_댓글_목록_조회(){
-
         //given
         Mbti mbti = testMbtiRepository.findAll().get(0);
         Job job = testJobRepository.createJob();
         int count = 10;
 
         Page page = Page.builder().pageNum(1).amount(10).build();
-        OrderSpecifier sort = QComment.comment.content.desc();
+        OrderSpecifier sort = QComment.comment.id.desc();
 
         //when
         for(int i = 0; i < count ; i++){
@@ -116,7 +115,7 @@ public class CommentRepositoryTest {
         }
 
         Page page = Page.builder().pageNum(1).amount(10).build();
-        OrderSpecifier sort = QComment.comment.id.desc();
+        OrderSpecifier sort = QComment.comment.createDate.desc();
         BooleanExpression keyword = QComment.comment.person.eq(person);
 
         //then

@@ -28,6 +28,7 @@ public class MbtiCountServiceImpl implements MbtiCountService{
     private final MbtiCountRepository mbtiCountRepository;
     private final MbtiRepository mbtiRepository;
 
+    @Transactional
     @Override
     public void vote(Mbti mbti, Object obj) {
         checkMbti(mbti);
@@ -35,6 +36,7 @@ public class MbtiCountServiceImpl implements MbtiCountService{
         commonVote(mbti, obj, true);
     }
 
+    @Transactional
     @Override
     public void cancelVote(Mbti mbti, Object obj) {
         checkMbti(mbti);

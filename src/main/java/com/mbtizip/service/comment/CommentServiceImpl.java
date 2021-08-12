@@ -4,6 +4,7 @@ import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.comment.QComment;
 import com.mbtizip.domain.common.Page;
 import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.job.QJob;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.repository.comment.CommentRepository;
 import com.querydsl.core.types.OrderSpecifier;
@@ -21,6 +22,7 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
 
+    @Transactional
     @Override
     public Long addComment(Person person, Comment comment) {
         checkIfPersisted(person.getId());
@@ -29,6 +31,7 @@ public class CommentServiceImpl implements CommentService {
         return comment.getId();
     }
 
+    @Transactional
     @Override
     public Long addComment(Job job, Comment comment) {
         checkIfPersisted(job.getId());
@@ -39,12 +42,28 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> findAllByPerson(Person person, Page page, OrderSpecifier sort) {
+
+        if(page == null){
+            page = Page.builder().build();
+        }
+        if(sort == null){
+            sort = QComment.comment.createDate.desc();
+        }
+
         BooleanExpression keyword = QComment.comment.person.eq(person);
         return commentRepository.findAll(page, sort, keyword);
     }
 
     @Override
     public List<Comment> findAllByJob(Job job , Page page, OrderSpecifier sort) {
+
+        if(page == null){
+            page = Page.builder().build();
+        }
+        if(sort == null){
+            sort = QComment.comment.createDate.desc();
+        }
+
         BooleanExpression keyword = QComment.comment.job.eq(job);
         return commentRepository.findAll(page, sort , keyword);
     }

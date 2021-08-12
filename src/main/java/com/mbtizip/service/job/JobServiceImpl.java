@@ -24,6 +24,7 @@ public class JobServiceImpl implements JobService{
 
     private final MbtiCountRepository mbtiCountRepository;
 
+    @Transactional
     @Override
     public Long register(Job job) {
         if(job == null) throw new IllegalArgumentException("Job 이 존재하지 않습니다.");
@@ -34,6 +35,7 @@ public class JobServiceImpl implements JobService{
     public Job get(Long id) {
         return jobRepository.find(id);
     }
+
     @Override
     public List<Job> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword) {
         if(page == null){
@@ -47,6 +49,11 @@ public class JobServiceImpl implements JobService{
         }
 
         return jobRepository.findAll(page, sort, keyword);
+    }
+
+    @Override
+    public void delete(Job job) {
+
     }
 
 

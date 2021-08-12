@@ -12,4 +12,5 @@ public interface JobService {
     Long register(Job job);
     Job get(Long id);
     List<Job> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword);
+    void delete(Job job);
 }
