@@ -1,4 +1,4 @@
-package com.mbtizip.domain.common;
+package com.mbtizip.domain.common.pageSortFilter;
 
 import com.mbtizip.domain.job.QJob;
 import com.mbtizip.domain.mbti.MbtiEnum;
@@ -19,7 +19,7 @@ public class PageSortFilterDto<T extends InterfaceForPageSortFilter> extends Pag
     //검색
     public BooleanExpression toPersonKeyword(){
 
-        checkIfKeywordNull();
+        if(checkIfKeywordNull()) return null;
 
         QPerson person = QPerson.person;
 
@@ -37,7 +37,7 @@ public class PageSortFilterDto<T extends InterfaceForPageSortFilter> extends Pag
     }
     public BooleanExpression toJobKeyword(){
 
-        checkIfKeywordNull();
+        if(checkIfKeywordNull()) return null;
 
         QJob job = QJob.job;
 
@@ -51,12 +51,13 @@ public class PageSortFilterDto<T extends InterfaceForPageSortFilter> extends Pag
     }
 
     //== private 메서드 ==//
-    private void checkIfKeywordNull() {
+    private Boolean checkIfKeywordNull() {
         if(filterBy == null || filterBy.equals("")){
-            throw new IllegalArgumentException("filterBy 가 null 입니다.");
+            return true;
         }
         if( keyword == null || keyword.equals("")){
-            throw new IllegalArgumentException("keyword 가 null 입니다.");
+            return true;
         }
+        return false;
     }
 }

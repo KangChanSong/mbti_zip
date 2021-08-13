@@ -1,4 +1,4 @@
-package com.mbtizip.domain.common;
+package com.mbtizip.domain.common.pageSortFilter;
 
 import lombok.*;
 

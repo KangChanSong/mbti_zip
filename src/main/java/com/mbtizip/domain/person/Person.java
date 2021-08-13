@@ -1,7 +1,7 @@
 package com.mbtizip.domain.person;
 
 import com.mbtizip.domain.common.CommonEntity;
-import com.mbtizip.domain.common.InterfaceForPageSortFilter;
+import com.mbtizip.domain.common.pageSortFilter.InterfaceForPageSortFilter;
 import com.mbtizip.domain.personCategory.PersonCategory;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.comment.Comment;
@@ -67,7 +67,7 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
     @Override
     public void changeMbti(Mbti mbti) {
         this.mbti = mbti;
-        mbti.getPersons().add(this);
+        if(mbti != null) mbti.getPersons().add(this);
     }
 
     //== 편의 메서드 ==//

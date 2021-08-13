@@ -1,15 +1,13 @@
 package com.mbtizip.service.job;
 
-import com.mbtizip.domain.common.Page;
+import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.job.QJob;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
-import com.mbtizip.domain.person.Person;
-import com.mbtizip.domain.person.QPerson;
 import com.mbtizip.repository.job.JobRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
-import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
+import com.mbtizip.service.mbtiCount.MbtiCountService;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
@@ -25,17 +23,21 @@ public class JobServiceImpl implements JobService{
 
     private final JobRepository jobRepository;
     private final MbtiRepository mbtiRepository;
+    private final MbtiCountService mbtiCountService;
 
     @Transactional
     @Override
-    public Long register(Job job) {
+    public Boolean register(Job job) {
         if(job == null) throw new IllegalArgumentException("Job 이 존재하지 않습니다.");
-        return jobRepository.save(job);
+        return jobRepository.save(job) == null ? false : true;
     }
 
     @Override
     public Job get(Long id) {
-        return jobRepository.find(id);
+
+        Job findJob = jobRepository.find(id);
+        if(findJob == null) throw new IllegalArgumentException("Job 을 찾을 수 없습니다. id : " + id);
+        return findJob;
     }
 
     @Override
@@ -60,9 +62,30 @@ public class JobServiceImpl implements JobService{
         return jobRepository.findAll(page, sort, keyword);
     }
 
+
+    @Transactional
     @Override
-    public void delete(Job job) {
+    public Boolean delete(Job job) {
         jobRepository.remove(job);
+        return true;
+    }
+
+    @Transactional
+    @Override
+    public Boolean vote(Long mbtiId, Long jobId) {
+        Mbti mbti = mbtiRepository.find(mbtiId);
+        Job job = jobRepository.find(jobId);
+        mbtiCountService.vote(mbti, job);
+        return true;
+    }
+
+    @Transactional
+    @Override
+    public Boolean cancelVote(Long mbtiId, Long jobId) {
+        Mbti mbti = mbtiRepository.find(mbtiId);
+        Job job = jobRepository.find(jobId);
+        mbtiCountService.cancelVote(mbti, job);
+        return true;
     }
 
 

@@ -1,6 +1,7 @@
 package com.mbtizip.repository.common;
 
 import com.mbtizip.domain.mbti.Mbti;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.EntityManager;
 import java.lang.reflect.Method;
@@ -10,6 +11,7 @@ import java.util.Locale;
 /**
  * 여러 리포지토리에서 공통으로 쓰일 수 있는 메서드를 모아놓은 클래스
  */
+@Slf4j
 public class CommonRepository {
 
     public static Object findAllByObject(EntityManager em, Class returnType ,Class matchType , Long id){
@@ -28,16 +30,7 @@ public class CommonRepository {
      */
     public static void modifyLikes(EntityManager em , Class entityType , Long id , Boolean isIncrease){
 
-//        try {
-//            Object findObj = em.find(entityType, id);
-//            Method method = findObj.getClass().getMethod("modifyLikes", Boolean.class);
-//            method.invoke(findObj, isIncrease);
-//
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-
-        methodInvoker(em,
+        invokeMethod(em,
                 entityType,
                 id,
                 Boolean.class,
@@ -50,7 +43,7 @@ public class CommonRepository {
      */
     public static void changeMbti(EntityManager em, Class entityType, Long id , Mbti mbti) {
 
-        methodInvoker(em,
+        invokeMethod(em,
                 entityType,
                 id,
                 Mbti.class,
@@ -58,7 +51,7 @@ public class CommonRepository {
                 "changeMbti");
     }
 
-    private static void methodInvoker(EntityManager em , Class entityType, Long id , Class parameterType,
+    private static void invokeMethod(EntityManager em , Class entityType, Long id , Class parameterType,
                                       Object parameter, String methodName){
         try {
             Object findObj = em.find(entityType, id);

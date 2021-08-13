@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PersonGetDto {
 
+    private Long id;
     private String name;
     private String description;
     private String gender;
@@ -31,6 +32,7 @@ public class PersonGetDto {
     public static PersonGetDto toDto(Person person, List<Category> categories){
 
         return PersonGetDto.builder()
+                .id(person.getId())
                 .name(person.getName())
                 .description(person.getDescription())
                 .gender(person.getGender().getText())

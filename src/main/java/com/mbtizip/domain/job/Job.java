@@ -2,7 +2,7 @@ package com.mbtizip.domain.job;
 
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.common.CommonEntity;
-import com.mbtizip.domain.common.InterfaceForPageSortFilter;
+import com.mbtizip.domain.common.pageSortFilter.InterfaceForPageSortFilter;
 import com.mbtizip.domain.mbti.Mbti;
 import lombok.Builder;
 import lombok.Getter;
@@ -60,6 +60,8 @@ public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
             if(likes > 0) this.likes --;
         }
     }
+
+
     //==연관관계 메서드==//
     @Override
     public void changeMbti(Mbti mbti) {

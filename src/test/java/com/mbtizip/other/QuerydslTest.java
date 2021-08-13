@@ -190,7 +190,7 @@ public class QuerydslTest {
                 .limit(20)
                 .fetch();
 
-        assertEquals(findJob.size(), 6);
+        assertEquals(findJob.size(), 8);
         //then
     }
 

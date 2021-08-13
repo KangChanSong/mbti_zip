@@ -1,12 +1,10 @@
 package com.mbtizip.service.person;
 
-import com.mbtizip.domain.category.Category;
-import com.mbtizip.domain.common.Page;
+import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.domain.person.QPerson;
 import com.mbtizip.repository.category.CategoryRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
-import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
 import com.mbtizip.repository.person.PersonRepository;
 import com.mbtizip.repository.personCategory.PersonCategoryRepository;
 import com.mbtizip.service.mbtiCount.MbtiCountService;

@@ -3,6 +3,7 @@ package com.mbtizip.repository.test;
 import com.mbtizip.domain.category.Category;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 public class TestCategoryRepository {
 
@@ -32,5 +33,10 @@ public class TestCategoryRepository {
         em.persist(category);
 
         return category;
+    }
+
+    public List<Category> findAll(){
+        return em.createQuery("select c from Category c")
+                .getResultList();
     }
 }

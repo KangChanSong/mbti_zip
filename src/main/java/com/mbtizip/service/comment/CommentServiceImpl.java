@@ -2,9 +2,8 @@ package com.mbtizip.service.comment;
 
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.comment.QComment;
-import com.mbtizip.domain.common.Page;
+import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.job.Job;
-import com.mbtizip.domain.job.QJob;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.repository.comment.CommentRepository;
 import com.querydsl.core.types.OrderSpecifier;

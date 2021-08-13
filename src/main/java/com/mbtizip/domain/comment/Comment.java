@@ -1,7 +1,7 @@
 package com.mbtizip.domain.comment;
 
 import com.mbtizip.domain.common.CommonEntity;
-import com.mbtizip.domain.common.InterfaceForPageSortFilter;
+import com.mbtizip.domain.common.pageSortFilter.InterfaceForPageSortFilter;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.person.Person;

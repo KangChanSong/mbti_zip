@@ -1,8 +1,7 @@
 package com.mbtizip.repository;
 
-import com.mbtizip.common.util.TestEntityGenerator;
 import com.mbtizip.domain.comment.QComment;
-import com.mbtizip.domain.common.Page;
+import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.mbti.Mbti;
@@ -24,7 +23,6 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.mbtizip.common.util.TestEntityGenerator.createComment;
-import static com.mbtizip.common.util.TestEntityGenerator.createJob;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest

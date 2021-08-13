@@ -1,6 +1,6 @@
 package com.mbtizip.repository;
 
-import com.mbtizip.domain.common.Page;
+import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.person.Person;
@@ -10,8 +10,6 @@ import com.mbtizip.repository.test.TestMbtiRepository;
 import com.mbtizip.repository.test.TestPersonRepository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.BooleanOperation;
-import javassist.compiler.ast.Keyword;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

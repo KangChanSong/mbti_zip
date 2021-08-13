@@ -1,0 +1,60 @@
+MBTI
+    GET  /mbti/list -> MBTI 목록을 불러온다.
+    GET  /mbti/get-> 해당 MBTI가 가장 높게 나온 인물, 직업들을 불러온다.
+
+
+// 인물, 직업에 대한 조회와 MBTI 투표수 조회를 같이한다.
+MBTI_COUNT
+    PERSON
+        GET  /mbti/count/person/{personId} ->
+        POST /mbti/count/person/{personId}/vote/{mbtiId} ->
+        DELETE /mbti/count/person/{personId}/cancle/{personId} ->
+    JOB
+        GET  /mbti/count/job/{jobId} ->
+        POST /mbti/count/job/{jobId}/vote/{mbtiId} ->
+        DELETE /mbti/count/job/{jobId}/cancle/{jobId} ->
+
+PERSON
+    POST /person/api/v1/register -> 인물 등록
+    GET  /person/api/v1/get/{personId} -> 인물 조회
+    POST /person/api/v1/vote/{personId}/mbti/{mbtiId} -> MBTI 투표
+    POST /person/api/v1/cancel_vote/{personId}/mbti/{mbtiId} -> 투표 취소
+    GET  /person/api/v1/list -> 목록 조회
+    DELETE /person/api/v1/delete/{personId} -> 인물 삭제
+
+JOB
+    POST /job/register ->
+    GET  /job/get/{jobId} ->
+    GET  /job/list ->
+    PUT  /job/update/{jobId} -> 임시로 제외ㅣ
+    DELETE /job/delete/{jobId} ->
+
+    MBTI
+        GET /job/mbti/list/{mbtiId}
+
+    POST /job/like/{jobId}
+    DELETE /job/like/{jobId}
+
+COMMENT
+    PERSON
+        POST /comment/{personId}/register ->
+        GET  /comment/{personId}/list ->
+        PUT  /comment/{personId}/modify/{commentId} ->
+        DELETE /comment/{personId}/delete/{commentId} ->
+
+        POST /comment/{personId}/like/{commentId}
+        DELETE /comment/{personId}/like/{commentId}
+
+    JOB
+        POST /comment/{jobId}/register ->
+        GET  /comment/{jobId}/list ->
+        PUT  /comment/{jobId}/modify/{commentId} ->
+        DELETE /comment/{jobId}/delete/{commentId} ->
+
+        POST /comment/{jobId}/like/{commentId}
+        DELETE /comment/{jobId}/like/{commentId}
+
+CATEGORY
+    POST /category/register
+    GET /category/get/{categoryId}
+    DELETE /category/delete/{categoryId}

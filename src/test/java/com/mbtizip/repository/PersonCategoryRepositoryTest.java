@@ -82,16 +82,19 @@ public class PersonCategoryRepositoryTest {
             );
         }
 
-        Category category = testCategoryRepository.createCategory();
+        Category category = testCategoryRepository.findAll().get(0);
 
         //when
-        persons.forEach( i-> personCategoryRepository.save(
-                PersonCategory.builder()
-                        .person(i)
-                        .category(category)
-                        .build()));
+        persons.forEach( i-> {
+            personCategoryRepository.save(
+                    PersonCategory.builder()
+                    .person(i)
+                    .category(category)
+                    .build());
+        });
 
         //then
+        System.out.println("category.getId() -> " + category.getId());
         List<PersonCategory> personCategories = personCategoryRepository.findAllByCategory(category);
 
         assertEquals(personCategories.size() , count);

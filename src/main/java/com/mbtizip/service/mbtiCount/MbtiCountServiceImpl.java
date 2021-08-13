@@ -54,11 +54,13 @@ public class MbtiCountServiceImpl implements MbtiCountService{
         return getVotesByObject(person);
     }
 
+    @Transactional
     @Override
     public void deleteAllByPerson(Person person) {
         mbtiCountRepository.removeAllByPerson(person);
     }
 
+    @Transactional
     @Override
     public void deleteAllByJob(Job job) {
         mbtiCountRepository.removeAllByJob(job);
@@ -96,7 +98,6 @@ public class MbtiCountServiceImpl implements MbtiCountService{
     // 득표수에 따라 MBTI 가 반영되는 메서드
     private void updateJobMbti(Job job){
         List<MbtiCount> maxVoted = mbtiCountRepository.findMaxByJob(job);
-        log.info("findMaxByJob call");
         updateObjecMbti(maxVoted, job.getMbti(), job::changeMbti);
     }
 
@@ -107,6 +108,8 @@ public class MbtiCountServiceImpl implements MbtiCountService{
 
     private void updateObjecMbti(List<MbtiCount> maxVoted, Mbti originalMbti, Consumer<Mbti> consumer){
 
+        if(maxVoted != null && maxVoted.get(0).getCount() == 0) consumer.accept(null);
+
         if(maxVoted.size() > 1){
             consumer.accept(mbtiRepository.findByName(MbtiEnum.DRAW));
         } else if (maxVoted.size() == 1){
@@ -116,7 +119,7 @@ public class MbtiCountServiceImpl implements MbtiCountService{
                 consumer.accept(resultMbti);
             }
         } else {
-            consumer.accept(mbtiRepository.findByName(MbtiEnum.NONE));
+            consumer.accept(null);
         }
     }
 

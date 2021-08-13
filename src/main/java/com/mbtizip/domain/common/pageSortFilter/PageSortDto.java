@@ -1,4 +1,4 @@
-package com.mbtizip.domain.common;
+package com.mbtizip.domain.common.pageSortFilter;
 
 import com.mbtizip.domain.comment.QComment;
 import com.mbtizip.domain.job.QJob;

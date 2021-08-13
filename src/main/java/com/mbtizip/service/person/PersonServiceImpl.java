@@ -1,27 +1,23 @@
 package com.mbtizip.service.person;
 
 import com.mbtizip.domain.category.Category;
-import com.mbtizip.domain.common.Page;
+import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.mbti.QMbti;
 import com.mbtizip.domain.person.Person;
-import com.mbtizip.domain.person.QPerson;
 import com.mbtizip.domain.personCategory.PersonCategory;
 import com.mbtizip.repository.category.CategoryRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
-import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
 import com.mbtizip.repository.person.PersonRepository;
 import com.mbtizip.repository.personCategory.PersonCategoryRepository;
 import com.mbtizip.service.mbtiCount.MbtiCountService;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.BooleanOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.HttpMediaTypeNotAcceptableException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,6 +59,7 @@ public class PersonServiceImpl implements PersonService{
     @Override
     public Person getById(Long saveId) {
         Person findPerson = personRepository.findWithMbti(saveId);
+        if(findPerson == null) throw new IllegalArgumentException("Person 을 찾을 수 없습니다. id : " + saveId);
         return findPerson;
     }
 
@@ -108,6 +105,18 @@ public class PersonServiceImpl implements PersonService{
 
         return true;
     }
+
+    @Transactional
+    @Override
+    public Boolean cancelVote(Long personId, Long mbtiId) {
+        Mbti mbti = mbtiRepository.find(mbtiId);
+        Person person = personRepository.find(personId);
+
+        mbtiCountService.cancelVote(mbti, person);
+
+        return true;
+    }
+
 
 
     private Map<Person, List<Category>> createPersonMapWithCategories(List<Person> findPersons) {

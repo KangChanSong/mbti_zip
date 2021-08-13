@@ -1,6 +1,6 @@
 package com.mbtizip.domain.common;
 
-import org.junit.jupiter.api.Assertions;
+import com.mbtizip.domain.common.pageSortFilter.Page;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

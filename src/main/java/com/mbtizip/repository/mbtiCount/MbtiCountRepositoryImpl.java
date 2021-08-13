@@ -41,7 +41,7 @@ public class MbtiCountRepositoryImpl implements MbtiCountRepository {
 
     @Override
     public void modifyJobCount(Mbti mbti, Job job, boolean isIncrease) {
-        List<MbtiCount> mbtiCounts = findAllWithMbtiAndOjb(mbti, job, job.getId());
+        List<MbtiCount> mbtiCounts = findAllWithMbtiAndObj(mbti, job, job.getId());
 
         // mbtiCounts.size() 가 0 일때만 builder 실행
         checkAndUpdate(mbtiCounts,
@@ -55,7 +55,7 @@ public class MbtiCountRepositoryImpl implements MbtiCountRepository {
     @Override
     public void modifyPersonCount(Mbti mbti, Person person, boolean isIncrease) {
 
-        List<MbtiCount> mbtiCounts = findAllWithMbtiAndOjb(mbti, person, person.getId());
+        List<MbtiCount> mbtiCounts = findAllWithMbtiAndObj(mbti, person, person.getId());
 
         checkAndUpdate(mbtiCounts,
                 () -> MbtiCount.builder()
@@ -109,7 +109,7 @@ public class MbtiCountRepositoryImpl implements MbtiCountRepository {
             }
     }
 
-    private List<MbtiCount> findAllWithMbtiAndOjb(Mbti mbti, Object obj, Long id) {
+    private List<MbtiCount> findAllWithMbtiAndObj(Mbti mbti, Object obj, Long id) {
 
         String str = obj.getClass().getSimpleName().toLowerCase(Locale.ROOT) + ".";
 

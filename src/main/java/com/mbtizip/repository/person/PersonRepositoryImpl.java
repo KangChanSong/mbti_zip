@@ -1,8 +1,6 @@
 package com.mbtizip.repository.person;
 
-import com.mbtizip.domain.category.QCategory;
-import com.mbtizip.domain.common.Page;
-import com.mbtizip.domain.mbti.MbtiEnum;
+import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.mbti.QMbti;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.domain.person.QPerson;
@@ -11,7 +9,6 @@ import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.common.CommonRepository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.BooleanOperation;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

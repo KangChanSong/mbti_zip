@@ -4,6 +4,7 @@ import com.mbtizip.domain.job.Job;
 import com.mbtizip.repository.job.JobRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
 import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
+import com.mbtizip.service.mbtiCount.MbtiCountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.mockito.Mock;
@@ -20,11 +21,12 @@ class JobServiceTest {
     @Mock
     MbtiRepository mbtiRepository;
 
-
+    @Mock
+    MbtiCountService mbtiCountService;
 
     @BeforeEach
     public void setUp(){
-        jobService = new JobServiceImpl(jobRepository, mbtiRepository);
+        jobService = new JobServiceImpl(jobRepository, mbtiRepository, mbtiCountService);
     }
 
     @DisplayName("직업 등록 테스트")
@@ -36,16 +38,6 @@ class JobServiceTest {
         //when
         jobService.register(job);
 
-        //then
-    }
-
-    @DisplayName("직업 정렬, 검색, 페이징 테스트")
-    public void 직업_목록_조회(){
-
-        //given
-
-        //when
-        //jobService.findAll();
         //then
     }
 

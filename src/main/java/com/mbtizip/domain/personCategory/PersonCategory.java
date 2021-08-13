@@ -27,9 +27,10 @@ public class PersonCategory {
 
     @Builder
     public PersonCategory(Person person, Category category){
+
         this.person = person;
-        person.getPersonCategories().add(this);
+        if(person != null ) person.getPersonCategories().add(this);
         this.category = category;
-        category.getPersonCategories().add(this);
+        if(category != null) category.getPersonCategories().add(this);
     }
 }

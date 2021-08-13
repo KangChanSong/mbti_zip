@@ -1,7 +1,6 @@
 package com.mbtizip.repository;
 
-import com.mbtizip.common.enums.TestJobEnum;
-import com.mbtizip.domain.common.Page;
+import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.job.QJob;
 import com.mbtizip.domain.mbti.Mbti;
@@ -14,21 +13,16 @@ import com.mbtizip.repository.test.TestJobRepository;
 import com.mbtizip.repository.test.TestMbtiRepository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import org.hibernate.cfg.annotations.MapBinder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.mbtizip.domain.mbti.MbtiEnum.ENTP;
-import static com.mbtizip.domain.mbti.MbtiEnum.INFP;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
