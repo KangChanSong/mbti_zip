@@ -9,11 +9,17 @@ import com.querydsl.core.types.OrderSpecifier;
 import java.util.List;
 
 public interface CommentService {
-    Long addComment(Person person, Comment comment);
-    Long addComment(Job job, Comment comment);
+    Boolean addPersonComment(Long personId, Comment comment);
+    Boolean addJobComment(Long jobId, Comment comment);
 
-    List<Comment> findAllByPerson(Person person, Page page, OrderSpecifier sort);
-    List<Comment> findAllByJob(Job job, Page page, OrderSpecifier sort);
+    Comment find(Long commentId);
 
-    void delete(Comment comment);
+    List<Comment> findAllByPerson(Long personId, Page page, OrderSpecifier sort);
+    List<Comment> findAllByJob(Long jobId, Page page, OrderSpecifier sort);
+
+    Boolean update(Long commentId, Comment comment);
+    Boolean delete(Long commentId);
+
+    Boolean like(Long commentId);
+    Boolean cancelLike(Long commentId);
 }

@@ -4,6 +4,8 @@ import com.mbtizip.common.util.TestEntityGenerator;
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.repository.comment.CommentRepository;
+import com.mbtizip.repository.job.JobRepository;
+import com.mbtizip.repository.person.PersonRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,10 +27,14 @@ public class CommentServiceTest {
 
     @Mock
     private CommentRepository mockCommentRepository;
+    @Mock
+    private PersonRepository personRepository;
+    @Mock
+    private JobRepository jobRepository;
 
     @BeforeEach
     public void setUp(){
-        commentService = new CommentServiceImpl(mockCommentRepository);
+        commentService = new CommentServiceImpl(mockCommentRepository, personRepository, jobRepository);
     }
     
     @DisplayName("Person, Job 객체가 영속상태가 아닐 경우에 예외 발생")
@@ -42,7 +48,7 @@ public class CommentServiceTest {
 
         //then
         assertThrows(IllegalArgumentException.class,
-                ()->commentService.addComment(person, comment));
+                ()->commentService.addPersonComment(person.getId(), comment));
     }
 
 }
