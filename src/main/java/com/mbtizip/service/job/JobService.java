@@ -12,7 +12,9 @@ public interface JobService {
     Job get(Long id);
     List<Job> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword);
     List<Job> findAllWithMbti(Page page, OrderSpecifier sort, Long mbtiId);
-    Boolean delete(Job job);
+    Boolean delete(Long jobId);
     Boolean vote(Long mbtiId, Long jobId);
     Boolean cancelVote(Long mbtiId, Long jobId);
+    Boolean like(Long jobId);
+    Boolean cancelLike(Long jobId);
 }

@@ -117,6 +117,25 @@ public class PersonServiceImpl implements PersonService{
         return true;
     }
 
+    @Transactional
+    @Override
+    public Boolean like(Long personId) {
+        checkAndReturnPerson(personId).modifyLikes(true);
+        return true;
+    }
+
+    @Transactional
+    @Override
+    public Boolean cancelLike(Long personId) {
+        checkAndReturnPerson(personId).modifyLikes(false);
+        return true;
+    }
+
+    private Person checkAndReturnPerson(Long personId){
+        Person findPerson = personRepository.find(personId);
+        if(findPerson == null) throw new IllegalArgumentException("인물을 찾을 수 없습니다.");
+        return findPerson;
+    }
 
 
     private Map<Person, List<Category>> createPersonMapWithCategories(List<Person> findPersons) {

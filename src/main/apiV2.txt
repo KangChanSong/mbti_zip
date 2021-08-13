@@ -14,27 +14,35 @@ MBTI_COUNT
         POST /mbti/count/job/{jobId}/vote/{mbtiId} ->
         DELETE /mbti/count/job/{jobId}/cancle/{jobId} ->
 
-PERSON
-    POST /person/api/v1/register -> 인물 등록
+PERSON 인물
     GET  /person/api/v1/get/{personId} -> 인물 조회
+    GET  /person/api/v1/list -> 목록 조회
+    GET  /job/api/v1/list/mbti/{mbtiId} -> MBTI 로 목록 조회
+
+    POST /person/api/v1/register -> 인물 등록
     POST /person/api/v1/vote/{personId}/mbti/{mbtiId} -> MBTI 투표
     POST /person/api/v1/cancel_vote/{personId}/mbti/{mbtiId} -> 투표 취소
-    GET  /person/api/v1/list -> 목록 조회
+
     DELETE /person/api/v1/delete/{personId} -> 인물 삭제
 
-JOB
-    POST /job/register ->
-    GET  /job/get/{jobId} ->
-    GET  /job/list ->
-    PUT  /job/update/{jobId} -> 임시로 제외ㅣ
-    DELETE /job/delete/{jobId} ->
+    LIKES
+        /person/api/v1/like/{personId}
+        /person/api/v1/cancel_like/{personId}
 
-    MBTI
-        GET /job/mbti/list/{mbtiId}
+JOB 직업
+    GET  /job/api/v1/get/{jobId} -> 직업 조회
+    GET  /job/api/v1/list/mbti/{mbtiId} -> MBTI 로 목록 조회
+    GET  /job/api/v1/list -> 목록 조회
 
-    POST /job/like/{jobId}
-    DELETE /job/like/{jobId}
+    POST /job/api/v1/register -> 직업 등록
+    POST /job/api/v1/vote/{jobId}/mbti/{mbtiId} -> MBTI 투표
+    POST /job/api/v1/cancel_vote/{jobId}/mbti/{mbtiId} -> 투표 취소
 
+    DELETE /job/api/v1/delete/{jobId} -> 직업 삭제
+
+    LIKES
+        /job/api/v1/like/{jobId}
+        /job/api/v1/cancel_like/{jobId}
 COMMENT
     PERSON
         POST /comment/{personId}/register ->

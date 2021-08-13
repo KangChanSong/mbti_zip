@@ -65,7 +65,9 @@ public class JobServiceImpl implements JobService{
 
     @Transactional
     @Override
-    public Boolean delete(Job job) {
+    public Boolean delete(Long jobId) {
+        Job job = jobRepository.find(jobId);
+        if(job == null) throw new IllegalArgumentException("직업을 찾을 수 없습니다. id : " + jobId);
         jobRepository.remove(job);
         return true;
     }
@@ -86,6 +88,26 @@ public class JobServiceImpl implements JobService{
         Job job = jobRepository.find(jobId);
         mbtiCountService.cancelVote(mbti, job);
         return true;
+    }
+
+    @Transactional
+    @Override
+    public Boolean like(Long jobId) {
+        checkAndReturn(jobId).modifyLikes(true);
+        return true;
+    }
+
+    @Transactional
+    @Override
+    public Boolean cancelLike(Long jobId) {
+        checkAndReturn(jobId).modifyLikes(false);
+        return true;
+    }
+
+    private Job checkAndReturn(Long jobId){
+        Job findJob = jobRepository.find(jobId);
+        if(findJob == null) throw new IllegalArgumentException("직업을 찾을 수 없습니다. id : " + jobId);
+        return findJob;
     }
 
 

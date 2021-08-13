@@ -79,4 +79,27 @@ public class JobApiController {
 
         return JobListDto.toDto(fnidJobs);
     }
+
+    //직업 삭제
+    @DeleteMapping("/api/v1/delete/{jobId}")
+    public BooleanResponseDto delete(@PathVariable("jobId") Long jobId){
+
+        Boolean isSuccess = jobService.delete(jobId);
+        return new BooleanResponseDto(isSuccess);
+    }
+
+    //좋아요
+    @PostMapping("/api/v1/like/{jobId}")
+    public BooleanResponseDto like(@PathVariable("jobId") Long jobId){
+        Boolean isSuccess = jobService.like(jobId);
+        return new BooleanResponseDto(isSuccess);
+    }
+    //좋아요 취소
+    @PostMapping("/api/v1/cancel_like/{jobId}")
+    public BooleanResponseDto cancelLike(@PathVariable("jobId") Long jobId){
+        Boolean isSuccess = jobService.cancelLike(jobId);
+        return new BooleanResponseDto(isSuccess);
+    }
+
+
 }

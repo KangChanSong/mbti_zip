@@ -89,5 +89,19 @@ public class PersonApiController {
         Boolean isSuccess = personService.delete(id);
         return new BooleanResponseDto(isSuccess);
     }
+    
+    //좋아요 증가
+    @PostMapping("/api/v1/like/{personId}")
+    public BooleanResponseDto like(@PathVariable("personId") Long personId){
+        Boolean isSuccess = personService.like(personId);
+        return new BooleanResponseDto(isSuccess);
+    }
+    
+    //좋아요 취소
+    @PostMapping("/api/v1/cancel_like/{personId}")
+    public BooleanResponseDto cancelLike(@PathVariable("personId") Long personId){
+        Boolean isSuccess = personService.cancelLike(personId);
+        return new BooleanResponseDto(isSuccess);
+    }
 
 }
