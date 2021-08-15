@@ -2,6 +2,7 @@ package com.mbtizip.domain.person;
 
 import com.mbtizip.domain.common.CommonEntity;
 import com.mbtizip.domain.common.pageSortFilter.InterfaceForPageSortFilter;
+import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.personCategory.PersonCategory;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.comment.Comment;
@@ -57,6 +58,10 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     private List<PersonCategory> personCategories = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private File file;
 
     @Builder
     public Person(String name, String description, String writer,String password,  Gender gender){

@@ -2,9 +2,11 @@ package com.mbtizip.common.util;
 
 import com.mbtizip.common.enums.TestCategoryEnum;
 import com.mbtizip.common.enums.TestCommentEnum;
+import com.mbtizip.common.enums.TestFileEnum;
 import com.mbtizip.common.enums.TestPersonEnum;
 import com.mbtizip.domain.category.Category;
 import com.mbtizip.domain.comment.Comment;
+import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
@@ -14,6 +16,8 @@ import com.mbtizip.domain.person.Person;
 
 import static com.mbtizip.common.enums.TestCommentEnum.COMMENT_CONTENT;
 import static com.mbtizip.common.enums.TestCommentEnum.COMMENT_WRITER;
+import static com.mbtizip.common.enums.TestFileEnum.FILE_NAME;
+import static com.mbtizip.common.enums.TestFileEnum.FILE_UUID;
 import static com.mbtizip.common.enums.TestJobEnum.JOB_TITLE;
 import static com.mbtizip.common.enums.TestJobEnum.JOB_WRITER;
 import static com.mbtizip.common.enums.TestPersonEnum.PERSON_DESCRIPTION;
@@ -72,6 +76,13 @@ public class TestEntityGenerator {
         return Comment.builder()
                 .writer(COMMENT_WRITER.getText())
                 .content(COMMENT_CONTENT.getText())
+                .build();
+    }
+
+    public static File createFile(){
+        return File.builder()
+                .uuid(FILE_UUID.getText())
+                .name(FILE_NAME.getText())
                 .build();
     }
 }
