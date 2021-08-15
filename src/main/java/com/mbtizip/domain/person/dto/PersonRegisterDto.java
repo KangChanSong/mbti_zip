@@ -15,6 +15,7 @@ public class PersonRegisterDto {
     private String name;
     private String gender;
     private String description;
+    private String password;
     private List<Long> categoryIds;
 
     public Person toEntity(){
@@ -22,6 +23,7 @@ public class PersonRegisterDto {
                 .name(name)
                 .gender(Gender.valueOf(gender))
                 .description(description)
+                .password(password)
                 .build();
     }
 

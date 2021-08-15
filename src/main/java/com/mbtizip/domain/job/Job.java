@@ -30,6 +30,9 @@ public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
     @Column(name = "job_writer")
     private String writer;
 
+    @Column(name = "job_password")
+    private String password;
+
     @Column(name = "job_likes", columnDefinition = "integer default 0")
     private int likes;
 
@@ -46,9 +49,10 @@ public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
     private List<Comment> comments = new ArrayList<>();
 
     @Builder
-    public Job(String title, String writer){
+    public Job(String title, String writer, String password){
         this.title = title;
         this.writer = writer;
+        this.password =password;
     }
 
     //== 편의 메서드 ==//
@@ -59,6 +63,11 @@ public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
         } else {
             if(likes > 0) this.likes --;
         }
+    }
+
+    @Override
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 

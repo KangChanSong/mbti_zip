@@ -1,24 +1,25 @@
 package com.mbtizip.controller.comment;
 
+import com.mbtizip.controller.like.LikeController;
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.comment.dto.CommentGetDto;
 import com.mbtizip.domain.comment.dto.CommentListDto;
 import com.mbtizip.domain.comment.dto.CommentRegisterDto;
+import com.mbtizip.domain.comment.dto.CommentUpdateDto;
+import com.mbtizip.domain.common.dto.PasswordDto;
 import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.common.pageSortFilter.PageSortDto;
 import com.mbtizip.domain.common.wrapper.BooleanResponseDto;
-import com.mbtizip.repository.comment.CommentRepository;
 import com.mbtizip.service.comment.CommentService;
-import com.querydsl.core.types.OrderSpecifier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.TypeCache;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+
+import static com.mbtizip.controller.like.LikeController.TARGET_JOB;
+import static com.mbtizip.controller.like.LikeController.TARGET_PERSON;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,8 +27,6 @@ import java.util.function.Supplier;
 @Slf4j
 public class CommentApiController {
 
-    private static final String TARGET_PERSON = "person";
-    private static final String TARGET_JOB = "job";
 
     private final CommentService commentService;
 
@@ -73,6 +72,29 @@ public class CommentApiController {
         return CommentListDto.toDto(findComments);
     }
 
+    //댓글 수정
+    @PutMapping("/api/v1/update/{commentId}")
+    public BooleanResponseDto update(@PathVariable("commentId") Long commentId,
+                                     @RequestBody CommentUpdateDto dto){
+
+        Boolean isSuccess = commentService.update(commentId, dto.toEntity());
+        return new BooleanResponseDto(isSuccess);
+    }
+    
+    //댓글 삭제
+    @DeleteMapping("/api/v1/delete/{commentId}")
+    public BooleanResponseDto delete(@PathVariable("commentId") Long commentId, @RequestBody PasswordDto dto){
+
+        Boolean isSuccess = commentService.delete(commentId, dto.getPassword());
+        return new BooleanResponseDto(isSuccess);
+    }
+    
+    //좋아요
+    
+    //좋아요 취소
+
+    //== private method ==//
+
     private <T> T checkTargetAndReturn(T obj , String target, Supplier personMethod , Supplier jobMethod){
 
         if(target.equals(TARGET_PERSON)){
@@ -85,13 +107,5 @@ public class CommentApiController {
         }
         return obj;
     }
-    
-    //댓글 수정
-    
-    //댓글 삭제
-    
-    //좋아요
-    
-    //좋아요 취소
 
 }

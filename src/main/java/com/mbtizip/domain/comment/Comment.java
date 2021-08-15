@@ -9,12 +9,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Slf4j
 @Getter
 @NoArgsConstructor
 @ToString
@@ -30,6 +32,9 @@ public class Comment extends CommonEntity implements InterfaceForPageSortFilter 
 
     @Column(name = "comment_writer")
     private String writer;
+
+    @Column(name = "comment_password")
+    private String password;
 
     @Column(name = "comment_likes", columnDefinition = "integer default 0")
     private int likes;
@@ -53,9 +58,10 @@ public class Comment extends CommonEntity implements InterfaceForPageSortFilter 
     private Mbti mbti;
 
     @Builder
-    public Comment(String content, String writer){
+    public Comment(String content, String writer, String password){
         this.content =content;
         this.writer = writer;
+        this.password = password;
     }
     
     //==연관관계 메서드==//
@@ -76,7 +82,6 @@ public class Comment extends CommonEntity implements InterfaceForPageSortFilter 
 
     public void update(Comment comment) {
         this.content = comment.getContent();
-        this.writer = comment.getWriter();
     }
 
     @Override
@@ -86,6 +91,11 @@ public class Comment extends CommonEntity implements InterfaceForPageSortFilter 
         } else {
             if(likes > 0) this.likes --;
         }
+    }
+
+    @Override
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
 

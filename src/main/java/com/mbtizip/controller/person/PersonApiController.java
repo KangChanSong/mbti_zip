@@ -1,6 +1,7 @@
 package com.mbtizip.controller.person;
 
 import com.mbtizip.domain.category.Category;
+import com.mbtizip.domain.common.dto.PasswordDto;
 import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.common.pageSortFilter.PageSortDto;
 import com.mbtizip.domain.common.pageSortFilter.PageSortFilterDto;
@@ -84,9 +85,9 @@ public class PersonApiController {
 
     //인물 삭제
     @DeleteMapping("/api/v1/delete/{personId}")
-    public BooleanResponseDto delete(@PathVariable("personId") Long id){
+    public BooleanResponseDto delete(@PathVariable("personId") Long id, @RequestBody PasswordDto dto){
 
-        Boolean isSuccess = personService.delete(id);
+        Boolean isSuccess = personService.delete(id, dto.getPassword());
         return new BooleanResponseDto(isSuccess);
     }
     

@@ -18,7 +18,7 @@ public interface CommentService {
     List<Comment> findAllByJob(Long jobId, Page page, OrderSpecifier sort);
 
     Boolean update(Long commentId, Comment comment);
-    Boolean delete(Long commentId);
+    Boolean delete(Long commentId, String password);
 
     Boolean like(Long commentId);
     Boolean cancelLike(Long commentId);

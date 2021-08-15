@@ -9,6 +9,7 @@ import com.mbtizip.domain.person.Person;
 import com.mbtizip.repository.comment.CommentRepository;
 import com.mbtizip.repository.job.JobRepository;
 import com.mbtizip.repository.person.PersonRepository;
+import com.mbtizip.util.EncryptHelper;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.function.Supplier;
+
+import static com.mbtizip.util.EncryptHelper.encrypt;
+import static com.mbtizip.util.EncryptHelper.isMatch;
 
 @Service
 @RequiredArgsConstructor
@@ -67,9 +71,14 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public Boolean delete(Long commentId) {
-        commentRepository.remove(checkIfNullAndReturn(commentId));
-        return true;
+    public Boolean delete(Long commentId, String password) {
+        Comment comment = checkIfNullAndReturn(commentId);
+        if(isMatch(password, comment.getPassword())){
+            commentRepository.remove(comment);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Transactional
@@ -94,6 +103,8 @@ public class CommentServiceImpl implements CommentService {
     private Boolean addCommonComment(Long id, Comment comment, Supplier findQuery){
         Object obj = findQuery.get();
         if(obj == null) throw new IllegalArgumentException();
+
+        comment.setPassword(encrypt(comment.getPassword()));
         commentRepository.save(comment);
 
         if(obj instanceof Job) comment.setJob((Job) obj);

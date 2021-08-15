@@ -8,13 +8,18 @@ import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.repository.job.JobRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
 import com.mbtizip.service.mbtiCount.MbtiCountService;
+import com.mbtizip.util.EncryptHelper;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.mbtizip.util.EncryptHelper.encrypt;
+import static com.mbtizip.util.EncryptHelper.isMatch;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +34,7 @@ public class JobServiceImpl implements JobService{
     @Override
     public Boolean register(Job job) {
         if(job == null) throw new IllegalArgumentException("Job 이 존재하지 않습니다.");
+        job.setPassword(encrypt(job.getPassword()));
         return jobRepository.save(job) == null ? false : true;
     }
 
@@ -65,11 +71,16 @@ public class JobServiceImpl implements JobService{
 
     @Transactional
     @Override
-    public Boolean delete(Long jobId) {
-        Job job = jobRepository.find(jobId);
-        if(job == null) throw new IllegalArgumentException("직업을 찾을 수 없습니다. id : " + jobId);
-        jobRepository.remove(job);
-        return true;
+    public Boolean delete(Long jobId, String password) {
+        Job findJob = jobRepository.find(jobId);
+        if(findJob == null) throw new IllegalArgumentException("직업을 찾을 수 없습니다. id : " + jobId);
+
+        if(isMatch(password, findJob.getPassword())) {
+            jobRepository.remove(findJob);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Transactional

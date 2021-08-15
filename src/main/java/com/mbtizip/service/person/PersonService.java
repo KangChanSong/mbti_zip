@@ -14,7 +14,7 @@ public interface PersonService {
     Person getById(Long saveId);
     Map<Person, List<Category>> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword);
     Map<Person, List<Category>> findAllWithMbti(Page page, OrderSpecifier sort, Long mbtiId);
-    Boolean delete(Long id);
+    Boolean delete(Long id, String password);
     Boolean vote(Long personId, Long mbtiId);
     Boolean cancelVote(Long personId, Long mbtiId);
     Boolean like(Long personId);

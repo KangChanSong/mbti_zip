@@ -1,5 +1,6 @@
 package com.mbtizip.controller.job;
 
+import com.mbtizip.domain.common.dto.PasswordDto;
 import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.common.pageSortFilter.PageSortDto;
 import com.mbtizip.domain.common.pageSortFilter.PageSortFilterDto;
@@ -82,9 +83,9 @@ public class JobApiController {
 
     //직업 삭제
     @DeleteMapping("/api/v1/delete/{jobId}")
-    public BooleanResponseDto delete(@PathVariable("jobId") Long jobId){
+    public BooleanResponseDto delete(@PathVariable("jobId") Long jobId, @RequestBody PasswordDto dto){
 
-        Boolean isSuccess = jobService.delete(jobId);
+        Boolean isSuccess = jobService.delete(jobId, dto.getPassword());
         return new BooleanResponseDto(isSuccess);
     }
 

@@ -37,6 +37,9 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
     @Column(name = "person_writer")
     private String writer;
 
+    @Column(name = "person_password")
+    private String password;
+
     @Column(name = "person_likes", columnDefinition = "integer default 0")
     private int likes;
 
@@ -56,10 +59,11 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
     private List<PersonCategory> personCategories = new ArrayList<>();
 
     @Builder
-    public Person(String name, String description, String writer, Gender gender){
+    public Person(String name, String description, String writer,String password,  Gender gender){
         this.name = name;
         this.description = description;
         this.writer = writer;
+        this.password = password;
         this.gender = gender;
     }
 
@@ -79,6 +83,11 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
         } else {
             if(likes > 0) this.likes --;
         }
+    }
+
+    @Override
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
 

@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.mbtizip.util.EncryptHelper.*;
+
 @Slf4j
 @Service
 @Transactional(readOnly = true)
@@ -39,22 +41,14 @@ public class PersonServiceImpl implements PersonService{
     @Transactional
     @Override
     public Boolean registerWithCategory(Person person, List<Long> categoryIds) {
-
+        if(person == null) throw new IllegalArgumentException("Person 이 null 입니다.");
+        person.setPassword(encrypt(person.getPassword()));
         Long saveId = personRepository.save(person);
-        categoryIds.forEach( categoryId -> {
-            Category category = categoryRepository.find(categoryId);
-
-            if(category == null) throw new IllegalArgumentException("카테고리를 찾을 수 없습니다. id : " + categoryId);
-
-            PersonCategory personCategory = PersonCategory.builder()
-                                    .person(person)
-                                    .category(category).build();
-
-            personCategoryRepository.save(personCategory);
-        });
+        savePersonCategories(person, categoryIds);
 
         return saveId == null ? false : true;
     }
+
 
     @Override
     public Person getById(Long saveId) {
@@ -66,7 +60,7 @@ public class PersonServiceImpl implements PersonService{
     @Override
     public Map<Person, List<Category>> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword) {
 
-        List<Person> findPersons = null;
+        List<Person> findPersons;
         if(keyword == null){
             findPersons = personRepository.findAll(page, sort);
         } else {
@@ -88,10 +82,16 @@ public class PersonServiceImpl implements PersonService{
 
     @Transactional
     @Override
-    public Boolean delete(Long id) {
-        Person person = personRepository.find(id);
-        personRepository.remove(person);
-        return true;
+    public Boolean delete(Long id, String password) {
+        Person findPerson = checkAndReturnPerson(id);
+        log.info(password);
+        log.info(findPerson.getPassword());
+        if(isMatch(password, findPerson.getPassword())){
+            personRepository.remove(findPerson);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Transactional
@@ -131,12 +131,27 @@ public class PersonServiceImpl implements PersonService{
         return true;
     }
 
+    //== private method ==//
+    private void savePersonCategories(Person person, List<Long> categoryIds){
+        categoryIds.forEach( categoryId -> {
+            Category category = categoryRepository.find(categoryId);
+
+            if(category == null) throw new IllegalArgumentException("카테고리를 찾을 수 없습니다. id : " + categoryId);
+
+            PersonCategory personCategory = PersonCategory.builder()
+                    .person(person)
+                    .category(category).build();
+
+            personCategoryRepository.save(personCategory);
+        });
+    }
+
+
     private Person checkAndReturnPerson(Long personId){
         Person findPerson = personRepository.find(personId);
         if(findPerson == null) throw new IllegalArgumentException("인물을 찾을 수 없습니다.");
         return findPerson;
     }
-
 
     private Map<Person, List<Category>> createPersonMapWithCategories(List<Person> findPersons) {
         Map<Person, List<Category>> map = new HashMap<>();
@@ -157,7 +172,6 @@ public class PersonServiceImpl implements PersonService{
         });
         return map;
     }
-
 
     private void checkIfNull(Mbti mbti, Person person){
         if(mbti == null) throw new IllegalArgumentException(" MBTI가 존재하지 않습니다.");
