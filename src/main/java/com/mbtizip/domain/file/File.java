@@ -36,6 +36,7 @@ public class File {
     //== 연관관계 메서드 ==//
     public void setPerson(Person person) {
         this.person = person;
+        person.setFile(this);
     }
 
     //== 편의 메서드 ==//

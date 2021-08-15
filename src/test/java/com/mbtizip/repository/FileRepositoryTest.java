@@ -20,8 +20,7 @@ import javax.persistence.EntityManager;
 import static com.mbtizip.common.enums.TestFileEnum.FILE_NAME;
 import static com.mbtizip.common.enums.TestFileEnum.FILE_UUID;
 import static com.mbtizip.common.util.TestEntityGenerator.createFile;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
@@ -72,6 +71,22 @@ public class FileRepositoryTest {
         File findFile = fileRepository.findByPerson(person);
 
         assertFileWithPerson(findFile, person);
+    }
+
+    //person 을 참조하는 file 삭제
+    @Test
+    public void 파일_PERSON_삭제(){
+
+        //given
+        File file = createFile();
+        Person person = testPersonRepository.createPerson();
+        file.setPerson(person);
+        //when
+        fileRepository.save(file);
+        fileRepository.deleteByPerson(person);
+        //then
+        File findFile = fileRepository.findByPerson(person);
+        assertNull(findFile);
     }
 
     private void assertFileWithPerson(File findFile, Person person){

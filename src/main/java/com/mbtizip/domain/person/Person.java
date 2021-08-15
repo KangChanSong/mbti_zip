@@ -79,6 +79,10 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
         if(mbti != null) mbti.getPersons().add(this);
     }
 
+    public void setFile(File file) {
+        this.file = file;
+    }
+
     //== 편의 메서드 ==//
 
     @Override

@@ -66,3 +66,11 @@ CATEGORY
     POST /category/register
     GET /category/get/{categoryId}
     DELETE /category/delete/{categoryId}
+
+File
+    인물 등록 화면에서 파일 저장, 삭제
+
+    인물 등록시에 파일 DB에 저장
+
+    인물 조회할떄 파일도 같이 조회
+

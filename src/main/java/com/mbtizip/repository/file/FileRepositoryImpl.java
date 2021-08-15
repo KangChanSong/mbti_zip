@@ -32,4 +32,17 @@ public class FileRepositoryImpl implements FileRepository{
                 .setParameter("id", person.getId())
                 .getResultList().get(0);
     }
+
+    @Override
+    public void delete(File file) {
+        em.remove(file);
+    }
+
+    @Override
+    public void deleteByPerson(Person findPerson) {
+        em.createQuery("delete from File f" +
+                " where f.person.id =: id")
+                .setParameter("id", findPerson.getId())
+                .executeUpdate();
+    }
 }
