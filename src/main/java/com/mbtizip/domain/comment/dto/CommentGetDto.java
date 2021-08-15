@@ -11,12 +11,14 @@ public class CommentGetDto {
     private Long id;
     private String writer;
     private String content;
+    private Integer likes;
 
     public static CommentGetDto toDto(Comment comment){
         return CommentGetDto.builder()
                 .id(comment.getId())
                 .writer(comment.getWriter())
                 .content(comment.getContent())
+                .likes(comment.getLikes())
                 .build();
     }
 }

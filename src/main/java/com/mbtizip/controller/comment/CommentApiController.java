@@ -88,11 +88,6 @@ public class CommentApiController {
         Boolean isSuccess = commentService.delete(commentId, dto.getPassword());
         return new BooleanResponseDto(isSuccess);
     }
-    
-    //좋아요
-    
-    //좋아요 취소
-
     //== private method ==//
 
     private <T> T checkTargetAndReturn(T obj , String target, Supplier personMethod , Supplier jobMethod){

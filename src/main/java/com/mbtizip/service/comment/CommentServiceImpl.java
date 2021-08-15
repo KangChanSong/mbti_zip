@@ -84,13 +84,17 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public Boolean like(Long commentId) {
-        return null;
+        Comment comment = checkIfNullAndReturn(commentId);
+        comment.modifyLikes(true);
+        return true;
     }
 
     @Transactional
     @Override
     public Boolean cancelLike(Long commentId) {
-        return null;
+        Comment comment = checkIfNullAndReturn(commentId);
+        comment.modifyLikes(false);
+        return true;
     }
     
     //== private 메서드 ==//

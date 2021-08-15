@@ -88,19 +88,4 @@ public class JobApiController {
         Boolean isSuccess = jobService.delete(jobId, dto.getPassword());
         return new BooleanResponseDto(isSuccess);
     }
-
-    //좋아요
-    @PostMapping("/api/v1/like/{jobId}")
-    public BooleanResponseDto like(@PathVariable("jobId") Long jobId){
-        Boolean isSuccess = jobService.like(jobId);
-        return new BooleanResponseDto(isSuccess);
-    }
-    //좋아요 취소
-    @PostMapping("/api/v1/cancel_like/{jobId}")
-    public BooleanResponseDto cancelLike(@PathVariable("jobId") Long jobId){
-        Boolean isSuccess = jobService.cancelLike(jobId);
-        return new BooleanResponseDto(isSuccess);
-    }
-
-
 }
