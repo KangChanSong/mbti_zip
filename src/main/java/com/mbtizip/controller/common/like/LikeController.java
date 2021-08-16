@@ -1,4 +1,4 @@
-package com.mbtizip.controller.like;
+package com.mbtizip.controller.common.like;
 
 import com.mbtizip.domain.common.wrapper.BooleanResponseDto;
 import com.mbtizip.service.comment.CommentService;
@@ -10,14 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.mbtizip.controller.common.TargetProperties.*;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/like")
 public class LikeController {
-
-    public static final String TARGET_PERSON = "person";
-    public static final String TARGET_JOB = "job";
-    public static final String TARGET_COMMENT = "comment";
 
     private final PersonService personService;
     private final JobService jobService;

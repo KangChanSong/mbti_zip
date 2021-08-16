@@ -34,29 +34,12 @@ public class JobApiController {
         return new BooleanResponseDto(isSuccess);
     }
 
-
     //직업 조회
     @GetMapping("/api/v1/get/{jobId}")
     public JobGetDto get(@PathVariable("jobId") Long id){
 
         Job job = jobService.get(id);
         return JobGetDto.toDto(job);
-    }
-    
-    //직업 MBTI 투표
-    @PostMapping("/api/v1/vote/{jobId}/mbti/{mbtiId}")
-    public BooleanResponseDto vote(@PathVariable("jobId") Long jobId, @PathVariable("mbtiId") Long mbtiId){
-
-        Boolean isSuccess = jobService.vote(mbtiId, jobId);
-        return new BooleanResponseDto(isSuccess);
-    }
-
-    //직업 MBTI 투표 취소
-    @PostMapping("/api/v1/cancel_vote/{jobId}/mbti/{mbtiId}")
-    public BooleanResponseDto cancelVote(@PathVariable("jobId") Long jobId, @PathVariable("mbtiId") Long mbtiId){
-
-        Boolean isSuccess = jobService.cancelVote(mbtiId, jobId);
-        return new BooleanResponseDto(isSuccess);
     }
 
     //직업 MBTI로 목록 조회

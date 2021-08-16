@@ -1,6 +1,5 @@
 package com.mbtizip.controller.comment;
 
-import com.mbtizip.controller.like.LikeController;
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.comment.dto.CommentGetDto;
 import com.mbtizip.domain.comment.dto.CommentListDto;
@@ -18,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static com.mbtizip.controller.like.LikeController.TARGET_JOB;
-import static com.mbtizip.controller.like.LikeController.TARGET_PERSON;
+import static com.mbtizip.controller.common.TargetProperties.TARGET_JOB;
+import static com.mbtizip.controller.common.TargetProperties.TARGET_PERSON;
 
 @RestController
 @RequiredArgsConstructor

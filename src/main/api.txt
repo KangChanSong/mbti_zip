@@ -1,0 +1,61 @@
+MBTI
+    GET /mbti/api/v1/list
+
+JOB
+    POST /job/api/v1/register
+        request body : JobRegisterDto
+
+    GET  /job/api/v1/get/{jobId}
+
+    GET  /job/api/v1/list/mbti/{mbtiId}
+        request body : PageSortDto
+
+    GET  /job/api/v1/list
+        request body : PageSortFilterDto
+
+    DELETE /job/api/v1/delete/{jobId}
+        request body : PasswordDto
+
+PERSON
+    POST /person/api/v1/register
+        request body : PersonRegisterDto
+
+    GET  /person/api/v1/get/{personId}
+
+    GET  /person/api/v1/list/mbti/{mbtiId}
+        request body : PageSortDto
+
+    GET  /person/api/v1/list
+        request body : PageSortFilterDto
+
+    DELETE /person/api/v1/delete/{personId}
+        request body : PasswordDto
+
+VOTE
+    POST /vote/api/v1/mbti/{mbtiId}/{target}/{targetId}
+    POST /vote/api/v1/cancel/mbti/{mbtiId}/{target}/{targetId}
+
+LIKE
+    POST /like/api/v1/add/{target}/{targetId}
+    POST /like/api/v1/cancel/{target}/{targetId}
+
+FILE
+    POST /file/api/v1/upload/{personId}
+        request body : MultipartFile
+    GET  /file/api/v1/get/{personId}
+    DELETE /file/api/v1/delete/{personId}
+
+COMMENT
+    POST /comment/api/v1/{target}/{targetId}/register
+        request body : CommentRegisterDto
+
+    GET  /comment/api/v1/get/{commentId}
+
+    GET  /comment/api/v1/{target}/{targetId}/list
+        request body : PageSortDto
+
+    PUT  /comment/api/v1/update/{commentId}
+        request body : CommentUpadteDto
+
+    DELETE /comment/api/v1/delete/{commentId}
+        request body : PasswordDto

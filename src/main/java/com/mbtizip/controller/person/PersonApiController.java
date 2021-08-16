@@ -42,22 +42,6 @@ public class PersonApiController {
         List<Category> categories = categoryService.findAllByPerson(persons);
         return PersonGetDto.toDto(persons, categories);
     }
-    
-    // MBTI 투표
-    @PostMapping("/api/v1/vote/{personId}/mbti/{mbtiId}")
-    public BooleanResponseDto vote(@PathVariable("personId") Long personId, @PathVariable("mbtiId") Long mbtiId){
-
-        Boolean isSuccess = personService.vote(personId, mbtiId);
-        return new BooleanResponseDto(isSuccess);
-    }
-    
-    //MBTI 투표 취소
-    @PostMapping("/api/v1/cancel_vote/{personId}/mbti/{mbtiId}")
-    public BooleanResponseDto cancelVote(@PathVariable("personId") Long personId, @PathVariable("mbtiId") Long mbtiId){
-
-        Boolean isSuccess = personService.cancelVote(personId, mbtiId);
-        return new BooleanResponseDto(isSuccess);
-    }
 
     // MBTI 에 해당하는 인물 목록 조회
     @GetMapping("/api/v1/list/mbti/{mbtiId}")

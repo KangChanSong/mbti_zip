@@ -33,7 +33,7 @@ public class FileApiController {
     }
 
     @DeleteMapping("/api/v1/delete/{personId}")
-    public BooleanResponseDto delete(@PathVariable("personId") Long personId){
+    public BooleanResponseDto delete(@PathVariable("personIdq") Long personId){
 
         Boolean isSuccess = fileService.deleteFile(personId);
         return new BooleanResponseDto(isSuccess);
