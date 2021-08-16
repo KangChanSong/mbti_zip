@@ -7,6 +7,6 @@ import java.io.InputStream;
 
 public interface FileService {
     Boolean saveFile(Long personId, MultipartFile file);
-    InputStream loadFile(Long personId);
-    Boolean deleteFile(Long personId, String filename);
+    byte[] loadFile(Long personId);
+    Boolean deleteFile(Long personId);
 }

@@ -9,8 +9,10 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.html.Option;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,17 +20,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService{
 
-    private final Path rootLocation = Paths.get("C:/temp_files");
+    private final Path rootLocation = Paths.get("C:/fileupload");
 
     private final PersonRepository personRepository;
     private final FileRepository fileRepository;
 
+    @Transactional
     @Override
     public Boolean saveFile(Long personId, MultipartFile file) {
         Person findPerson = checkAndReturn(personId);
@@ -38,19 +43,26 @@ public class FileServiceImpl implements FileService{
     }
 
     @Override
-    public InputStream loadFile(Long personId) {
+    public byte[] loadFile(Long personId) {
         Person findPerson = checkAndReturn(personId);
         File findFile = fileRepository.findByPerson(findPerson);
         return loadFromLocal(findFile);
     }
 
+    @Transactional
     @Override
-    public Boolean deleteFile(Long personId, String filename) {
-        Person findPerson = personRepository.find(personId);
-        if(findPerson == null) throw new IllegalArgumentException("Person 을 찾을 수 없습니다 : " + personId);
-        deleteFormLocal(filename);
-        fileRepository.deleteByPerson(findPerson);
-        return true;
+    public Boolean deleteFile(Long personId) {
+        Person findPerson = checkAndReturn(personId);
+        File file = Optional.of(fileRepository.findByPerson(findPerson))
+                .orElseThrow(() -> {throw new IllegalArgumentException("Person 에 해당하는 File을 찾을 수 없습니다. personId : " + personId);});
+
+        boolean isDeleted = deleteFormLocal(file);
+
+        if(isDeleted) {
+            fileRepository.deleteByPerson(findPerson);
+            return true;
+        }
+        else return false;
     }
 
 
@@ -63,7 +75,7 @@ public class FileServiceImpl implements FileService{
     private void storeInLocal(MultipartFile file, String uuid) {
 
         try {
-            Path destinationFile = this.rootLocation.resolve(file.getOriginalFilename())
+            Path destinationFile = this.rootLocation.resolve(uuid + "_" + file.getOriginalFilename())
                     .normalize().toAbsolutePath();
 
             InputStream inputStream = file.getInputStream();
@@ -94,14 +106,14 @@ public class FileServiceImpl implements FileService{
     }
 
 
-    private InputStream loadFromLocal(File file) {
+    private byte[] loadFromLocal(File file) {
         try {
             Path loaded = rootLocation.resolve(file.getUuid() + "_" + file.getName());
 
             Resource resource = new UrlResource(loaded.toUri());
 
             if(resource.exists() || resource.isReadable()){
-                return new FileInputStream(resource.getFile());
+                return new FileInputStream(resource.getFile()).readAllBytes();
             } else {
                 throw new RuntimeException("파일을 읽을 수 없습니다.");
             }
@@ -112,9 +124,13 @@ public class FileServiceImpl implements FileService{
     }
 
 
-    private void deleteFormLocal(String filename) {
-        this.rootLocation
-                .resolve(filename)
+    private boolean deleteFormLocal(File file) {
+
+        String name = file.getName();
+        String uuid = file.getUuid();
+
+        return this.rootLocation
+                .resolve(uuid+"_"+name)
                 .toFile()
                 .delete();
 
