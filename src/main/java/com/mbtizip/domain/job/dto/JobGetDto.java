@@ -13,6 +13,7 @@ public class JobGetDto {
     private String title;
     private String writer;
     private Integer likes;
+    private Integer views;
     private String mbti;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
@@ -23,6 +24,7 @@ public class JobGetDto {
                 .title(job.getTitle())
                 .writer(job.getWriter())
                 .likes(job.getLikes())
+                .views(job.getViews())
                 .mbti(vaildateAndReturnMbti(job))
                 .createDate(job.getCreateDate())
                 .updateDate(job.getUpdateDate())

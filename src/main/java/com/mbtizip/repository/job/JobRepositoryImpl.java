@@ -86,4 +86,5 @@ public class JobRepositoryImpl implements JobRepository{
     public void remove(Job job) {
         em.remove(job);
     }
+
 }

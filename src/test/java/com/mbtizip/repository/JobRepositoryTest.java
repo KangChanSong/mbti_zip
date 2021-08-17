@@ -160,4 +160,5 @@ class JobRepositoryTest {
         Job modifiedJob = jobRepository.find(job.getId());
         assertSame(modifiedJob.getMbti(), modifiedMbti);
     }
+
 }

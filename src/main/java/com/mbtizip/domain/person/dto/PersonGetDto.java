@@ -22,6 +22,7 @@ public class PersonGetDto {
     private String description;
     private String gender;
     private int likes;
+    private int views;
 
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
@@ -37,6 +38,7 @@ public class PersonGetDto {
                 .description(person.getDescription())
                 .gender(person.getGender().getText())
                 .likes(person.getLikes())
+                .views(person.getViews())
 
                 .createDate(person.getCreateDate())
                 .updateDate(person.getUpdateDate())

@@ -8,4 +8,5 @@ public abstract class CommonEntity {
     public abstract void modifyLikes(Boolean isIncrease);
     public abstract void setPassword(String password);
     public void changeMbti(Mbti mbti){};
+    public void increaseViews(){};
 }

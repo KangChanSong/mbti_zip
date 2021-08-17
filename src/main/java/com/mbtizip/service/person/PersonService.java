@@ -19,4 +19,5 @@ public interface PersonService {
     Boolean cancelVote(Long personId, Long mbtiId);
     Boolean like(Long personId);
     Boolean cancelLike(Long personId);
+    Boolean increaseView(Long personId);
 }

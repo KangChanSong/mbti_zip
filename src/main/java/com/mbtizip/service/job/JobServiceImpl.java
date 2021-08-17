@@ -38,11 +38,12 @@ public class JobServiceImpl implements JobService{
         return jobRepository.save(job) == null ? false : true;
     }
 
+    @Transactional
     @Override
     public Job get(Long id) {
 
-        Job findJob = jobRepository.find(id);
-        if(findJob == null) throw new IllegalArgumentException("Job 을 찾을 수 없습니다. id : " + id);
+        Job findJob = checkAndReturn(id);
+        findJob.increaseViews();
         return findJob;
     }
 
@@ -114,7 +115,6 @@ public class JobServiceImpl implements JobService{
         checkAndReturn(jobId).modifyLikes(false);
         return true;
     }
-
     private Job checkAndReturn(Long jobId){
         Job findJob = jobRepository.find(jobId);
         if(findJob == null) throw new IllegalArgumentException("직업을 찾을 수 없습니다. id : " + jobId);

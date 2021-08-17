@@ -36,6 +36,9 @@ public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
     @Column(name = "job_likes", columnDefinition = "integer default 0")
     private int likes;
 
+    @Column(name = "job_views" , columnDefinition = "integer default 0")
+    private int views;
+
     @CreationTimestamp
     private LocalDateTime createDate;
     @UpdateTimestamp
@@ -55,6 +58,14 @@ public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
         this.password =password;
     }
 
+
+    //==연관관계 메서드==//
+    @Override
+    public void changeMbti(Mbti mbti) {
+        this.mbti = mbti;
+        mbti.getJobs().add(this);
+    }
+
     //== 편의 메서드 ==//
     @Override
     public void modifyLikes(Boolean isIncrease) {
@@ -66,15 +77,14 @@ public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
     }
 
     @Override
+    public void increaseViews() {
+        this.views++;
+    }
+
+    @Override
     public void setPassword(String password) {
         this.password = password;
     }
 
 
-    //==연관관계 메서드==//
-    @Override
-    public void changeMbti(Mbti mbti) {
-        this.mbti = mbti;
-        mbti.getJobs().add(this);
-    }
 }

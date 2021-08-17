@@ -50,10 +50,12 @@ public class PersonServiceImpl implements PersonService{
     }
 
 
+    @Transactional
     @Override
     public Person getById(Long saveId) {
         Person findPerson = personRepository.findWithMbti(saveId);
         if(findPerson == null) throw new IllegalArgumentException("Person 을 찾을 수 없습니다. id : " + saveId);
+        findPerson.increaseViews();
         return findPerson;
     }
 
@@ -128,6 +130,12 @@ public class PersonServiceImpl implements PersonService{
     @Override
     public Boolean cancelLike(Long personId) {
         checkAndReturnPerson(personId).modifyLikes(false);
+        return true;
+    }
+
+    @Override
+    public Boolean increaseView(Long personId) {
+        checkAndReturnPerson(personId).increaseViews();
         return true;
     }
 

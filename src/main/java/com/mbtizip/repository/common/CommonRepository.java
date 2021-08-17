@@ -1,5 +1,6 @@
 package com.mbtizip.repository.common;
 
+import com.mbtizip.domain.common.CommonEntity;
 import com.mbtizip.domain.mbti.Mbti;
 import lombok.extern.slf4j.Slf4j;
 

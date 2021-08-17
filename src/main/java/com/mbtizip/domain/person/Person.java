@@ -44,6 +44,9 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
     @Column(name = "person_likes", columnDefinition = "integer default 0")
     private int likes;
 
+    @Column(name = "person_views" , columnDefinition = "integer default 0")
+    private int views;
+
     @CreationTimestamp
     private LocalDateTime createDate;
     @UpdateTimestamp
@@ -97,6 +100,11 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
     @Override
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public void increaseViews() {
+        this.views++;
     }
 }
 
