@@ -56,12 +56,26 @@ public class PersonApiController {
 
     //인물 목록 조회
     @GetMapping("/api/v1/list")
-    public PersonListDto getList(@RequestBody PageSortFilterDto psf){
-        Page page = psf.toPage();
-        OrderSpecifier sort = psf.toPersonSort();
-        BooleanExpression keyword  = psf.toPersonKeyword();
+    public PersonListDto getList(@RequestParam(name = "page", required = false) int page,
+                                 @RequestParam(name = "size", required = false) int size,
+                                 @RequestParam(name = "sort", required = false) String sort,
+                                 @RequestParam(name = "dir", required = false) String dir,
+                                 @RequestParam(name = "keyword", required = false) String keyword,
+                                 @RequestParam(name = "filterBy", required = false) String filterBy){
 
-        Map<Person, List<Category>> findMap = personService.findAll(page, sort, keyword);
+        PageSortFilterDto psf = new PageSortFilterDto();
+        psf.setPage(page);
+        psf.setSize(size);
+        psf.setSort(sort);
+        psf.setDir(dir);
+        psf.setKeyword(keyword);
+        psf.setFilterBy(filterBy);
+
+        Page pageObj = psf.toPage();
+        OrderSpecifier sortObj = psf.toPersonSort();
+        BooleanExpression keywordObj  = psf.toPersonKeyword();
+
+        Map<Person, List<Category>> findMap = personService.findAll(pageObj, sortObj, keywordObj);
 
         return PersonListDto.toDtoList(findMap);
     }

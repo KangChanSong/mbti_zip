@@ -60,12 +60,21 @@ public class CommentApiController {
     @GetMapping("/api/v1/{target}/{targetId}/list")
     public CommentListDto getList(@PathVariable("target") String target
                                 , @PathVariable("targetId") Long targetId,
-                                  @RequestBody PageSortDto dto){
+                                  @RequestParam("page") int page,
+                                  @RequestParam("size") int size,
+                                  @RequestParam("sort") String sort,
+                                  @RequestParam("dir") String dir){
+
+        PageSortDto dto = new PageSortDto();
+        dto.setPage(page);
+        dto.setSize(size);
+        dto.setSort(sort);
+        dto.setDir(dir);
 
         List<Comment> findComments = null;
-        Page page = dto.toPage();
-        Supplier personMethod = () -> commentService.findAllByPerson(targetId, page, null);
-        Supplier jobMethod = () -> commentService.findAllByJob(targetId, page, null);
+        Page pageObj = dto.toPage();
+        Supplier personMethod = () -> commentService.findAllByPerson(targetId, pageObj, dto.toPersonSort());
+        Supplier jobMethod = () -> commentService.findAllByJob(targetId, pageObj, dto.toJobSort());
         findComments = checkTargetAndReturn(findComments, target, personMethod, jobMethod);
 
         return CommentListDto.toDto(findComments);

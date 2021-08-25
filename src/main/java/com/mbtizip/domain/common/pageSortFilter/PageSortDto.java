@@ -20,7 +20,7 @@ public class PageSortDto<T extends InterfaceForPageSortFilter> {
     private String dir = "desc";
 
     public void setDir(String dir) {
-        if(!dir.equals("asc") && !dir.equals("desc")){
+        if(dir == null | (!dir.equals("asc") && !dir.equals("desc"))){
             this.dir = "desc";
         } else {
             this.dir = dir;
@@ -125,4 +125,5 @@ public class PageSortDto<T extends InterfaceForPageSortFilter> {
 
         return likesPath;
     }
+
 }

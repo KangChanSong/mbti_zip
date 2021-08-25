@@ -52,19 +52,32 @@ public class JobApiController {
     }
 
     //직업 목록 조회
+    //직업 삭제
+
     @GetMapping("/api/v1/list")
-    public JobListDto getList(@RequestBody PageSortFilterDto psf){
+    public JobListDto getList(@RequestParam(name ="page", required = false) int page,
+                              @RequestParam(name ="size", required = false) int size,
+                              @RequestParam(name ="sort", required = false) String sort,
+                              @RequestParam(name ="dir", required = false) String dir,
+                              @RequestParam(name ="keyword", required = false) String keyword,
+                              @RequestParam(name ="filterBy", required = false) String filterBy){
 
-        Page page = psf.toPage();
-        OrderSpecifier sort = psf.toJobSort();
-        BooleanExpression keyword = psf.toJobKeyword();
+        PageSortFilterDto psf = new PageSortFilterDto();
+        psf.setPage(page);
+        psf.setSize(size);
+        psf.setSort(sort);
+        psf.setDir(dir);
+        psf.setKeyword(keyword);
+        psf.setFilterBy(filterBy);
 
-        List<Job> fnidJobs = jobService.findAll(page, sort, keyword);
+        Page pageObj = psf.toPage();
+        OrderSpecifier sortObj = psf.toJobSort();
+        BooleanExpression keywordObj = psf.toJobKeyword();
+
+        List<Job> fnidJobs = jobService.findAll(pageObj, sortObj, keywordObj);
 
         return JobListDto.toDto(fnidJobs);
     }
-
-    //직업 삭제
     @DeleteMapping("/api/v1/delete/{jobId}")
     public BooleanResponseDto delete(@PathVariable("jobId") Long jobId, @RequestBody PasswordDto dto){
 
