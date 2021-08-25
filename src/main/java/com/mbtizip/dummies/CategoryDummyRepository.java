@@ -19,4 +19,14 @@ public class CategoryDummyRepository {
                 .name(name
                 ).build());
     }
+    public void insertCategoies(){
+
+        String[] names = new String[]{
+                "음악가","정치인","연예인","애니주인공","연기자", "개발자"
+        };
+
+        for(int i = 0 ; i < names.length ; i++){
+            save(names[i]);
+        }
+    }
 }
