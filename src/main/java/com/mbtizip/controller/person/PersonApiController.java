@@ -57,7 +57,6 @@ public class PersonApiController {
     //인물 목록 조회
     @GetMapping("/api/v1/list")
     public PersonListDto getList(@RequestBody PageSortFilterDto psf){
-
         Page page = psf.toPage();
         OrderSpecifier sort = psf.toPersonSort();
         BooleanExpression keyword  = psf.toPersonKeyword();

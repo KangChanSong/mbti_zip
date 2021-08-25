@@ -13,6 +13,7 @@ import java.util.List;
 public class PersonRegisterDto {
 
     private String name;
+    private String writer;
     private String gender;
     private String description;
     private String password;
@@ -21,6 +22,7 @@ public class PersonRegisterDto {
     public Person toEntity(){
         return Person.builder()
                 .name(name)
+                .writer(writer)
                 .gender(Gender.valueOf(gender))
                 .description(description)
                 .password(password)
