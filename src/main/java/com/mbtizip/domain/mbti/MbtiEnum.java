@@ -1,5 +1,7 @@
 package com.mbtizip.domain.mbti;
 
+import java.util.List;
+
 public enum MbtiEnum {
     ISTJ("istj"), ISFJ("isfj"), INFJ("infj"), INTJ("intj"),
     ISTP("istp"), ISFP("isfp"), INFP("infp"), INTP("intp"),
@@ -14,4 +16,5 @@ public enum MbtiEnum {
     public String getText() {
         return text;
     }
+
 }

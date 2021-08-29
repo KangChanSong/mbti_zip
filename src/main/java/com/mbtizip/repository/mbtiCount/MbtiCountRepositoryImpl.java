@@ -2,10 +2,12 @@ package com.mbtizip.repository.mbtiCount;
 
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
+import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.exception.TooManyEntityException;
 import com.mbtizip.repository.common.CommonRepository;
+import com.mbtizip.repository.mbti.MbtiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +20,7 @@ import java.util.Locale;
 public class MbtiCountRepositoryImpl implements MbtiCountRepository {
 
     private final EntityManager em;
+    private final MbtiRepository mbtiRepository;
 
     @Override
     public List<MbtiCount> findAllByJob(Long jobId) {
@@ -73,6 +76,33 @@ public class MbtiCountRepositoryImpl implements MbtiCountRepository {
     @Override
     public void removeAllByJob(Job job) {
         removeAllByObject(job, job.getId());
+    }
+
+    @Override
+    public void insertAllByPerson(Person person) {
+
+        List<Mbti> mbtis = mbtiRepository.findAll();
+        mbtis.forEach(
+            mbti ->  {
+                if(!mbti.getName().equals(MbtiEnum.NONE) && !mbti.getName().equals(MbtiEnum.DRAW)){
+                    em.persist(MbtiCount.builder()
+                            .mbti(mbti)
+                            .person(person).build());
+                }
+            });
+    }
+
+    @Override
+    public void insertAllByJob(Job job) {
+        List<Mbti> mbtis = mbtiRepository.findAll();
+        mbtis.forEach(
+                mbti ->  {
+                    if(!mbti.getName().equals(MbtiEnum.NONE) && !mbti.getName().equals(MbtiEnum.DRAW)) {
+                        em.persist(MbtiCount.builder()
+                                .mbti(mbti)
+                                .job(job).build());
+                    }
+                });
     }
 
     private void removeAllByObject(Object obj, Long id){

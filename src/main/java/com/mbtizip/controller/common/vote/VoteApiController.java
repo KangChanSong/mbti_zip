@@ -1,7 +1,6 @@
 package com.mbtizip.controller.common.vote;
 
 import com.mbtizip.domain.common.wrapper.BooleanResponseDto;
-import com.mbtizip.domain.mbtiCount.MbtiCount;
 import com.mbtizip.domain.mbtiCount.dto.MbtiCountListDto;
 import com.mbtizip.service.job.JobService;
 import com.mbtizip.service.mbtiCount.MbtiCountService;
@@ -9,8 +8,6 @@ import com.mbtizip.service.person.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 import static com.mbtizip.controller.common.TargetProperties.TARGET_JOB;

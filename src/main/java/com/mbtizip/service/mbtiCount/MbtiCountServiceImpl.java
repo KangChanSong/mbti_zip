@@ -66,19 +66,30 @@ public class MbtiCountServiceImpl implements MbtiCountService{
         mbtiCountRepository.removeAllByJob(job);
     }
 
+    @Override
+    public void initializeByPerson(Person person) {
+        mbtiCountRepository.insertAllByPerson(person);
+    }
+
+    @Override
+    public void initailizeByJob(Job job) {
+        mbtiCountRepository.insertAllByJob(job);
+    }
+
     //== private method ==//
 
     private List<MbtiCount> getVotesByObject(Long targetId, String target){
-        Map<String, Integer> map = new HashMap<>();
+
+        List<MbtiCount> resultList;
 
         if(target.equals("job")) {
-            return mbtiCountRepository.findAllByJob(targetId);
+            resultList = mbtiCountRepository.findAllByJob(targetId);
         } else if (target.equals("person")){
-            return mbtiCountRepository.findAllByPerson(targetId);
+            resultList = mbtiCountRepository.findAllByPerson(targetId);
         } else {
             throw new IllegalArgumentException("target 이 적합하지 않습니다. target : " + target);
         }
-
+        return resultList;
     }
 
     // 투표, 표 취소에 공유되는 공통 메서드

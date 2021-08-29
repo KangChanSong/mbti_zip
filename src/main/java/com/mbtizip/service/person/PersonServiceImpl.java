@@ -46,6 +46,9 @@ public class PersonServiceImpl implements PersonService{
         Long saveId = personRepository.save(person);
         savePersonCategories(person, categoryIds);
 
+        if(saveId != null){
+            mbtiCountService.initializeByPerson(person);
+        }
         return saveId == null ? false : true;
     }
 

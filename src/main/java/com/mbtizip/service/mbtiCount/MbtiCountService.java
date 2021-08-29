@@ -15,4 +15,7 @@ public interface MbtiCountService {
     List<MbtiCount> getVotesByPerson(Long personId);
     void deleteAllByPerson(Person person);
     void deleteAllByJob(Job job);
+
+    void initializeByPerson(Person person);
+    void initailizeByJob(Job job);
 }

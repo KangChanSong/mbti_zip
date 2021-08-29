@@ -9,6 +9,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Builder
 @Getter
@@ -50,9 +51,9 @@ public class PersonGetDto {
 
     private static String validateAndReturnMbti(Person person){
         if(person.getMbti() == null){
-            return null;
+            return "MBTI 미정";
         } else {
-            return person.getMbti().getName().getText();
+            return person.getMbti().getName().getText().toUpperCase(Locale.ROOT);
         }
     }
 

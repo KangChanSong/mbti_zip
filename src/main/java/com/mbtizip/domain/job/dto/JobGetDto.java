@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
+
 @Builder
 @Data
 public class JobGetDto {
@@ -34,9 +36,9 @@ public class JobGetDto {
     private static String vaildateAndReturnMbti(Job job) {
 
         if(job.getMbti() == null){
-            return null;
+            return "미정";
         } else {
-            return job.getMbti().getName().getText();
+            return job.getMbti().getName().getText().toUpperCase(Locale.ROOT);
         }
     }
 

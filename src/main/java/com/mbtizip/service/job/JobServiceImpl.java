@@ -35,7 +35,12 @@ public class JobServiceImpl implements JobService{
     public Boolean register(Job job) {
         if(job == null) throw new IllegalArgumentException("Job 이 존재하지 않습니다.");
         job.setPassword(encrypt(job.getPassword()));
-        return jobRepository.save(job) == null ? false : true;
+        Long saveId = jobRepository.save(job);
+
+        if(saveId != null){
+            mbtiCountService.initailizeByJob(job);
+        }
+        return saveId == null ? false : true;
     }
 
     @Transactional

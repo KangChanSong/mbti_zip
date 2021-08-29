@@ -23,4 +23,7 @@ public interface MbtiCountRepository {
     void removeAllByPerson(Person person);
     void removeAllByJob(Job job);
 
+    void insertAllByPerson(Person person);
+    void insertAllByJob(Job job);
+
 }

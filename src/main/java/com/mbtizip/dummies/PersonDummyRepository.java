@@ -31,7 +31,5 @@ public class PersonDummyRepository {
                     .password("password" + i)
                     .build());
         });
-
-
     }
 }
