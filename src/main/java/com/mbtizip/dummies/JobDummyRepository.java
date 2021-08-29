@@ -18,7 +18,7 @@ public class JobDummyRepository {
     public void save(Job job){
         em.persist(job);
     }
-
+    @Transactional
     public void insertJobs(){
         IntStream.range(0, 50).forEach( i-> {
             save(Job.builder()

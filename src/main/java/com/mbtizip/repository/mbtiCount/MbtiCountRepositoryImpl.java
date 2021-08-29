@@ -20,13 +20,13 @@ public class MbtiCountRepositoryImpl implements MbtiCountRepository {
     private final EntityManager em;
 
     @Override
-    public List<MbtiCount> findAllByJob(Job job) {
-        return (List<MbtiCount>) CommonRepository.findAllByObject(em, MbtiCount.class, Job.class, job.getId());
+    public List<MbtiCount> findAllByJob(Long jobId) {
+        return (List<MbtiCount>) CommonRepository.findAllByObject(em, MbtiCount.class, Job.class, jobId);
     }
 
     @Override
-    public List<MbtiCount> findAllByPerson(Person person) {
-        return (List<MbtiCount>) CommonRepository.findAllByObject(em, MbtiCount.class, Person.class,  person.getId());
+    public List<MbtiCount> findAllByPerson(Long personId) {
+        return (List<MbtiCount>) CommonRepository.findAllByObject(em, MbtiCount.class, Person.class,  personId);
     }
 
     @Override

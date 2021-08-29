@@ -20,7 +20,7 @@ public class MbtiDummyRepository {
         Mbti mbti = Mbti.builder().name(mbtiEnum).build();
         em.persist(mbti);
     }
-
+    @Transactional
     public void insertMbtis(){
         save(MbtiEnum.INFP);
         save(MbtiEnum.INTJ);

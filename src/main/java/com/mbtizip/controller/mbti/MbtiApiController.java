@@ -14,7 +14,6 @@ import java.util.List;
 @RequestMapping("/mbti")
 @RequiredArgsConstructor
 public class MbtiApiController {
-
     private final MbtiRepository mbtiRepository;
 
     @GetMapping("/api/v1/list")

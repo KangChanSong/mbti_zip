@@ -19,6 +19,7 @@ public class CategoryDummyRepository {
                 .name(name
                 ).build());
     }
+    @Transactional
     public void insertCategoies(){
 
         String[] names = new String[]{

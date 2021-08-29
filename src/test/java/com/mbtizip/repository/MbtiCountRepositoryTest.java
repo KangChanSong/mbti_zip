@@ -60,7 +60,7 @@ class MbtiCountRepositoryTest {
         //when
         Long saveid = childMbtiCountRepository.save(mbtiCount);
         //then
-        List<MbtiCount> mbtiCounts = childMbtiCountRepository.findAllByJob(job);
+        List<MbtiCount> mbtiCounts = childMbtiCountRepository.findAllByJob(job.getId());
 
         assertEquals(mbtiCounts.size() , 1);
         assertEquals(mbtiCounts.get(0).getJob().getTitle(), JOB_TITLE);
@@ -167,7 +167,7 @@ class MbtiCountRepositoryTest {
 
         //then
         MbtiCount max = childMbtiCountRepository.findMaxByJob(job).get(0);
-        List<MbtiCount> counts = childMbtiCountRepository.findAllByJob(job);
+        List<MbtiCount> counts = childMbtiCountRepository.findAllByJob(job.getId());
 
         assertEquals(counts.size(), 1);
         assertEquals(max.getCount(), 1);
@@ -185,7 +185,7 @@ class MbtiCountRepositoryTest {
 
         //then
         MbtiCount max = childMbtiCountRepository.findMaxByPerson(person).get(0);
-        List<MbtiCount> counts = childMbtiCountRepository.findAllByPerson(person);
+        List<MbtiCount> counts = childMbtiCountRepository.findAllByPerson(person.getId());
 
         assertEquals(counts.size(), 1);
         assertEquals(max.getCount(), 1);
@@ -245,7 +245,7 @@ class MbtiCountRepositoryTest {
                         i-> childMbtiCountRepository.modifyJobCount(mbti, job, true));
         //then
         childMbtiCountRepository.removeAllByJob(job);
-        List<MbtiCount> findJobs = childMbtiCountRepository.findAllByJob(job);
+        List<MbtiCount> findJobs = childMbtiCountRepository.findAllByJob(job.getId());
         assertEquals(findJobs.size(), 0);
     }
 

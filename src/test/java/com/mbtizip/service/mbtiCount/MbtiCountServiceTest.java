@@ -129,9 +129,9 @@ public class MbtiCountServiceTest {
     @Test
     public void 직업_목록_조회(){
         //given
-        Job job = createJob();
-        OngoingStubbing stubbing = when(mockMbtiCountRepository.findAllByJob(job));
-        Supplier supplier = () -> mbtiCountService.getVotesByJob(job);
+        Long jobId = createJob().getId();
+        OngoingStubbing stubbing = when(mockMbtiCountRepository.findAllByJob(jobId));
+        Supplier supplier = () -> mbtiCountService.getVotesByJob(jobId);
 
         //then
         getListTest(stubbing, supplier);
@@ -142,9 +142,9 @@ public class MbtiCountServiceTest {
     @Test
     public void 인물_목록_조회(){
         //given
-        Person person = createPerson();
-        OngoingStubbing stubbing = when(mockMbtiCountRepository.findAllByPerson(person));
-        Supplier supplier = () -> mbtiCountService.getVotesByPerson(person);
+        Long personId = createPerson().getId();
+        OngoingStubbing stubbing = when(mockMbtiCountRepository.findAllByPerson(personId));
+        Supplier supplier = () -> mbtiCountService.getVotesByPerson(personId);
 
         //then
         getListTest(stubbing, supplier);
@@ -167,12 +167,9 @@ public class MbtiCountServiceTest {
         //when
         stubbing.thenReturn(mbtiCounts);
 
-        Map<String, Integer> resultMap = (Map<String, Integer>) supplier.get();
+         List<MbtiCount> result = (List<MbtiCount>) supplier.get();
 
         //then
-        assertEquals(resultMap.get(INFP.getText()), 0);
-        assertEquals(resultMap.get(ENTP.getText()), 0);
-        assertEquals(resultMap.get(INTJ.getText()), 1);
     }
 
     private void jobResultNumberTest(int resultNumber, MbtiEnum resultMbtiName){

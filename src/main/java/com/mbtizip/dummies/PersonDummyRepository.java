@@ -19,7 +19,7 @@ public class PersonDummyRepository {
     public void save(Person person){
         em.persist(person);
     }
-
+    @Transactional
     public void insertPersons(){
 
         IntStream.range(0, 50).forEach(i -> {

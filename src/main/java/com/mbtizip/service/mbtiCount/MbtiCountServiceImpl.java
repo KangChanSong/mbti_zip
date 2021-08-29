@@ -45,13 +45,13 @@ public class MbtiCountServiceImpl implements MbtiCountService{
     }
 
     @Override
-    public Map<String, Integer> getVotesByJob(Job job) {
-        return getVotesByObject(job);
+    public List<MbtiCount> getVotesByJob(Long jobId) {
+        return getVotesByObject(jobId, "job");
     }
 
     @Override
-    public Map<String, Integer> getVotesByPerson(Person person) {
-        return getVotesByObject(person);
+    public List<MbtiCount> getVotesByPerson(Long personId) {
+        return getVotesByObject(personId, "person");
     }
 
     @Transactional
@@ -68,18 +68,17 @@ public class MbtiCountServiceImpl implements MbtiCountService{
 
     //== private method ==//
 
-    private Map<String , Integer> getVotesByObject(Object obj){
-        checkInstance(obj);
+    private List<MbtiCount> getVotesByObject(Long targetId, String target){
         Map<String, Integer> map = new HashMap<>();
-        List<MbtiCount> findCounts = new ArrayList<>();
-        if(obj instanceof Job) {
-            findCounts = mbtiCountRepository.findAllByJob((Job) obj);
-        } else if (obj instanceof Person){
-            findCounts = mbtiCountRepository.findAllByPerson((Person) obj);
+
+        if(target.equals("job")) {
+            return mbtiCountRepository.findAllByJob(targetId);
+        } else if (target.equals("person")){
+            return mbtiCountRepository.findAllByPerson(targetId);
+        } else {
+            throw new IllegalArgumentException("target 이 적합하지 않습니다. target : " + target);
         }
-        findCounts.forEach( i->
-                map.put(i.getMbti().getName().getText(),i.getCount()));
-        return map;
+
     }
 
     // 투표, 표 취소에 공유되는 공통 메서드
