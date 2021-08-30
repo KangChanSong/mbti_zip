@@ -17,4 +17,5 @@ public interface PersonRepository {
     void modifyLikes(Person person, Boolean isIncrease);
     void remove(Person person);
     Person findWithMbti(Long saveId);
+    Long countAll();
 }

@@ -17,4 +17,5 @@ public interface JobService {
     Boolean cancelVote(Long mbtiId, Long jobId);
     Boolean like(Long jobId);
     Boolean cancelLike(Long jobId);
+    Long getTotalCount();
 }

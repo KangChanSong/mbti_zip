@@ -114,13 +114,7 @@ public class MbtiCountServiceTest {
         assertEquals(person.getMbti().getName(), NONE);
     }
 
-    private void commonCancleVote(Object obj){
-        Mbti mbti = createMbti(INFP);
-        when(mockMbtiRepository.findByName(NONE))
-                .thenReturn(Mbti.builder().name(NONE).build());
 
-        mbtiCountService.cancelVote(mbti, obj);
-    }
 
     /**
      * MbtiCount 에 직업에 대한 MBTI 가 아예 존재하지 않으면 득표수 0 으로 치환
@@ -215,6 +209,14 @@ public class MbtiCountServiceTest {
                 .thenReturn(createMbti(resultMbtiName));
 
         mbtiCountService.vote(mbti, obj);
+    }
+
+    private void commonCancleVote(Object obj){
+        Mbti mbti = createMbti(INFP);
+        when(mockMbtiRepository.findByName(NONE))
+                .thenReturn(Mbti.builder().name(NONE).build());
+
+        mbtiCountService.cancelVote(mbti, obj);
     }
 
 

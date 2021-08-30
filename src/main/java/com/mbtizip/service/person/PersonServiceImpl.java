@@ -142,6 +142,11 @@ public class PersonServiceImpl implements PersonService{
         return true;
     }
 
+    @Override
+    public Long getTotalCount() {
+        return personRepository.countAll();
+    }
+
     //== private method ==//
     private void savePersonCategories(Person person, List<Long> categoryIds){
         categoryIds.forEach( categoryId -> {

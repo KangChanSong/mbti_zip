@@ -87,4 +87,10 @@ public class JobRepositoryImpl implements JobRepository{
         em.remove(job);
     }
 
+    @Override
+    public Long countAll() {
+    return (Long) em.createQuery("select count(j) from Job j")
+            .getSingleResult();
+    }
+
 }

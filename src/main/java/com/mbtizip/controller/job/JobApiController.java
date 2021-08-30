@@ -1,5 +1,6 @@
 package com.mbtizip.controller.job;
 
+import com.mbtizip.domain.common.dto.CountDto;
 import com.mbtizip.domain.common.dto.PasswordDto;
 import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.common.pageSortFilter.PageSortDto;
@@ -83,5 +84,10 @@ public class JobApiController {
 
         Boolean isSuccess = jobService.delete(jobId, dto.getPassword());
         return new BooleanResponseDto(isSuccess);
+    }
+
+    @GetMapping("/api/v1/count/all")
+    public CountDto getTotalCount(){
+        return new CountDto(jobService.getTotalCount());
     }
 }

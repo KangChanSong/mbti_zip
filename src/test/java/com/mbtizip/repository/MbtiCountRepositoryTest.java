@@ -25,12 +25,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 class MbtiCountRepositoryTest {
-
-
-
     @Autowired
     EntityManager em;
-
     //== 테스트 대역 ==//
     ChildMbtiCountRepository childMbtiCountRepository;
     TestPersonRepository testPersonRepository;

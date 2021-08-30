@@ -20,4 +20,5 @@ public interface PersonService {
     Boolean like(Long personId);
     Boolean cancelLike(Long personId);
     Boolean increaseView(Long personId);
+    Long getTotalCount();
 }

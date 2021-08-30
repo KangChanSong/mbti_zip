@@ -33,7 +33,9 @@ public class JobServiceImpl implements JobService{
     @Transactional
     @Override
     public Boolean register(Job job) {
+        //테스트 가능
         if(job == null) throw new IllegalArgumentException("Job 이 존재하지 않습니다.");
+
         job.setPassword(encrypt(job.getPassword()));
         Long saveId = jobRepository.save(job);
 
@@ -120,6 +122,12 @@ public class JobServiceImpl implements JobService{
         checkAndReturn(jobId).modifyLikes(false);
         return true;
     }
+
+    @Override
+    public Long getTotalCount() {
+        return jobRepository.countAll();
+    }
+
     private Job checkAndReturn(Long jobId){
         Job findJob = jobRepository.find(jobId);
         if(findJob == null) throw new IllegalArgumentException("직업을 찾을 수 없습니다. id : " + jobId);

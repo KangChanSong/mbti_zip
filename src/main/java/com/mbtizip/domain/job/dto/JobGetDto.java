@@ -36,7 +36,7 @@ public class JobGetDto {
     private static String vaildateAndReturnMbti(Job job) {
 
         if(job.getMbti() == null){
-            return "미정";
+            return "MBTI 미정";
         } else {
             return job.getMbti().getName().getText().toUpperCase(Locale.ROOT);
         }

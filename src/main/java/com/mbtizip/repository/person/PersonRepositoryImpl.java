@@ -97,9 +97,16 @@ public class PersonRepositoryImpl implements PersonRepository{
     public Person findWithMbti(Long saveId) {
         return (Person) em.createQuery("select p from Person p" +
                 " left join fetch p.mbti m" +
-                " where p.id =: id")
+                " where p.i d =: id")
                 .setParameter("id", saveId)
                 .getResultList().get(0);
     }
+
+    @Override
+    public Long countAll() {
+        return (Long)em.createQuery("select count(p) from Person p")
+                .getSingleResult();
+    }
+
 
 }

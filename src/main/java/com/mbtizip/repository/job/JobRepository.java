@@ -18,4 +18,5 @@ public interface JobRepository {
     void modifyLikes(Job job, Boolean isIncrease);
     void changeMbti(Job job, Mbti mbti);
     void remove(Job job);
+    Long countAll();
 }
