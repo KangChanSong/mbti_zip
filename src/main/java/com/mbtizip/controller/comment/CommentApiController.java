@@ -5,6 +5,7 @@ import com.mbtizip.domain.comment.dto.CommentGetDto;
 import com.mbtizip.domain.comment.dto.CommentListDto;
 import com.mbtizip.domain.comment.dto.CommentRegisterDto;
 import com.mbtizip.domain.comment.dto.CommentUpdateDto;
+import com.mbtizip.domain.common.dto.CountDto;
 import com.mbtizip.domain.common.dto.PasswordDto;
 import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.common.pageSortFilter.PageSortDto;
@@ -96,6 +97,15 @@ public class CommentApiController {
         Boolean isSuccess = commentService.delete(commentId, dto.getPassword());
         return new BooleanResponseDto(isSuccess);
     }
+
+    @GetMapping("/{target}/{targetId}/api/v1/count/all")
+    public CountDto getTotalCount(@PathVariable("target") String target, @PathVariable("targetId") Long targetId){
+        if(!target.equals("person") && !target.equals("job")){
+            throw new IllegalArgumentException("target 이 적합하지 않습니다. target : " + target);
+        }
+        return new CountDto(commentService.getTotalCount(target, targetId));
+    }
+
     //== private method ==//
 
     private <T> T checkTargetAndReturn(T obj , String target, Supplier personMethod , Supplier jobMethod){

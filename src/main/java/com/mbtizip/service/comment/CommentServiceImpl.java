@@ -13,6 +13,7 @@ import com.mbtizip.util.EncryptHelper;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ import java.util.function.Supplier;
 import static com.mbtizip.util.EncryptHelper.encrypt;
 import static com.mbtizip.util.EncryptHelper.isMatch;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -33,11 +35,12 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public Boolean addPersonComment(Long personId, Comment comment) {
-        return addCommonComment(personId, comment, () -> personRepository.find(personId));
+        return addCommonComment(comment, () -> personRepository.find(personId));
     }
+    @Transactional
     @Override
     public Boolean addJobComment(Long jobId, Comment comment) {
-        return addCommonComment(jobId, comment, () -> jobRepository.find(jobId));
+        return addCommonComment(comment, () -> jobRepository.find(jobId));
     }
 
     @Override
@@ -96,7 +99,12 @@ public class CommentServiceImpl implements CommentService {
         comment.modifyLikes(false);
         return true;
     }
-    
+
+    @Override
+    public Long getTotalCount(String target, Long targetId) {
+        return commentRepository.countAll(target, targetId);
+    }
+
     //== private 메서드 ==//
     private Comment checkIfNullAndReturn(Long commentId){
         Comment comment = commentRepository.find(commentId);
@@ -104,7 +112,7 @@ public class CommentServiceImpl implements CommentService {
         return comment;
     }
 
-    private Boolean addCommonComment(Long id, Comment comment, Supplier findQuery){
+    private Boolean addCommonComment(Comment comment, Supplier findQuery){
         Object obj = findQuery.get();
         if(obj == null) throw new IllegalArgumentException();
 

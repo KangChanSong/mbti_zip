@@ -74,4 +74,13 @@ public class CommentRepositoryImpl implements CommentRepository{
         CommonRepository.modifyLikes(em, Comment.class, comment.getId(), isIncrease);
     }
 
+    @Override
+    public Long countAll(String target, Long targetId) {
+
+        return (Long) em.createQuery("select count(c) from Comment c " +
+                "where c." + target + ".id = :id" )
+                .setParameter("id",targetId )
+                .getSingleResult();
+    }
+
 }

@@ -50,12 +50,12 @@ public class MbtiCountServiceTest {
     @Mock
     MbtiRepository mockMbtiRepository;
 
+    // 테스트 대역을 써보려고 했다가 실패함
     @BeforeEach
     public void setUp(){
         mbtiCountService = new MbtiCountServiceImpl( mockMbtiCountRepository,mockMbtiRepository);
-
-
     }
+
 
     @DisplayName("직업 득표율의 수에 따라 결과가 달라져야 함 (0, 1, 2+)")
     @Test
@@ -141,6 +141,7 @@ public class MbtiCountServiceTest {
         Supplier supplier = () -> mbtiCountService.getVotesByPerson(personId);
 
         //then
+        // 코드는 보기에 깔끔해졋으나 가독성이 안좋아진게 아닌지
         getListTest(stubbing, supplier);
     }
 

@@ -15,4 +15,6 @@ public interface CommentRepository {
 
     void remove(Comment comment);
     void modifyLikes(Comment comment, Boolean isIncrease);
+
+    Long countAll(String target, Long targetId);
 }

@@ -22,4 +22,6 @@ public interface CommentService {
 
     Boolean like(Long commentId);
     Boolean cancelLike(Long commentId);
+
+    Long getTotalCount(String target, Long targetId);
 }
