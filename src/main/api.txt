@@ -33,12 +33,11 @@ PERSON
 
 VOTE
     POST /vote/api/v1/mbti/{mbtiId}/{target}/{targetId}
-    POST /vote/api/v1/cancel/mbti/{mbtiId}/{target}/{targetId}
+    GET /vote/api/v1/list/{target}/{targetId}
 
 LIKE
-    POST /like/api/v1/add/{target}/{targetId}
-    POST /like/api/v1/cancel/{target}/{targetId}
-
+    POST /like/api/v1/{target}/{targetId}
+    GET /like/api/v1/get/{target}/{targetId}
 FILE
     POST /file/api/v1/upload/{personId}
         request body : MultipartFile

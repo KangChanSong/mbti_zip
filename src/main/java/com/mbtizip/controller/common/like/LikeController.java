@@ -10,11 +10,11 @@ import com.mbtizip.service.job.JobService;
 import com.mbtizip.service.person.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpRequest;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static com.mbtizip.controller.common.TargetProperties.*;
 import static com.mbtizip.controller.common.common.InteractionControllerHelper.TARGET_INVALID_ERROR_MESSAGE;
@@ -40,19 +40,42 @@ public class LikeController {
         Boolean isSuccess;
 
         if(!isExists) {
-            if (target.equals(TARGET_PERSON)) isSuccess = personService.like(targetId);
-            else if (target.equals(TARGET_JOB)) isSuccess = jobService.like(targetId);
-            else if (target.equals(TARGET_COMMENT)) isSuccess = commentService.like(targetId);
-            else throw new IllegalArgumentException(TARGET_INVALID_ERROR_MESSAGE + target);
+            isSuccess = handleTarget(target,
+                    () -> personService.like(targetId),
+                    () -> jobService.like(targetId),
+                    () -> commentService.like(targetId));
         } else {
-            if(target.equals(TARGET_PERSON)) isSuccess = personService.cancelLike(targetId);
-            else if(target.equals(TARGET_JOB)) isSuccess = jobService.cancelLike(targetId);
-            else if(target.equals(TARGET_COMMENT)) isSuccess = commentService.cancelLike(targetId);
-            else throw new IllegalArgumentException(TARGET_INVALID_ERROR_MESSAGE + target);
+            isSuccess = handleTarget(target,
+                    () -> personService.cancelLike(targetId),
+                    () -> jobService.cancelLike(targetId),
+                    () -> commentService.cancelLike(targetId));
         }
 
         if(isSuccess) return new InteractionResponseDto(isExists);
         else throw new RuntimeException();
     }
+
+    @GetMapping("/api/v1/get/{target}/{targetId}")
+    public Integer get(@PathVariable("target") String target,
+                            @PathVariable("targetId") Long targetId){
+        return handleTarget(target,
+                () -> personService.getById(targetId).getLikes(),
+                () -> jobService.get(targetId).getLikes(),
+                null);
+    }
+
+    private <T> T handleTarget(String target,
+                               Supplier<T> personMethod,
+                               Supplier<T> jobMethod,
+                               Supplier<T> commentMethod ){
+        T obj;
+        if (target.equals(TARGET_PERSON)) obj = personMethod.get();
+        else if (target.equals(TARGET_JOB)) obj = jobMethod.get();
+        else if (target.equals(TARGET_COMMENT)) obj = commentMethod.get();
+        else throw new IllegalArgumentException(TARGET_INVALID_ERROR_MESSAGE + target);
+
+        return obj;
+    }
+
 
 }
