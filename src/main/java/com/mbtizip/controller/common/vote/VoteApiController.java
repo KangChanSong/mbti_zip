@@ -1,20 +1,21 @@
 package com.mbtizip.controller.common.vote;
+
 import com.mbtizip.domain.common.wrapper.BooleanResponseDto;
+import com.mbtizip.domain.interaction.Interaction;
 import com.mbtizip.domain.interaction.dto.InteractionResponseDto;
+import com.mbtizip.domain.mbtiCount.dto.MbtiCountGetDto;
 import com.mbtizip.domain.mbtiCount.dto.MbtiCountListDto;
 import com.mbtizip.service.interaction.InteractionService;
 import com.mbtizip.service.job.JobService;
 import com.mbtizip.service.mbtiCount.MbtiCountService;
 import com.mbtizip.service.person.PersonService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.function.Supplier;
+import java.util.List;
 
-import static com.mbtizip.controller.common.TargetProperties.TARGET_JOB;
-import static com.mbtizip.controller.common.TargetProperties.TARGET_PERSON;
-import static com.mbtizip.controller.common.common.InteractionControllerHelper.TARGET_INVALID_ERROR_MESSAGE;
-import static com.mbtizip.controller.common.common.InteractionControllerHelper.buildInteraction;
+import static com.mbtizip.controller.common.common.InteractionControllerHelper.handleTarget;
 import static com.mbtizip.controller.common.common.InteractionDType.V;
 
 @RestController
@@ -28,42 +29,53 @@ public class VoteApiController {
     private final InteractionService interactionService;
 
     @PostMapping("/api/v1/mbti/{mbtiId}/{target}/{targetId}")
-    public InteractionResponseDto vote(@PathVariable("mbtiId") Long mbtiId,
+    public BooleanResponseDto vote(@PathVariable("mbtiId") Long mbtiId,
                                        @PathVariable("target") String target,
                                        @PathVariable("targetId") Long targetId){
 
-        boolean isExists = interactionService.checkIfExists(buildInteraction(target, targetId, V.name()));
+        boolean isExists = interactionService.checkIfExists(new Interaction(target, targetId, V.name()));
 
         Boolean isSuccess;
         if(!isExists){
-            isSuccess = checkTargetAndExecute(
+            isSuccess = handleTarget(
+                    target,
                     () -> personService.vote(targetId,mbtiId),
-                    () -> jobService.vote(mbtiId, targetId),
-                    target);
+                    () -> jobService.vote(mbtiId, targetId));
         } else {
-            isSuccess = checkTargetAndExecute(
+            isSuccess = handleTarget(
+                    target,
                     () -> personService.cancelVote(targetId, mbtiId),
-                    () -> jobService.cancelVote(mbtiId, targetId),
-                    target);
+                    () -> jobService.cancelVote(mbtiId, targetId));
         }
-        if(isSuccess) return new InteractionResponseDto(isExists);
-        else throw new RuntimeException();
+        return new BooleanResponseDto(isSuccess);
 
     }
 
     @GetMapping("/api/v1/list/{target}/{targetId}")
-    public MbtiCountListDto getList(@PathVariable("target") String target,
+    public VoteResponseDto getList(@PathVariable("target") String target,
                                     @PathVariable("targetId") Long targetId){
 
-        return MbtiCountListDto.toDto(checkTargetAndExecute(
-                () -> mbtiCountService.getVotesByPerson(targetId),
-                () -> mbtiCountService.getVotesByJob(targetId),
-                target));
+        boolean isExists = interactionService.checkIfExists(new Interaction(target, targetId, V.name()));
+
+        MbtiCountListDto listDto = MbtiCountListDto.toDto(
+                handleTarget(
+                        target,
+                        () -> mbtiCountService.getVotesByPerson(targetId),
+                        () -> mbtiCountService.getVotesByJob(targetId)));
+
+        return new VoteResponseDto(listDto, !isExists);
     }
 
-    private <T> T checkTargetAndExecute(Supplier<T> personFunc, Supplier<T> jobFunc, String target) {
-        if(target.equals(TARGET_PERSON)) return personFunc.get();
-        else if (target.equals(TARGET_JOB)) return jobFunc.get();
-        else throw new IllegalArgumentException(TARGET_INVALID_ERROR_MESSAGE + target);
+    @Data
+    private static class VoteResponseDto{
+
+        private List<MbtiCountGetDto> mbtiCountGetDtos;
+        private boolean isAvailable;
+
+        VoteResponseDto(MbtiCountListDto listDto, boolean isAvailable){
+            this.mbtiCountGetDtos = listDto.getMbtiCountGetDtos();
+            this.isAvailable = isAvailable;
+        }
     }
+
 }

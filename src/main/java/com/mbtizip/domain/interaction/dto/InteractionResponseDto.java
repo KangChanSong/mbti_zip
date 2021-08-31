@@ -9,9 +9,9 @@ import lombok.Setter;
 @Setter
 public class InteractionResponseDto {
 
-    private boolean isDone;
+    private boolean isAvailable;
 
     public InteractionResponseDto(boolean isSuccess){
-        this.isDone = !isSuccess;
+        this.isAvailable = !isSuccess;
     }
 }
