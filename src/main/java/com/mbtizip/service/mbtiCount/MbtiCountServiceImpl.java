@@ -120,10 +120,10 @@ public class MbtiCountServiceImpl implements MbtiCountService{
 
         if(maxVoted != null && maxVoted.get(0).getCount() == 0) consumer.accept(null);
 
+        // 같은 투표수의 MBTI 가 두개 이상 존재할때
         if(maxVoted.size() > 1){
-            consumer.accept(mbtiRepository.findByName(MbtiEnum.DRAW));
+            consumer.accept(null);
         } else if (maxVoted.size() == 1){
-
             Mbti resultMbti = maxVoted.get(0).getMbti();
             if(resultMbti != originalMbti){
                 consumer.accept(resultMbti);

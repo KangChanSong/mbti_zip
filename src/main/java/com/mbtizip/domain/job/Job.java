@@ -63,7 +63,8 @@ public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
     @Override
     public void changeMbti(Mbti mbti) {
         this.mbti = mbti;
-        mbti.getJobs().add(this);
+        if(mbti != null) mbti.getJobs().add(this);
+
     }
 
     //== 편의 메서드 ==//
