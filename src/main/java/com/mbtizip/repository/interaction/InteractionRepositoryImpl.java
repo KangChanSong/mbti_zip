@@ -19,18 +19,27 @@ public class InteractionRepositoryImpl implements InteractionRepository {
     }
 
     @Override
-    public Long countByCondition(Long personId, Long jobId, String dType) {
-        return (Long) em.createQuery("select count(i) from Interaction i " +
-                "where i.dType =: dType" +
-                " and ( i.personId =: personId or i.jobId =: jobId )")
-                .setParameter("dType", dType)
-                .setParameter("personId", personId)
-                .setParameter("jobId", jobId)
-                .getSingleResult();
+    public Interaction findOneByObject(Interaction interaction) {
+
+        try {
+            Interaction finded = (Interaction) em.createQuery("select i from Interaction i " +
+                            "where i.dType =: dType" +
+                            " and i.sessionId =: sessionId" +
+                            " and ( i.personId =: personId or i.jobId =: jobId )")
+                    .setParameter("dType", interaction.getDType())
+                    .setParameter("sessionId", interaction.getSessionId())
+                    .setParameter("personId", interaction.getPersonId())
+                    .setParameter("jobId", interaction.getJobId())
+                    .getSingleResult();
+
+            return finded;
+        } catch (RuntimeException e){
+            return null;
+        }
     }
 
     @Override
-    public int remove(Interaction interaction) {
-        return 0;
+    public void remove(Interaction interaction) {
+        em.remove(interaction);
     }
 }

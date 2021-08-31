@@ -4,6 +4,6 @@ import com.mbtizip.domain.interaction.Interaction;
 
 public interface InteractionRepository {
     Long save(Interaction interaction);
-    Long countByCondition(Long personId, Long jobId, String dType);
-    int remove(Interaction interaction);
+    Interaction findOneByObject(Interaction interaction);
+    void remove(Interaction interaction);
 }
