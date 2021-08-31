@@ -32,7 +32,7 @@ public class PersonApiController {
     @PostMapping("/api/v1/register")
     public BooleanResponseDto register(@RequestBody PersonRegisterDto dto){
         Person person = dto.toEntity();
-        Boolean isSuccess = personService.registerWithCategory(person, dto.getCategoryIds());
+        Boolean isSuccess = personService.registerWithCategory(person, dto.getCategoryId());
         return new BooleanResponseDto(isSuccess);
     }
 

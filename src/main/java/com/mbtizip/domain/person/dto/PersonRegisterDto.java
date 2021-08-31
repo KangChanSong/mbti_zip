@@ -17,7 +17,7 @@ public class PersonRegisterDto {
     private String gender;
     private String description;
     private String password;
-    private List<Long> categoryIds;
+    private Long categoryId;
 
     public Person toEntity(){
         return Person.builder()

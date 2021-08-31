@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface PersonService {
-    Boolean registerWithCategory(Person person, List<Long> categoryId);
+    Boolean registerWithCategory(Person person, Long categoryId);
     Person getById(Long saveId);
     Map<Person, List<Category>> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword);
     Map<Person, List<Category>> findAllWithMbti(Page page, OrderSpecifier sort, Long mbtiId);

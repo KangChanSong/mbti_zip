@@ -8,5 +8,5 @@ import java.util.List;
 public interface CategoryRepository {
     Long save(Category category);
     Category find(Long categoryId);
-    List<Category> findAll(Page page);
+    List<Category> findAll();
 }

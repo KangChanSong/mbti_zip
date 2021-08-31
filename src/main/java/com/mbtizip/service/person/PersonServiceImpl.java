@@ -40,11 +40,11 @@ public class PersonServiceImpl implements PersonService{
 
     @Transactional
     @Override
-    public Boolean registerWithCategory(Person person, List<Long> categoryIds) {
+    public Boolean registerWithCategory(Person person, Long categoryId) {
         if(person == null) throw new IllegalArgumentException("Person 이 null 입니다.");
         person.setPassword(encrypt(person.getPassword()));
         Long saveId = personRepository.save(person);
-        savePersonCategories(person, categoryIds);
+        savePersonCategories(person, categoryId);
 
         if(saveId != null){
             mbtiCountService.initializeByPerson(person);
@@ -148,18 +148,16 @@ public class PersonServiceImpl implements PersonService{
     }
 
     //== private method ==//
-    private void savePersonCategories(Person person, List<Long> categoryIds){
-        categoryIds.forEach( categoryId -> {
-            Category category = categoryRepository.find(categoryId);
+    private void savePersonCategories(Person person, Long categoryId){
+        Category category = categoryRepository.find(categoryId);
 
-            if(category == null) throw new IllegalArgumentException("카테고리를 찾을 수 없습니다. id : " + categoryId);
+        if(category == null) throw new IllegalArgumentException("카테고리를 찾을 수 없습니다. id : " + categoryId);
 
-            PersonCategory personCategory = PersonCategory.builder()
-                    .person(person)
-                    .category(category).build();
+        PersonCategory personCategory = PersonCategory.builder()
+                .person(person)
+                .category(category).build();
 
-            personCategoryRepository.save(personCategory);
-        });
+        personCategoryRepository.save(personCategory);
     }
 
 

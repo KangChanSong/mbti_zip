@@ -31,10 +31,8 @@ public class CategoryRepositoryImpl implements CategoryRepository{
     }
 
     @Override
-    public List<Category> findAll(Page page) {
+    public List<Category> findAll() {
         return em.createQuery("select c from Category c")
-                .setFirstResult(page.getOffset())
-                .setMaxResults(page.getAmount())
                 .getResultList();
     }
 }

@@ -28,7 +28,7 @@ public class PersonGetDto {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
-    private List<String> categories;
+    private String category;
     private String mbti;
 
     public static PersonGetDto toDto(Person person, List<Category> categories){
@@ -45,7 +45,7 @@ public class PersonGetDto {
                 .updateDate(person.getUpdateDate())
 
                 .mbti(validateAndReturnMbti(person))
-                .categories(extractCategoryNames(categories))
+                .category(getCategoryFromList(categories))
                 .build();
     }
 
@@ -54,6 +54,14 @@ public class PersonGetDto {
             return "MBTI 미정";
         } else {
             return person.getMbti().getName().getText().toUpperCase(Locale.ROOT);
+        }
+    }
+
+    private static String getCategoryFromList(List<Category> categories){
+        if(categories == null || categories.isEmpty()){
+            return "";
+        } else {
+            return categories.get(0).getName();
         }
     }
 

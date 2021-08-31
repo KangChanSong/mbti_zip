@@ -29,8 +29,9 @@ public class CategoryApiController {
 
     //카테고리 목록 조회
     @GetMapping("/api/v1/list")
-    public CategoryListDto getList(@RequestBody PageSortDto psd){
-        List<Category> findCategories = categoryService.findAll(psd.toPage());
+    public CategoryListDto getList(){
+
+        List<Category> findCategories = categoryService.findAll();
         return CategoryListDto.toDto(findCategories);
     }
 
