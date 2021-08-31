@@ -3,6 +3,7 @@ package com.mbtizip.controller.common.like;
 import com.mbtizip.controller.common.common.InteractionDType;
 import com.mbtizip.domain.common.wrapper.BooleanResponseDto;
 import com.mbtizip.domain.interaction.Interaction;
+import com.mbtizip.domain.interaction.dto.InteractionResponseDto;
 import com.mbtizip.service.comment.CommentService;
 import com.mbtizip.service.interaction.InteractionService;
 import com.mbtizip.service.job.JobService;
@@ -32,8 +33,8 @@ public class LikeController {
 
 
     @PostMapping("/api/v1/{target}/{targetId}")
-    public BooleanResponseDto like(@PathVariable("target") String target,
-                                   @PathVariable("targetId") Long targetId){
+    public InteractionResponseDto like(@PathVariable("target") String target,
+                                       @PathVariable("targetId") Long targetId){
         boolean isExists = interactionService.checkIfExists(buildInteraction(target, targetId, L.name()));
 
         Boolean isSuccess;
@@ -50,7 +51,8 @@ public class LikeController {
             else throw new IllegalArgumentException(TARGET_INVALID_ERROR_MESSAGE + target);
         }
 
-        return new BooleanResponseDto(isSuccess);
+        if(isSuccess) return new InteractionResponseDto(isExists);
+        else throw new RuntimeException();
     }
 
 }

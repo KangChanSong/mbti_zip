@@ -1,5 +1,6 @@
 package com.mbtizip.controller.common.vote;
 import com.mbtizip.domain.common.wrapper.BooleanResponseDto;
+import com.mbtizip.domain.interaction.dto.InteractionResponseDto;
 import com.mbtizip.domain.mbtiCount.dto.MbtiCountListDto;
 import com.mbtizip.service.interaction.InteractionService;
 import com.mbtizip.service.job.JobService;
@@ -27,9 +28,9 @@ public class VoteApiController {
     private final InteractionService interactionService;
 
     @PostMapping("/api/v1/mbti/{mbtiId}/{target}/{targetId}")
-    public BooleanResponseDto vote(@PathVariable("mbtiId") Long mbtiId,
-                                   @PathVariable("target") String target,
-                                   @PathVariable("targetId") Long targetId){
+    public InteractionResponseDto vote(@PathVariable("mbtiId") Long mbtiId,
+                                       @PathVariable("target") String target,
+                                       @PathVariable("targetId") Long targetId){
 
         boolean isExists = interactionService.checkIfExists(buildInteraction(target, targetId, V.name()));
 
@@ -45,7 +46,9 @@ public class VoteApiController {
                     () -> jobService.cancelVote(mbtiId, targetId),
                     target);
         }
-        return new BooleanResponseDto(isSuccess);
+        if(isSuccess) return new InteractionResponseDto(isExists);
+        else throw new RuntimeException();
+
     }
 
     @GetMapping("/api/v1/list/{target}/{targetId}")
