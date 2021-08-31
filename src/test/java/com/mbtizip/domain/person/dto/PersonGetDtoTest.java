@@ -41,7 +41,7 @@ class PersonGetDtoTest {
         PersonGetDto dto = PersonGetDto.toDto(person, categories);
 
         //then
-        assertEquals(dto.getCategories(), names);
+        assertEquals(dto.getCategory(), names);
         assertEquals(dto.getName(), PERSON_NAME.getText());
         assertEquals(dto.getGender(), Gender.MALE.getText());
 
@@ -68,6 +68,6 @@ class PersonGetDtoTest {
 
         assertEquals(listDto.getPersonGetDtos().size() , 1);
         assertEquals(dto.getName(), PERSON_NAME.getText());
-        assertTrue(dto.getCategories().contains(categories.get(0).getName()));
+        assertTrue(dto.getCategory().contains(categories.get(0).getName()));
     }
 }

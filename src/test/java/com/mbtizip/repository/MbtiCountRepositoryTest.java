@@ -5,6 +5,7 @@ import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
 import com.mbtizip.domain.person.Person;
+import com.mbtizip.repository.mbti.MbtiRepositoryImpl;
 import com.mbtizip.repository.mbtiCount.MbtiCountRepositoryImpl;
 import com.mbtizip.repository.test.TestJobRepository;
 import com.mbtizip.repository.test.TestMbtiRepository;
@@ -280,7 +281,7 @@ class MbtiCountRepositoryTest {
         private final EntityManager thisEm;
 
         public ChildMbtiCountRepository(EntityManager em) {
-            super(em);
+            super(em, new MbtiRepositoryImpl(em));
             thisEm = em;
         }
 

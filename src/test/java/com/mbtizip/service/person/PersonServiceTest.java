@@ -60,7 +60,7 @@ public class PersonServiceTest {
     public void 인물_등록(){
 
         assertThrows(IllegalArgumentException.class, () ->
-                personService.registerWithCategory(createPerson(), createCategoryList()));
+                personService.registerWithCategory(createPerson(), createCategoryList().get(0)));
 
 
     }

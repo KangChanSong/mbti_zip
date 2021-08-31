@@ -42,7 +42,7 @@ public class CategoryRepositoryTest {
         //given
         Page page = Page.builder().pageNum(1).amount(3).build();
         //when
-        List<Category> findCategories = categoryRepository.findAll(page);
+        List<Category> findCategories = categoryRepository.findAll();
         //then
         assertEquals(findCategories.size(), 3);
     }

@@ -20,6 +20,7 @@ public class PersonGetDto {
 
     private Long id;
     private String name;
+    private String writer;
     private String description;
     private String gender;
     private int likes;
@@ -36,6 +37,7 @@ public class PersonGetDto {
         return PersonGetDto.builder()
                 .id(person.getId())
                 .name(person.getName())
+                .writer(person.getWriter())
                 .description(person.getDescription())
                 .gender(person.getGender().getText())
                 .likes(person.getLikes())
