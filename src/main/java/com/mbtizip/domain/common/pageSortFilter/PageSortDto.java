@@ -50,6 +50,7 @@ public class PageSortDto<T extends InterfaceForPageSortFilter> {
         DateTimePath createDatePath = makeCreateDatePath(qObject);
         DateTimePath updateDatePath = makeUpdateDatePath(qObject);
         NumberPath likesPath = makeLikesPath(qObject);
+        NumberPath viewsPath = makeViewsPath(qObject);
 
         if(dir.equals("desc")){
             switch (sort){
@@ -62,6 +63,8 @@ public class PageSortDto<T extends InterfaceForPageSortFilter> {
                 case "likes":
                     orderSpecifier = likesPath.desc();
                     break;
+                case "views":
+                    orderSpecifier = viewsPath.desc();
             }
         }
         if(dir.equals("asc")) {
@@ -75,6 +78,8 @@ public class PageSortDto<T extends InterfaceForPageSortFilter> {
                 case "likes":
                     orderSpecifier = likesPath.asc();
                     break;
+                case "views":
+                    orderSpecifier = viewsPath.asc();
             }
         }
 
@@ -83,47 +88,44 @@ public class PageSortDto<T extends InterfaceForPageSortFilter> {
 
     private DateTimePath makeCreateDatePath(EntityPath qObject){
 
-        DateTimePath createDatePath = null;
-
-        if(qObject instanceof QPerson){
-            createDatePath = QPerson.person.createDate;
-        } else if (qObject instanceof QJob){
-            createDatePath = QJob.job.createDate;
-        } else if (qObject instanceof QComment){
-            createDatePath = QComment.comment.createDate;
-        }
-
-        return createDatePath;
+        return checkAndGetPath(qObject,
+                QPerson.person.createDate,
+                QJob.job.createDate,
+                QComment.comment.createDate);
     }
 
     private DateTimePath makeUpdateDatePath(EntityPath qObject){
 
-        DateTimePath updateDatePath = null;
-
-        if(qObject instanceof QPerson){
-            updateDatePath = QPerson.person.updateDate;
-        } else if (qObject instanceof QJob){
-            updateDatePath = QJob.job.updateDate;
-        } else if (qObject instanceof QComment){
-            updateDatePath = QComment.comment.updateDate;
-        }
-
-        return updateDatePath;
+        return checkAndGetPath(qObject,
+                QPerson.person.updateDate,
+                QJob.job.updateDate,
+                QComment.comment.updateDate);
     }
 
     private NumberPath makeLikesPath(EntityPath qObject){
 
-        NumberPath likesPath = null;
-
-        if(qObject instanceof QPerson){
-            likesPath = QPerson.person.likes;
-        } else if (qObject instanceof QJob){
-            likesPath = QJob.job.likes;
-        } else if (qObject instanceof QComment){
-            likesPath = QComment.comment.likes;
-        }
-
-        return likesPath;
+        return checkAndGetPath(qObject,
+                QPerson.person.likes,
+                QJob.job.likes,
+                QComment.comment.likes);
     }
 
+    private NumberPath makeViewsPath(EntityPath qObject){
+        return checkAndGetPath(qObject,
+                QPerson.person.views,
+                QJob.job.views, null);
+    }
+
+    private <T> T checkAndGetPath(EntityPath qObject, T personPath, T jobPath, T commentPath){
+        T obj = null;
+        if(qObject instanceof QPerson){
+            obj = personPath;
+        } else if (qObject instanceof QJob){
+            obj = jobPath;
+        } else if (qObject instanceof QComment){
+            obj = commentPath;
+        } else throw new IllegalArgumentException("인스턴스의 클래스가 적합하지 않습니다. class = " + obj.getClass().getSimpleName());
+
+        return obj;
+    }
 }
