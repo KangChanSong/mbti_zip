@@ -35,7 +35,7 @@ public class FileServiceImpl implements FileService{
 
     @Transactional
     @Override
-    public Boolean saveFile(Long personId, MultipartFile file) {
+    public Boolean saveFileWithPerson(Long personId, MultipartFile file) {
         Person findPerson = checkAndReturn(personId);
         String uuid = createUuid();
         storeInLocal(file, uuid);
@@ -43,7 +43,7 @@ public class FileServiceImpl implements FileService{
     }
 
     @Override
-    public byte[] loadFile(Long personId) {
+    public byte[] loadFileByPerson(Long personId) {
         Person findPerson = checkAndReturn(personId);
         File findFile = fileRepository.findByPerson(findPerson);
         return loadFromLocal(findFile);

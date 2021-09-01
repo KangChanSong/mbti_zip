@@ -3,6 +3,7 @@ package com.mbtizip.domain.job;
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.common.CommonEntity;
 import com.mbtizip.domain.common.pageSortFilter.InterfaceForPageSortFilter;
+import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.mbti.Mbti;
 import lombok.Builder;
 import lombok.Getter;
@@ -51,6 +52,10 @@ public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private File file;
+
     @Builder
     public Job(String title, String writer, String password){
         this.title = title;
@@ -65,6 +70,10 @@ public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
         this.mbti = mbti;
         if(mbti != null) mbti.getJobs().add(this);
 
+    }
+
+    public void setFile(File file){
+        this.file = file;
     }
 
     //== 편의 메서드 ==//

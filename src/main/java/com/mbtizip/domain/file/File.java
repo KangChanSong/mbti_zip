@@ -1,5 +1,6 @@
 package com.mbtizip.domain.file;
 
+import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.person.Person;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +14,8 @@ import javax.persistence.*;
 @Entity
 public class File {
 
-    @Id
-    @Column(name = "person_id")
+    @Id @GeneratedValue
+    @Column(name = "file_id")
     private Long id;
 
     private String uuid;
@@ -23,9 +24,12 @@ public class File {
     private String name;
 
     @OneToOne
-    @MapsId
     @JoinColumn(name = "person_id")
     private Person person;
+
+    @OneToOne
+    @JoinColumn(name = "job_id")
+    private Job job;
 
     @Builder
     public File(String uuid, String name){
@@ -37,6 +41,11 @@ public class File {
     public void setPerson(Person person) {
         this.person = person;
         person.setFile(this);
+    }
+
+    public void setJob(Job job){
+        this.job = job;
+        job.setFile(this);
     }
 
     //== 편의 메서드 ==//

@@ -6,7 +6,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.InputStream;
 
 public interface FileService {
-    Boolean saveFile(Long personId, MultipartFile file);
-    byte[] loadFile(Long personId);
-    Boolean deleteFile(Long personId);
+    Boolean saveFileWithPerson(Long personId, MultipartFile file);
+    Boolean saveFileWithJob(Long jobId, MultipartFile file);
+    byte[] loadFileByPerson(Long personId);
+    byte[] loadFileByJob(Long jobId);
+
+    Boolean deleteFileByPerson(Long personId);
+    Boolean deleteFileByJob(Long jobId);
 }
