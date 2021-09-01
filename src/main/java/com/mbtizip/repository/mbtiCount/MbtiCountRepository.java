@@ -26,4 +26,6 @@ public interface MbtiCountRepository {
     void insertAllByPerson(Person person);
     void insertAllByJob(Job job);
 
+    Long sumAllOfJob(Long jobId);
+    Long sumAllOfPerson(Long personId);
 }

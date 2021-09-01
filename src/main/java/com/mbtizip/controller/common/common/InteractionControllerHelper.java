@@ -1,12 +1,11 @@
 package com.mbtizip.controller.common.common;
 
-import com.mbtizip.domain.interaction.Interaction;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.function.Supplier;
 
-import static com.mbtizip.controller.common.TargetProperties.*;
+import static com.mbtizip.controller.common.TargetProperties.TARGET_JOB;
+import static com.mbtizip.controller.common.TargetProperties.TARGET_PERSON;
 
 @Slf4j
 public class InteractionControllerHelper {

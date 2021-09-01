@@ -25,7 +25,7 @@ import static com.mbtizip.controller.common.common.InteractionDType.L;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/like")
-public class LikeController {
+public class LikeApiController {
 
     private final PersonService personService;
     private final JobService jobService;
@@ -36,7 +36,7 @@ public class LikeController {
     @PostMapping("/api/v1/{target}/{targetId}")
     public BooleanResponseDto like(@PathVariable("target") String target,
                                        @PathVariable("targetId") Long targetId){
-        boolean isExists = interactionService.checkIfExists(new Interaction(target, targetId, L.name()));
+        boolean isExists = interactionService.checkAndRemove(new Interaction(target, targetId, L.name()));
 
         Boolean isSuccess;
 

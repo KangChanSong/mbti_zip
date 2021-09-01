@@ -1,6 +1,5 @@
 package com.mbtizip.domain.interaction;
 
-import com.mbtizip.controller.common.common.InteractionControllerHelper;
 import lombok.*;
 import org.springframework.web.context.request.RequestContextHolder;
 

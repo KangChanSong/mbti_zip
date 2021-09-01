@@ -11,9 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class InteractionSeviceImpl implements InteractionService{
     private final InteractionRepository interactionRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public boolean checkIfExists(Interaction interaction) {
+        return interactionRepository.findOneByObject(interaction) == null ? false : true;
+    }
+
+    @Transactional
+    @Override
+    public boolean checkAndRemove(Interaction interaction) {
         Interaction finded = interactionRepository.findOneByObject(interaction);
         if(finded == null){
             interactionRepository.save(interaction);

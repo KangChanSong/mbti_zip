@@ -18,4 +18,7 @@ public interface MbtiCountService {
 
     void initializeByPerson(Person person);
     void initailizeByJob(Job job);
+
+    Long getTotalCountOfJob(Long jobId);
+    Long getTotalCountOfPerson(Long personId);
 }

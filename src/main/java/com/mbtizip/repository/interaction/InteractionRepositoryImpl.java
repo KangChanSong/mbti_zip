@@ -33,6 +33,7 @@ public class InteractionRepositoryImpl implements InteractionRepository {
                     .getSingleResult();
 
             return finded;
+
         } catch (RuntimeException e){
             return null;
         }

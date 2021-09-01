@@ -1,5 +1,6 @@
 package com.mbtizip.repository;
 
+import com.mbtizip.controller.common.common.InteractionDType;
 import com.mbtizip.domain.interaction.Interaction;
 import com.mbtizip.repository.interaction.InteractionRepository;
 import org.junit.jupiter.api.Assertions;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.mbtizip.controller.common.common.InteractionDType.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
@@ -29,10 +31,7 @@ public class InteractionRepositoryTest {
         Long personId = 1L;
         String dType = "L";
 
-        Interaction interaction = Interaction.builder()
-                .sessionId(sessionId)
-                .personId(personId)
-                .dType(dType).build();
+        Interaction interaction = new Interaction("person", personId , dType);
 
         //when
         interactionRepository.save(interaction);
@@ -49,15 +48,28 @@ public class InteractionRepositoryTest {
     @DisplayName("아무것도 찾지 못했을때 에러가 뜨는지에 대한 테스트")
     @Test
     public void 결과_0_에러(){
-
-        //then
-        assertThrows(IllegalArgumentException.class ,
-                () -> interactionRepository.findOneByObject(Interaction.builder().build()));
-
         //when
-        Interaction finded = interactionRepository.findOneByObject(Interaction.builder().dType("L").build());
+        Interaction finded = interactionRepository.findOneByObject(new Interaction("sd", 1L ,  "person"));
 
         assertNull(finded);
-        System.out.println("===========> " + finded);
+    }
+
+    @DisplayName("Job에 대해 insert 했을 때 올바르게 찾는지에 대한 테스트")
+    @Test
+    public void JOB_INSERT(){
+
+        //given
+        Long jobId = 1L;
+        String dType = V.name();
+
+        Interaction interaction = new Interaction("job", jobId, dType);
+        interactionRepository.save(interaction);
+        //when
+
+        Interaction finded = interactionRepository.findOneByObject(interaction);
+        //then
+        assertNotNull(finded);
+        assertEquals(finded.getJobId(), jobId);
+        assertEquals(finded.getDType(), dType);
     }
 }

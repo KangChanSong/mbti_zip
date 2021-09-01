@@ -105,6 +105,24 @@ public class MbtiCountRepositoryImpl implements MbtiCountRepository {
                 });
     }
 
+    @Override
+    public Long sumAllOfJob(Long jobId) {
+        return (Long) em.createQuery("select sum(m.count) from MbtiCount m " +
+                " where m.job.id =: jobId" +
+                " group by m.job.id")
+                .setParameter("jobId", jobId)
+                .getSingleResult();
+    }
+
+    @Override
+    public Long sumAllOfPerson(Long personId) {
+        return (Long) em.createQuery("select sum(m.count) from MbtiCount m " +
+                        " where m.person.id =: personId" +
+                        " group by m.job.id")
+                .setParameter("personId", personId)
+                .getSingleResult();
+    }
+
     private void removeAllByObject(Object obj, Long id){
         checkType(obj);
         String str = obj.getClass().getSimpleName().toLowerCase(Locale.ROOT) + ".";

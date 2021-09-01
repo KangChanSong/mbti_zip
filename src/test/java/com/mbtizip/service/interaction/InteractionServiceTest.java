@@ -1,5 +1,6 @@
 package com.mbtizip.service.interaction;
 
+import com.mbtizip.controller.common.common.InteractionDType;
 import com.mbtizip.domain.interaction.Interaction;
 import com.mbtizip.repository.interaction.InteractionRepository;
 import org.junit.jupiter.api.Assertions;
@@ -11,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static com.mbtizip.controller.common.common.InteractionDType.V;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -32,7 +34,7 @@ public class InteractionServiceTest {
     @Test
     public void false_반환(){
         //given
-        Interaction interaction = Interaction.builder().dType("L").build();
+        Interaction interaction = new Interaction("job", 1L , V.name());
         when(interactionRepository.findOneByObject(interaction)).thenReturn(null);
 
         //when
@@ -46,7 +48,7 @@ public class InteractionServiceTest {
     public void true_반환(){
 
         //given
-        Interaction interaction = Interaction.builder().dType("L").build();
+        Interaction interaction = new Interaction("job", 1L , V.name());
         when(interactionRepository.findOneByObject(interaction)).thenReturn(interaction);
 
         //when

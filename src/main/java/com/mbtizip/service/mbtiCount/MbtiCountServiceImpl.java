@@ -76,6 +76,16 @@ public class MbtiCountServiceImpl implements MbtiCountService{
         mbtiCountRepository.insertAllByJob(job);
     }
 
+    @Override
+    public Long getTotalCountOfJob(Long jobId) {
+        return mbtiCountRepository.sumAllOfJob(jobId);
+    }
+
+    @Override
+    public Long getTotalCountOfPerson(Long personId) {
+        return mbtiCountRepository.sumAllOfPerson(personId);
+    }
+
     //== private method ==//
 
     private List<MbtiCount> getVotesByObject(Long targetId, String target){
