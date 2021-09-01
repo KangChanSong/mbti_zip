@@ -29,7 +29,6 @@ public class LikeApiController {
 
     private final PersonService personService;
     private final JobService jobService;
-    private final CommentService commentService;
     private final InteractionService interactionService;
 
 
