@@ -16,6 +16,7 @@ import static com.mbtizip.controller.common.common.InteractionControllerHelper.h
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("file")
+
 public class FileApiController {
 
     private final FileService fileService;
@@ -32,7 +33,7 @@ public class FileApiController {
 
     @GetMapping(
             value = "/api/v1/get/{target}/{targetId}",
-            produces = "image/jpeg")
+            produces = {"image/jpeg" , "image/png", "image/gif"})
     public byte[] get(@PathVariable("target") String target ,
                       @PathVariable("targetId") Long targetId) throws IOException {
 

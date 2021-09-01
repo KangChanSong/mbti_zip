@@ -17,7 +17,7 @@ import java.nio.file.StandardCopyOption;
 @Service
 public class StoreServiceImpl implements StoreService{
 
-    private final Path rootLocation = Paths.get("C:/fileupload");
+    private final Path rootLocation = Paths.get("src/main/resources/static/upload");
 
     @Override
     public void storeInLocal(MultipartFile file, String uuid) {
