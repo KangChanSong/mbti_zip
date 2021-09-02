@@ -29,6 +29,12 @@ public class FileApiController {
         return new FileResponseDto(fileService.upload(file));
     }
 
+    @DeleteMapping("/api/v1/delete/{filename}")
+    public void delete(@PathVariable("filename") String filename){
+        fileService.delete(filename);
+    }
+
+
     @PostMapping("/api/v1/upload/{target}/{targetId}")
     public BooleanResponseDto upload(@PathVariable("targetId") Long targetId,
                                      @PathVariable("target") String target,

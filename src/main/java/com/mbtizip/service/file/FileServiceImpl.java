@@ -48,15 +48,13 @@ public class FileServiceImpl implements FileService{
     private final FileRepository fileRepository;
     private final StoreService storeService;
 
+    @Transactional
     @Override
     public String upload(MultipartFile multipartFile) {
-        File file = convert(multipartFile);
-        storeService.storeInLocal(multipartFile, file.getFileId().getUuid());
-        FileId saved = fileRepository.save(file);
+        FileId saved = fileRepository.save(new File(multipartFile));
+        storeService.storeInLocal(multipartFile, saved.getUuid());
         return saved.getUuid() + "_" + saved.getName();
     }
-
-
     @Transactional
     @Override
     public Boolean saveFileWithPerson(Long personId, MultipartFile file) {
@@ -79,6 +77,14 @@ public class FileServiceImpl implements FileService{
         Job findJob = checkAndReturn(Job.class, jobId);
         return storeService.loadFromLocal(fileRepository.findByJob(findJob));
     }
+
+    @Transactional
+    @Override
+    public void delete(String filename) {
+        File file = fileRepository.find(new FileId(filename));
+        fileRepository.delete(file);
+        storeService.deleteFromLocal(file);
+    }
     @Transactional
     @Override
     public Boolean deleteFileByPerson(Long personId) {
@@ -92,12 +98,6 @@ public class FileServiceImpl implements FileService{
     }
 
     //== private 메서드 ==//
-    private File convert(MultipartFile file){
-        return new File(FileId.builder()
-                .uuid(randomUUID().toString())
-                .name(file.getOriginalFilename())
-                .build());
-    }
 
     private Boolean saveInDb(MultipartFile file, Object obj) {
         String uuid = randomUUID().toString();

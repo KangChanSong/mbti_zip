@@ -12,6 +12,7 @@ public interface FileService {
     byte[] loadFileByPerson(Long personId);
     byte[] loadFileByJob(Long jobId);
 
+    void delete(String filename);
     Boolean deleteFileByPerson(Long personId);
     Boolean deleteFileByJob(Long jobId);
 }
