@@ -62,10 +62,6 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     private List<PersonCategory> personCategories = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private File file;
-
     @Builder
     public Person(String name, String description, String writer,String password,  Gender gender){
         this.name = name;
@@ -80,10 +76,6 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
     public void changeMbti(Mbti mbti) {
         this.mbti = mbti;
         if(mbti != null) mbti.getPersons().add(this);
-    }
-
-    public void setFile(File file) {
-        this.file = file;
     }
 
     //== 편의 메서드 ==//

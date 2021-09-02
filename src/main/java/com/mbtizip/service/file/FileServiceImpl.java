@@ -2,6 +2,7 @@ package com.mbtizip.service.file;
 
 import com.mbtizip.domain.common.CommonEntity;
 import com.mbtizip.domain.file.File;
+import com.mbtizip.domain.file.FileId;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.exception.NoEntityFoundException;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.text.html.Option;
 import java.awt.image.ColorModel;
+import java.awt.image.MultiResolutionImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,6 +35,7 @@ import java.util.function.Supplier;
 
 import static com.mbtizip.util.ErrorMessageProvider.INVALID_INSTANCE;
 import static com.mbtizip.util.ErrorMessageProvider.NO_ENTITY_FOUND;
+import static java.util.UUID.randomUUID;
 
 @Service
 @Transactional(readOnly = true)
@@ -44,6 +47,15 @@ public class FileServiceImpl implements FileService{
     private final JobRepository jobRepository;
     private final FileRepository fileRepository;
     private final StoreService storeService;
+
+    @Override
+    public String upload(MultipartFile multipartFile) {
+        File file = convert(multipartFile);
+        storeService.storeInLocal(multipartFile, file.getFileId().getUuid());
+        FileId saved = fileRepository.save(file);
+        return saved.getUuid() + "_" + saved.getName();
+    }
+
 
     @Transactional
     @Override
@@ -80,19 +92,26 @@ public class FileServiceImpl implements FileService{
     }
 
     //== private 메서드 ==//
+    private File convert(MultipartFile file){
+        return new File(FileId.builder()
+                .uuid(randomUUID().toString())
+                .name(file.getOriginalFilename())
+                .build());
+    }
+
     private Boolean saveInDb(MultipartFile file, Object obj) {
-        String uuid = UUID.randomUUID().toString();
+        String uuid = randomUUID().toString();
         storeService.storeInLocal(file, uuid);
 
-        File fileEntity = File.builder()
+        File fileEntity = new File();
+        fileEntity.setFileId(FileId.builder()
                 .name(file.getOriginalFilename())
                 .uuid(uuid)
-                .build();
-
+                .build());
         checkAndJoin(obj, fileEntity);
 
-        Long saveId = fileRepository.save(fileEntity);
-        return saveId == null ? false : true;
+        FileId fileId = fileRepository.save(fileEntity);
+        return fileId == null ? false : true;
     }
 
     private Boolean deleteFileByObject(Class cls , Long id){

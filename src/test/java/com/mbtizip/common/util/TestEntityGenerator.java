@@ -7,6 +7,7 @@ import com.mbtizip.common.enums.TestPersonEnum;
 import com.mbtizip.domain.category.Category;
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.file.File;
+import com.mbtizip.domain.file.FileId;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
@@ -80,9 +81,11 @@ public class TestEntityGenerator {
     }
 
     public static File createFile(){
-        return File.builder()
+        File file = new File();
+        file.setFileId(FileId.builder()
                 .uuid(FILE_UUID.getText())
                 .name(FILE_NAME.getText())
-                .build();
+                .build());
+        return file;
     }
 }

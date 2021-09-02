@@ -3,6 +3,7 @@ package com.mbtizip.repository;
 import com.mbtizip.common.enums.TestFileEnum;
 import com.mbtizip.common.util.TestEntityGenerator;
 import com.mbtizip.domain.file.File;
+import com.mbtizip.domain.file.FileId;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.exception.NoEntityFoundException;
@@ -38,13 +39,31 @@ public class FileRepositoryTest {
     TestPersonRepository testPersonRepository;
     TestJobRepository testJobRepository;
 
+    FileId fileId;
+
     @BeforeEach
     public void setup(){
 
         this.testPersonRepository = new TestPersonRepository(em);
         this.testJobRepository = new TestJobRepository(em);
+        fileId = fileId.builder().uuid(FILE_UUID.getText())
+                                    .name(FILE_NAME.getText())
+                .build();
     }
-    
+
+    @Test
+    public void 파일_등록(){
+
+        //when
+        File file = new File();
+        file.setFileId(fileId);
+        fileRepository.save(file);
+
+        //then
+        File found = fileRepository.find(fileId);
+        assertEquals(found.getFileId(), fileId);
+    }
+
     //파일 person으로 조회
     @Test
     public void 파일_PERSON_조회(){
@@ -125,7 +144,7 @@ public class FileRepositoryTest {
     }
 
     private void assertFile(File findFile){
-        assertEquals(FILE_NAME.getText(), findFile.getName());
-        assertEquals(FILE_UUID.getText(), findFile.getUuid());
+        assertEquals(FILE_NAME.getText(), findFile.getFileId().getName());
+        assertEquals(FILE_UUID.getText(), findFile.getFileId().getUuid());
     }
 }

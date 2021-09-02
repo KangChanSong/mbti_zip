@@ -36,7 +36,7 @@ public class StoreServiceImpl implements StoreService{
     @Override
     public byte[] loadFromLocal(File file) {
         try {
-            Path loaded = rootLocation.resolve(file.getUuid() + "_" + file.getName());
+            Path loaded = rootLocation.resolve(file.getFileId().getUuid() + "_" + file.getFileId().getName());
 
             Resource resource = new UrlResource(loaded.toUri());
 
@@ -52,8 +52,8 @@ public class StoreServiceImpl implements StoreService{
     }
     @Override
     public boolean deleteFromLocal(File file) {
-        String name = file.getName();
-        String uuid = file.getUuid();
+        String name = file.getFileId().getName();
+        String uuid = file.getFileId().getUuid();
         return this.rootLocation
                 .resolve(uuid+"_"+name)
                 .toFile()

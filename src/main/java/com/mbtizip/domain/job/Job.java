@@ -52,18 +52,12 @@ public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private File file;
-
     @Builder
     public Job(String title, String writer, String password){
         this.title = title;
         this.writer = writer;
         this.password =password;
     }
-
-
     //==연관관계 메서드==//
     @Override
     public void changeMbti(Mbti mbti) {
@@ -71,11 +65,6 @@ public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
         if(mbti != null) mbti.getJobs().add(this);
 
     }
-
-    public void setFile(File file){
-        this.file = file;
-    }
-
     //== 편의 메서드 ==//
     @Override
     public void modifyLikes(Boolean isIncrease) {

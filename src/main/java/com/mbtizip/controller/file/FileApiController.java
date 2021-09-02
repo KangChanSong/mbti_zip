@@ -2,7 +2,11 @@ package com.mbtizip.controller.file;
 
 import com.mbtizip.controller.common.common.InteractionControllerHelper;
 import com.mbtizip.domain.common.wrapper.BooleanResponseDto;
+import com.mbtizip.repository.file.FileRepository;
 import com.mbtizip.service.file.FileService;
+import com.mbtizip.service.file.store.StoreService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +20,20 @@ import static com.mbtizip.controller.common.common.InteractionControllerHelper.h
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("file")
-
 public class FileApiController {
 
     private final FileService fileService;
+
+    @PostMapping("/api/v1/upload")
+    public FileResponseDto upload(MultipartFile file){
+        return new FileResponseDto(fileService.upload(file));
+    }
 
     @PostMapping("/api/v1/upload/{target}/{targetId}")
     public BooleanResponseDto upload(@PathVariable("targetId") Long targetId,
                                      @PathVariable("target") String target,
                                      MultipartFile file){
+
         return new BooleanResponseDto(
                 handleTarget(target,
                 () -> fileService.saveFileWithPerson(targetId, file),
@@ -33,7 +42,7 @@ public class FileApiController {
 
     @GetMapping(
             value = "/api/v1/get/{target}/{targetId}",
-            produces = {"image/jpeg" , "image/png", "image/gif"})
+            produces = {"image/*"})
     public byte[] get(@PathVariable("target") String target ,
                       @PathVariable("targetId") Long targetId) throws IOException {
 
@@ -50,5 +59,11 @@ public class FileApiController {
                 handleTarget(target,
                         () -> fileService.deleteFileByPerson(targetId),
                         () -> fileService.deleteFileByJob(targetId)));
+    }
+
+    @AllArgsConstructor
+    @Data
+    private static class FileResponseDto{
+        private String fullName;
     }
 }

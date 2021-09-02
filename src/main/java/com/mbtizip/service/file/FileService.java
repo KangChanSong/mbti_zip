@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.InputStream;
 
 public interface FileService {
+    String upload(MultipartFile file);
     Boolean saveFileWithPerson(Long personId, MultipartFile file);
     Boolean saveFileWithJob(Long jobId, MultipartFile file);
     byte[] loadFileByPerson(Long personId);
