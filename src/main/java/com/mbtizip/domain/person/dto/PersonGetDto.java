@@ -32,7 +32,7 @@ public class PersonGetDto {
     private String category;
     private String mbti;
 
-    public static PersonGetDto toDto(Person person, List<Category> categories){
+    public static PersonGetDto toDto(Person person, Category category){
 
         return PersonGetDto.builder()
                 .id(person.getId())
@@ -47,7 +47,7 @@ public class PersonGetDto {
                 .updateDate(person.getUpdateDate())
 
                 .mbti(validateAndReturnMbti(person))
-                .category(getCategoryFromList(categories))
+                .category(category.getName())
                 .build();
     }
 
@@ -57,23 +57,6 @@ public class PersonGetDto {
         } else {
             return person.getMbti().getName().getText().toUpperCase(Locale.ROOT);
         }
-    }
-
-    private static String getCategoryFromList(List<Category> categories){
-        if(categories == null || categories.isEmpty()){
-            return "";
-        } else {
-            return categories.get(0).getName();
-        }
-    }
-
-    private static List<String> extractCategoryNames(List<Category> categories){
-
-        List<String> names = new ArrayList<>();
-        if(categories != null && categories.size() != 0) {
-            categories.forEach(category -> names.add(category.getName()));
-        }
-        return names;
     }
 
 }

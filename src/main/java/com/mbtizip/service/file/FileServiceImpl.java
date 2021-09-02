@@ -89,30 +89,29 @@ public class FileServiceImpl implements FileService{
     }
     @Transactional
     @Override
-    public Boolean deleteFileByPerson(Long personId) {
-        return deleteFileByObject(Person.class, personId);
+    public Boolean deleteFileByPerson(Person person) {
+        return deleteFileByObject(person);
     }
 
     @Transactional
     @Override
-    public Boolean deleteFileByJob(Long jobId) {
-        return deleteFileByObject(Job.class, jobId);
+    public Boolean deleteFileByJob(Job job) {
+        return deleteFileByObject(job);
     }
 
     //== private 메서드 ==//
 
-    private Boolean deleteFileByObject(Class cls , Long id){
-        Object found = checkAndReturn(cls, id);
+    private Boolean deleteFileByObject(Object obj){
         Optional<File> optFile;
-        if(found instanceof Person) optFile = Optional.of(fileRepository.findByPerson((Person) found));
-        else optFile = Optional.of(fileRepository.findByJob((Job) found));
+        if(obj instanceof Person) optFile = Optional.of(fileRepository.findByPerson((Person) obj));
+        else optFile = Optional.of(fileRepository.findByJob((Job) obj));
 
-        File file = optFile.orElseThrow(() -> {throw new IllegalArgumentException(NO_ENTITY_FOUND + " id : " + id);});
+        File file = optFile.orElseThrow(() -> {throw new IllegalArgumentException(NO_ENTITY_FOUND);});
         boolean isDeleted = storeService.deleteFromLocal(file);
 
         if(isDeleted) {
-            if(found instanceof Person) fileRepository.deleteByPerson((Person) found);
-            else fileRepository.deleteByJob((Job) found);
+            if(obj instanceof Person) fileRepository.deleteByPerson((Person) obj);
+            else fileRepository.deleteByJob((Job) obj);
             return true;
         }
         else return false;
@@ -122,12 +121,6 @@ public class FileServiceImpl implements FileService{
         Object found = checkByClass(cls, id);
         if(found == null) throw new NoEntityFoundException(NO_ENTITY_FOUND + " class : " + cls.getName() + ", id : " + id);
         return (T) found;
-    }
-
-    private void checkAndJoin( Object obj, File file){
-        if(obj instanceof Person) file.setPerson((Person) obj);
-        else if (obj instanceof Job) file.setJob((Job) obj);
-        else throw new IllegalArgumentException(INVALID_INSTANCE + " 클래스 : " + obj.getClass().getSimpleName());
     }
 
     private <T extends CommonEntity> T checkByClass(Class cls, Long id){

@@ -18,17 +18,9 @@ public class PersonListDto {
 
     private List<PersonGetDto> personGetDtos;
 
-    public static PersonListDto toDtoList(Map<Person, List<Category>> map){
+    public static PersonListDto toDtoList(List<PersonGetDto> dtoList){
         return PersonListDto.builder()
-                .personGetDtos(convertPersonList(map))
+                .personGetDtos(dtoList)
                 .build();
-    }
-
-    private static List<PersonGetDto> convertPersonList(Map map){
-        Set<Person> personSet = map.keySet();
-
-        return personSet.stream().map(
-                person -> PersonGetDto.toDto(person, (List<Category>) map.get(person)))
-                                .collect(Collectors.toList());
     }
 }

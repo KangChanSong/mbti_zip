@@ -6,6 +6,7 @@ import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.mbti.QMbti;
 import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.person.dto.PersonGetDto;
 import com.mbtizip.domain.personCategory.PersonCategory;
 import com.mbtizip.repository.category.CategoryRepository;
 import com.mbtizip.repository.file.FileRepository;
@@ -67,7 +68,7 @@ public class PersonServiceImpl implements PersonService{
     }
 
     @Override
-    public Map<Person, List<Category>> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword) {
+    public List<PersonGetDto> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword) {
 
         List<Person> findPersons;
         if(keyword == null){
@@ -75,17 +76,17 @@ public class PersonServiceImpl implements PersonService{
         } else {
             findPersons = personRepository.findAll(page, sort, keyword);
         }
-        return  createPersonMapWithCategories(findPersons);
+        return  createPersonListWithCategories(findPersons);
     }
 
 
 
     @Override
-    public Map<Person, List<Category>> findAllWithMbti(Page page, OrderSpecifier sort, Long mbtiId) {
+    public List<PersonGetDto> findAllWithMbti(Page page, OrderSpecifier sort, Long mbtiId) {
         MbtiEnum mbti = mbtiRepository.find(mbtiId).getName();
         BooleanExpression keyword = QMbti.mbti.name.eq(mbti);
         List<Person> findPersons = personRepository.findAll(page, sort, keyword);
-        return createPersonMapWithCategories(findPersons);
+        return createPersonListWithCategories(findPersons);
     }
 
 
@@ -103,7 +104,7 @@ public class PersonServiceImpl implements PersonService{
     }
 
     private void delete(Person person){
-        fileService.deleteFileByPerson(person.getId());
+        fileService.deleteFileByPerson(person);
         mbtiCountService.deleteAllByPerson(person);
         personRepository.remove(person);
     }
@@ -176,24 +177,19 @@ public class PersonServiceImpl implements PersonService{
         return findPerson;
     }
 
-    private Map<Person, List<Category>> createPersonMapWithCategories(List<Person> findPersons) {
-        Map<Person, List<Category>> map = new HashMap<>();
+    private List<PersonGetDto> createPersonListWithCategories(List<Person> findPersons) {
+
+        List<PersonGetDto> dtoList = new ArrayList<>();
 
         findPersons.forEach(person -> {
-            if(person.getPersonCategories() == null
-                    || person.getPersonCategories().size()==0){
-                map.put(person, null);
+            if(person.getPersonCategories() != null && person.getPersonCategories().size() > 0){
+                Category category = person.getPersonCategories().get(0).getCategory();
+                dtoList.add(PersonGetDto.toDto(person, category));
             } else {
-                person.getPersonCategories().forEach(
-                        personCategory -> {
-                            List<Category> categories = new ArrayList<>();
-                            categories.add(personCategory.getCategory());
-                            map.put(person, categories);
-                        }
-                );
+                dtoList.add(PersonGetDto.toDto(person, Category.builder().name("no category").build()));
             }
         });
-        return map;
+        return dtoList;
     }
 
     private void checkIfNull(Mbti mbti, Person person){

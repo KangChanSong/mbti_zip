@@ -44,8 +44,8 @@ public class PersonApiController {
     @GetMapping("/api/v1/get/{personId}")
     public PersonGetDto get(@PathVariable("personId") Long personId){
         Person persons = personService.getById(personId);
-        List<Category> categories = categoryService.findAllByPerson(persons);
-        return PersonGetDto.toDto(persons, categories);
+        Category category = categoryService.findAllByPerson(persons).get(0);
+        return PersonGetDto.toDto(persons, category);
     }
 
     // MBTI 에 해당하는 인물 목록 조회
@@ -54,9 +54,8 @@ public class PersonApiController {
 
         Page page = psf.toPage();
         OrderSpecifier sort = psf.toPersonSort();
-
-        Map<Person, List<Category>> map = personService.findAllWithMbti(page, sort, mbtiId);
-        return PersonListDto.toDtoList(map);
+        return PersonListDto.toDtoList(
+                personService.findAllWithMbti(page, sort, mbtiId));
     }
 
     //인물 목록 조회
@@ -80,9 +79,7 @@ public class PersonApiController {
         OrderSpecifier sortObj = psf.toPersonSort();
         BooleanExpression keywordObj  = psf.toPersonKeyword();
 
-        Map<Person, List<Category>> findMap = personService.findAll(pageObj, sortObj, keywordObj);
-
-        return PersonListDto.toDtoList(findMap);
+        return PersonListDto.toDtoList(personService.findAll(pageObj, sortObj, keywordObj));
     }
 
     //인물 삭제

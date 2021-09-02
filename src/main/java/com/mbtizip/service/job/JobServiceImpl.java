@@ -86,9 +86,7 @@ public class JobServiceImpl implements JobService{
         Job findJob = jobRepository.find(jobId);
         if(findJob == null) throw new IllegalArgumentException("직업을 찾을 수 없습니다. id : " + jobId);
         if(isMatch(password, findJob.getPassword())) {
-            fileService.deleteFileByJob(findJob.getId());
-            mbtiCountService.deleteAllByJob(findJob);
-            jobRepository.remove(findJob);
+            delete(findJob);
             return true;
         }
         else{
@@ -97,7 +95,9 @@ public class JobServiceImpl implements JobService{
     }
 
     private void delete(Job job){
-
+        fileService.deleteFileByJob(job);
+        mbtiCountService.deleteAllByJob(job);
+        jobRepository.remove(job);
     }
 
     @Transactional

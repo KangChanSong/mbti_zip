@@ -45,16 +45,6 @@ public class FileApiController {
                 () -> fileService.loadFileByJob(targetId));
     }
 
-    @DeleteMapping("/api/v1/delete/{target}/{targetId}")
-    public BooleanResponseDto delete(@PathVariable("target") String target,
-                                     @PathVariable("targetId") Long targetId){
-
-        return new BooleanResponseDto(
-                handleTarget(target,
-                        () -> fileService.deleteFileByPerson(targetId),
-                        () -> fileService.deleteFileByJob(targetId)));
-    }
-
     @AllArgsConstructor
     @Data
     private static class FileResponseDto{
