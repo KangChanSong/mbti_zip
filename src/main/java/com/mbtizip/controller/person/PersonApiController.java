@@ -11,6 +11,7 @@ import com.mbtizip.domain.person.Person;
 import com.mbtizip.domain.person.dto.PersonGetDto;
 import com.mbtizip.domain.person.dto.PersonListDto;
 import com.mbtizip.domain.person.dto.PersonRegisterDto;
+import com.mbtizip.service.file.FileService;
 import com.mbtizip.service.personCategory.PersonCategoryService;
 import com.mbtizip.service.person.PersonService;
 import com.querydsl.core.types.OrderSpecifier;
@@ -28,11 +29,14 @@ public class PersonApiController {
 
     private final PersonService personService;
     private final PersonCategoryService categoryService;
+    private final FileService fileService;
+
     //인물 카테고리와 함께 등록
     @PostMapping("/api/v1/register")
     public BooleanResponseDto register(@RequestBody PersonRegisterDto dto){
         Person person = dto.toEntity();
         Boolean isSuccess = personService.registerWithCategory(person, dto.getCategoryId());
+        fileService.saveFileWithPerson(person.getId(), dto.getFilename());
         return new BooleanResponseDto(isSuccess);
     }
 
@@ -84,7 +88,6 @@ public class PersonApiController {
     //인물 삭제
     @DeleteMapping("/api/v1/delete/{personId}")
     public BooleanResponseDto delete(@PathVariable("personId") Long id, @RequestBody PasswordDto dto){
-
         Boolean isSuccess = personService.delete(id, dto.getPassword());
         return new BooleanResponseDto(isSuccess);
     }

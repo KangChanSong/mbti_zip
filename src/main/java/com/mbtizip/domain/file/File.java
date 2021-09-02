@@ -18,9 +18,11 @@ import static java.util.UUID.randomUUID;
 public class File {
     @EmbeddedId
     private FileId fileId;
+
     @OneToOne
     @JoinColumn(name = "person_id")
     private Person person;
+
     @OneToOne
     @JoinColumn(name = "job_id")
     private Job job;

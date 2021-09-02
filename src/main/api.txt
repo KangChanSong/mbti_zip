@@ -39,9 +39,9 @@ LIKE
     POST /like/api/v1/{target}/{targetId}
     GET /like/api/v1/get/{target}/{targetId}
 FILE
-    POST /file/api/v1/upload/{target}/{targetId}
-        request body : MultipartFile
+    POST /file/api/v1/upload
     GET  /file/api/v1/get/{target}/{targetId}
+    DELETE /file/api/v1/delete/{filename}
     DELETE /file/api/v1/delete/{target}/{targetId}
 
 COMMENT

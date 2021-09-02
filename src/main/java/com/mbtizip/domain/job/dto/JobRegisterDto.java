@@ -11,6 +11,7 @@ public class JobRegisterDto {
     private String title;
     private String writer;
     private String password;
+    private String filename;
 
     public Job toEntity(){
         return Job.builder()

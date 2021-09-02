@@ -8,9 +8,11 @@ import com.mbtizip.domain.mbti.QMbti;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.domain.personCategory.PersonCategory;
 import com.mbtizip.repository.category.CategoryRepository;
+import com.mbtizip.repository.file.FileRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
 import com.mbtizip.repository.person.PersonRepository;
 import com.mbtizip.repository.personCategory.PersonCategoryRepository;
+import com.mbtizip.service.file.FileService;
 import com.mbtizip.service.mbtiCount.MbtiCountService;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -37,6 +39,8 @@ public class PersonServiceImpl implements PersonService{
     private final CategoryRepository categoryRepository;
     private final MbtiRepository mbtiRepository;
     private final MbtiCountService mbtiCountService;
+    private final FileService fileService;
+
 
     @Transactional
     @Override
@@ -88,15 +92,20 @@ public class PersonServiceImpl implements PersonService{
     @Transactional
     @Override
     public Boolean delete(Long id, String password) {
+
         Person findPerson = checkAndReturnPerson(id);
-        log.info(password);
-        log.info(findPerson.getPassword());
-        if(isMatch(password, findPerson.getPassword())){
-            personRepository.remove(findPerson);
+        if(isMatch(password, findPerson.getPassword())) {
+            delete(findPerson);
             return true;
         } else {
             return false;
         }
+    }
+
+    private void delete(Person person){
+        fileService.deleteFileByPerson(person.getId());
+        mbtiCountService.deleteAllByPerson(person);
+        personRepository.remove(person);
     }
 
     @Transactional

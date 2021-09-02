@@ -3,12 +3,14 @@ package com.mbtizip.service.file;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.InputStream;
 
 public interface FileService {
     String upload(MultipartFile file);
-    Boolean saveFileWithPerson(Long personId, MultipartFile file);
-    Boolean saveFileWithJob(Long jobId, MultipartFile file);
+    void saveFileWithPerson(Long personId, String filename);
+    void saveFileWithJob(Long jobId, String filename);
+
     byte[] loadFileByPerson(Long personId);
     byte[] loadFileByJob(Long jobId);
 

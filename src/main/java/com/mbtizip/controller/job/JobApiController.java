@@ -10,6 +10,7 @@ import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.job.dto.JobGetDto;
 import com.mbtizip.domain.job.dto.JobListDto;
 import com.mbtizip.domain.job.dto.JobRegisterDto;
+import com.mbtizip.service.file.FileService;
 import com.mbtizip.service.job.JobService;
 import com.mbtizip.service.mbtiCount.MbtiCountService;
 import com.querydsl.core.types.OrderSpecifier;
@@ -25,13 +26,15 @@ import java.util.List;
 public class JobApiController {
 
     private final JobService jobService;
+    private final FileService fileService;
     
     //직업 등록
     @PostMapping("/api/v1/register")
     public BooleanResponseDto register(@RequestBody JobRegisterDto dto){
 
-        Boolean isSuccess = jobService.register(dto.toEntity());
-
+        Job job= dto.toEntity();
+        Boolean isSuccess = jobService.register(job);
+        fileService.saveFileWithJob(job.getId(), dto.getFilename());
         return new BooleanResponseDto(isSuccess);
     }
 
@@ -81,7 +84,6 @@ public class JobApiController {
     }
     @DeleteMapping("/api/v1/delete/{jobId}")
     public BooleanResponseDto delete(@PathVariable("jobId") Long jobId, @RequestBody PasswordDto dto){
-
         Boolean isSuccess = jobService.delete(jobId, dto.getPassword());
         return new BooleanResponseDto(isSuccess);
     }

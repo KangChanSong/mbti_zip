@@ -34,18 +34,6 @@ public class FileApiController {
         fileService.delete(filename);
     }
 
-
-    @PostMapping("/api/v1/upload/{target}/{targetId}")
-    public BooleanResponseDto upload(@PathVariable("targetId") Long targetId,
-                                     @PathVariable("target") String target,
-                                     MultipartFile file){
-
-        return new BooleanResponseDto(
-                handleTarget(target,
-                () -> fileService.saveFileWithPerson(targetId, file),
-                () -> fileService.saveFileWithJob(targetId, file)));
-    }
-
     @GetMapping(
             value = "/api/v1/get/{target}/{targetId}",
             produces = {"image/*"})

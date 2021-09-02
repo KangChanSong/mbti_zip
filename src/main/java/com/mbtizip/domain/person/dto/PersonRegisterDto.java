@@ -18,6 +18,7 @@ public class PersonRegisterDto {
     private String description;
     private String password;
     private Long categoryId;
+    private String filename;
 
     public Person toEntity(){
         return Person.builder()

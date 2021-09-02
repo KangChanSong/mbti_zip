@@ -5,8 +5,10 @@ import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.job.QJob;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
+import com.mbtizip.repository.file.FileRepository;
 import com.mbtizip.repository.job.JobRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
+import com.mbtizip.service.file.FileService;
 import com.mbtizip.service.mbtiCount.MbtiCountService;
 import com.mbtizip.util.EncryptHelper;
 import com.querydsl.core.types.OrderSpecifier;
@@ -29,6 +31,7 @@ public class JobServiceImpl implements JobService{
     private final JobRepository jobRepository;
     private final MbtiRepository mbtiRepository;
     private final MbtiCountService mbtiCountService;
+    private final FileService fileService;
 
     @Transactional
     @Override
@@ -82,13 +85,19 @@ public class JobServiceImpl implements JobService{
     public Boolean delete(Long jobId, String password) {
         Job findJob = jobRepository.find(jobId);
         if(findJob == null) throw new IllegalArgumentException("직업을 찾을 수 없습니다. id : " + jobId);
-
         if(isMatch(password, findJob.getPassword())) {
+            fileService.deleteFileByJob(findJob.getId());
+            mbtiCountService.deleteAllByJob(findJob);
             jobRepository.remove(findJob);
             return true;
-        } else {
+        }
+        else{
             return false;
         }
+    }
+
+    private void delete(Job job){
+
     }
 
     @Transactional
