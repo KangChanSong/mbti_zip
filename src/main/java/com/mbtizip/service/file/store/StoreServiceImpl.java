@@ -34,9 +34,9 @@ public class StoreServiceImpl implements StoreService{
         }
     }
     @Override
-    public byte[] loadFromLocal(File file) {
+    public byte[] loadFromLocal(String fullname) {
         try {
-            Path loaded = rootLocation.resolve(file.getFileId().getUuid() + "_" + file.getFileId().getName());
+            Path loaded = rootLocation.resolve(fullname);
 
             Resource resource = new UrlResource(loaded.toUri());
 

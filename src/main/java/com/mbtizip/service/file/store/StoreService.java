@@ -5,6 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface StoreService {
     void storeInLocal(MultipartFile file, String uuid);
-    byte[] loadFromLocal(File file);
+    byte[] loadFromLocal(String filename);
     boolean deleteFromLocal(File file);
 }

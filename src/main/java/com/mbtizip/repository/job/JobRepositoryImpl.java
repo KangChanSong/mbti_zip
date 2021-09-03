@@ -1,6 +1,7 @@
 package com.mbtizip.repository.job;
 
 import com.mbtizip.domain.common.pageSortFilter.Page;
+import com.mbtizip.domain.file.QFile;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.job.QJob;
 import com.mbtizip.domain.mbti.Mbti;
@@ -35,9 +36,12 @@ public class JobRepositoryImpl implements JobRepository{
 
     @Override
     public Job find(Long id){
-        Job job = em.find(Job.class, id);
-        if(job == null) throw new NoEntityFoundException("Job 을 찾을 수 없습니다. id = " +  id);
-        return job;
+        QJob job = QJob.job;
+        return queryFactory.selectFrom(QJob.job)
+                .leftJoin(job.file, QFile.file)
+                .fetchJoin()
+                .where(job.id.eq(id))
+                .fetchOne();
     }
 
     @Override
@@ -71,7 +75,10 @@ public class JobRepositoryImpl implements JobRepository{
         QJob job = QJob.job;
         QMbti mbti = QMbti.mbti;
         return queryFactory.selectFrom(job)
-                .leftJoin(job.mbti, mbti);
+                .leftJoin(job.mbti, mbti)
+                .fetchJoin()
+                .leftJoin(job.file, QFile.file)
+                .fetchJoin();
     }
 
     @Override

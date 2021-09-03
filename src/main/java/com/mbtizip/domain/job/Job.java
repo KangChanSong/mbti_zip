@@ -16,6 +16,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.LAZY;
+
 @NoArgsConstructor
 @Getter
 @Entity
@@ -45,12 +48,15 @@ public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
     @UpdateTimestamp
     private LocalDateTime updateDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "mbti_id")
     private Mbti mbti;
 
-    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "job", cascade = ALL)
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToOne(mappedBy = "job", fetch = LAZY)
+    private File file;
 
     @Builder
     public Job(String title, String writer, String password){

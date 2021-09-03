@@ -37,4 +37,9 @@ public class File {
                 .uuid(randomUUID().toString())
                 .name(multipartFile.getOriginalFilename()).build();
     }
+
+    //== 편의 메서드 ==//
+    public String getFileName(){
+        return this.fileId.getUuid() + "_" + this.fileId.getName();
+    }
 }

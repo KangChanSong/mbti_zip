@@ -1,6 +1,8 @@
 package com.mbtizip.domain.person.dto;
 
 import com.mbtizip.domain.category.Category;
+import com.mbtizip.domain.common.FileNameProvider;
+import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.domain.personCategory.PersonCategory;
@@ -10,6 +12,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import static com.mbtizip.domain.common.FileNameProvider.getFileName;
 
 @Builder
 @Getter
@@ -32,6 +36,8 @@ public class PersonGetDto {
     private String category;
     private String mbti;
 
+    private String filename;
+
     public static PersonGetDto toDto(Person person, Category category){
 
         return PersonGetDto.builder()
@@ -48,6 +54,8 @@ public class PersonGetDto {
 
                 .mbti(validateAndReturnMbti(person))
                 .category(category.getName())
+
+                .filename(getFileName(person.getFile()))
                 .build();
     }
 

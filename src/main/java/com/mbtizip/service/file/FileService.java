@@ -12,10 +12,6 @@ public interface FileService {
     String upload(MultipartFile file);
     void saveFileWithPerson(Long personId, String filename);
     void saveFileWithJob(Long jobId, String filename);
-
-    byte[] loadFileByPerson(Long personId);
-    byte[] loadFileByJob(Long jobId);
-
     void delete(String filename);
     Boolean deleteFileByPerson(Person person);
     Boolean deleteFileByJob(Job job);

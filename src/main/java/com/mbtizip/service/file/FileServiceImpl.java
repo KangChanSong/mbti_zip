@@ -69,16 +69,6 @@ public class FileServiceImpl implements FileService{
         File file = fileRepository.find(new FileId(filename));
         file.setJob(findJob);
     }
-    @Override
-    public byte[] loadFileByPerson(Long personId) {
-        Person findPerson = checkAndReturn(Person.class, personId);
-        return storeService.loadFromLocal(fileRepository.findByPerson(findPerson));
-    }
-    @Override
-    public byte[] loadFileByJob(Long jobId) {
-        Job findJob = checkAndReturn(Job.class, jobId);
-        return storeService.loadFromLocal(fileRepository.findByJob(findJob));
-    }
 
     @Transactional
     @Override

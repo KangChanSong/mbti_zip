@@ -40,7 +40,7 @@ LIKE
     GET /like/api/v1/get/{target}/{targetId}
 FILE
     POST /file/api/v1/upload
-    GET  /file/api/v1/get/{target}/{targetId}
+    GET  /file/api/v1/get/{filename}
     DELETE /file/api/v1/delete/{filename}
 
 COMMENT

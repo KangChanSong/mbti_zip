@@ -1,6 +1,7 @@
 package com.mbtizip.repository.person;
 
 import com.mbtizip.domain.common.pageSortFilter.Page;
+import com.mbtizip.domain.file.QFile;
 import com.mbtizip.domain.mbti.QMbti;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.domain.person.QPerson;
@@ -38,9 +39,12 @@ public class PersonRepositoryImpl implements PersonRepository{
 
     @Override
     public Person find(Long id) {
-        Person person = em.find(Person.class, id);
-        if(person == null) throw new NoEntityFoundException("Person 을 찾을 수 없습니다. id = " + id);
-        return person;
+        QPerson person = QPerson.person;
+        return queryFactory.selectFrom(person)
+                .leftJoin(person.file, QFile.file)
+                .fetchJoin()
+                .where(person.id.eq(id))
+                .fetchOne();
     }
 
     @Override
@@ -81,7 +85,10 @@ public class PersonRepositoryImpl implements PersonRepository{
     private JPAQuery<Person> joinQuery(){
         return queryFactory.selectFrom(qPerson)
                 .leftJoin(qPerson.mbti, qMbti)
+                .fetchJoin()
                 .leftJoin(qPerson.personCategories, qPersonCategory)
+                .fetchJoin()
+                .leftJoin(qPerson.file, QFile.file)
                 .fetchJoin();
     }
 

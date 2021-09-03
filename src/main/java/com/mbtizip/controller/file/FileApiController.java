@@ -23,6 +23,7 @@ import static com.mbtizip.controller.common.common.InteractionControllerHelper.h
 public class FileApiController {
 
     private final FileService fileService;
+    private final StoreService storeService;
 
     @PostMapping("/api/v1/upload")
     public FileResponseDto upload(MultipartFile file){
@@ -35,14 +36,11 @@ public class FileApiController {
     }
 
     @GetMapping(
-            value = "/api/v1/get/{target}/{targetId}",
+            value = "/api/v1/get/{filename}",
             produces = {"image/*"})
-    public byte[] get(@PathVariable("target") String target ,
-                      @PathVariable("targetId") Long targetId) throws IOException {
+    public byte[] get(@PathVariable("filename") String filename) throws IOException {
 
-        return handleTarget(target,
-                () -> fileService.loadFileByPerson(targetId),
-                () -> fileService.loadFileByJob(targetId));
+        return storeService.loadFromLocal(filename);
     }
 
     @AllArgsConstructor

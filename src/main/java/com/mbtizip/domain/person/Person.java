@@ -18,6 +18,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.LAZY;
+
 @Slf4j
 @NoArgsConstructor
 @Getter
@@ -54,15 +57,18 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
     @UpdateTimestamp
     private LocalDateTime updateDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "mbti_id")
     private Mbti mbti;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "person", cascade = ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "person", cascade = ALL)
     private List<PersonCategory> personCategories = new ArrayList<>();
+
+    @OneToOne(mappedBy = "person", fetch = LAZY)
+    private File file;
 
     @Builder
     public Person(String name, String description, String writer,String password,  Gender gender){
@@ -101,5 +107,6 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
         log.info("조회수 올리는 메서드");
         this.views++;
     }
+
 }
 
