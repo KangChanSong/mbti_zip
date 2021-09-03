@@ -56,7 +56,8 @@ public class VoteApiController {
     @GetMapping("/api/v1/list/{target}/{targetId}")
     public VoteResponseDto getList(@PathVariable("target") String target,
                                     @PathVariable("targetId") Long targetId){
-
+        
+        log.info("투표수 집계 조회");
         boolean isExists = interactionService.checkIfExists(new Interaction(target, targetId, V.name()));
         log.info(Boolean.toString(isExists));
         MbtiCountListDto listDto = MbtiCountListDto.toDto(

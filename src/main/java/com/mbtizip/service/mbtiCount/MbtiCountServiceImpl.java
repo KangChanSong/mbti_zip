@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 public class MbtiCountServiceImpl implements MbtiCountService{
 
     private final MbtiCountRepository mbtiCountRepository;
-    private final MbtiRepository mbtiRepository;
 
     @Transactional
     @Override

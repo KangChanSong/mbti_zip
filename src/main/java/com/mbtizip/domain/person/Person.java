@@ -9,6 +9,7 @@ import com.mbtizip.domain.comment.Comment;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @NoArgsConstructor
 @Getter
 @Entity
@@ -96,6 +98,7 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
 
     @Override
     public void increaseViews() {
+        log.info("조회수 올리는 메서드");
         this.views++;
     }
 }

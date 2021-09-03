@@ -11,6 +11,7 @@ import com.mbtizip.service.job.JobService;
 import com.mbtizip.service.person.PersonService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -22,6 +23,7 @@ import static com.mbtizip.controller.common.TargetProperties.*;
 import static com.mbtizip.controller.common.common.InteractionControllerHelper.*;
 import static com.mbtizip.controller.common.common.InteractionDType.L;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/like")
@@ -55,6 +57,9 @@ public class LikeApiController {
     @GetMapping("/api/v1/get/{target}/{targetId}")
     public LikeResponseDto get(@PathVariable("target") String target,
                             @PathVariable("targetId") Long targetId){
+
+        log.info("좋아요 수 조회");
+
         int likes = handleTarget(target,
                 () -> personService.getById(targetId).getLikes(),
                 () -> jobService.get(targetId).getLikes());

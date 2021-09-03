@@ -57,13 +57,10 @@ public class PersonServiceImpl implements PersonService{
         return saveId == null ? false : true;
     }
 
-
-    @Transactional
     @Override
     public Person getById(Long saveId) {
         Person findPerson = personRepository.findWithMbti(saveId);
         if(findPerson == null) throw new IllegalArgumentException("Person 을 찾을 수 없습니다. id : " + saveId);
-        findPerson.increaseViews();
         return findPerson;
     }
 
@@ -146,6 +143,7 @@ public class PersonServiceImpl implements PersonService{
         return true;
     }
 
+    @Transactional
     @Override
     public Boolean increaseView(Long personId) {
         checkAndReturnPerson(personId).increaseViews();
@@ -156,6 +154,7 @@ public class PersonServiceImpl implements PersonService{
     public Long getTotalCount() {
         return personRepository.countAll();
     }
+
 
     //== private method ==//
     private void savePersonCategories(Person person, Long categoryId){

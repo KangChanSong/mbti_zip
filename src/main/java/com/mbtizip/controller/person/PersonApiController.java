@@ -17,12 +17,13 @@ import com.mbtizip.service.person.PersonService;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.mbtizip.service.person.PersonService.NO_CATEGORY;
 
-
+@Slf4j
 @RestController
 @RequestMapping("/person")
 @RequiredArgsConstructor
@@ -45,9 +46,13 @@ public class PersonApiController {
     //인물 조회 (MBTI, 카테고리 포함)
     @GetMapping("/api/v1/get/{personId}")
     public PersonGetDto get(@PathVariable("personId") Long personId){
+        log.info("Person 조회");
         Person person = personService.getById(personId);
+        personService.increaseView(person.getId());
+
         List<Category> cs = categoryService.findAllByPerson(person);
         if(cs != null && !cs.isEmpty()) return PersonGetDto.toDto(person,cs.get(0));
+
         else return PersonGetDto.toDto(person, Category.builder().name(NO_CATEGORY).build());
     }
 
