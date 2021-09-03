@@ -51,9 +51,7 @@ public class JobServiceImpl implements JobService{
     @Transactional
     @Override
     public Job get(Long id) {
-
         Job findJob = checkAndReturn(id);
-        findJob.increaseViews();
         return findJob;
     }
 
@@ -135,6 +133,13 @@ public class JobServiceImpl implements JobService{
     @Override
     public Long getTotalCount() {
         return jobRepository.countAll();
+    }
+
+    @Transactional
+    @Override
+    public void increaseView(Long jobId) {
+        Job job = jobRepository.find(jobId);
+        job.increaseViews();
     }
 
     private Job checkAndReturn(Long jobId){

@@ -18,4 +18,5 @@ public interface JobService {
     Boolean like(Long jobId);
     Boolean cancelLike(Long jobId);
     Long getTotalCount();
+    void increaseView(Long jobId);
 }

@@ -43,6 +43,7 @@ public class JobApiController {
     public JobGetDto get(@PathVariable("jobId") Long id){
 
         Job job = jobService.get(id);
+        jobService.increaseView(job.getId());
         return JobGetDto.toDto(job);
     }
 
