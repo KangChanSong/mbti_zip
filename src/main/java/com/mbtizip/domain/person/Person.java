@@ -108,5 +108,8 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
         this.views++;
     }
 
+    public void setFile(File file) {
+        this.file = file;
+    }
 }
 

@@ -6,6 +6,7 @@ import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.domain.personCategory.PersonCategory;
+import com.mbtizip.service.person.PersonService;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.mbtizip.domain.common.FileNameProvider.getFileName;
+import static com.mbtizip.service.person.PersonService.NO_CATEGORY;
 
 @Builder
 @Getter
@@ -38,7 +40,7 @@ public class PersonGetDto {
 
     private String filename;
 
-    public static PersonGetDto toDto(Person person, Category category){
+    public static PersonGetDto toDto(Person person){
 
         return PersonGetDto.builder()
                 .id(person.getId())
@@ -53,10 +55,17 @@ public class PersonGetDto {
                 .updateDate(person.getUpdateDate())
 
                 .mbti(validateAndReturnMbti(person))
-                .category(category.getName())
+                .category(getCategoryName(person.getPersonCategories()))
 
                 .filename(getFileName(person.getFile()))
                 .build();
+    }
+
+    private static String getCategoryName(List<PersonCategory> personCategories) {
+        if(personCategories != null && !personCategories.isEmpty()) {
+            return personCategories.get(0).getCategory().getName();
+        }
+        return NO_CATEGORY;
     }
 
     private static String validateAndReturnMbti(Person person){

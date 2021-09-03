@@ -105,11 +105,8 @@ public class PersonRepositoryImpl implements PersonRepository{
 
     @Override
     public Person findWithMbti(Long saveId) {
-        return (Person) em.createQuery("select p from Person p" +
-                " left join fetch p.mbti m" +
-                " where p.id =: id")
-                .setParameter("id", saveId)
-                .getResultList().get(0);
+        QPerson person = QPerson.person;
+        return joinQuery().where(person.id.eq(saveId)).fetchOne();
     }
 
     @Override

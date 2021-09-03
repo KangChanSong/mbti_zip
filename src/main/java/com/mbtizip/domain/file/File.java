@@ -11,21 +11,40 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.*;
 
 import static java.util.UUID.randomUUID;
+import static javax.persistence.FetchType.LAZY;
 
 @NoArgsConstructor
-@Getter @Setter
+@Getter
 @Entity
 public class File {
     @EmbeddedId
     private FileId fileId;
 
-    @OneToOne
+    @OneToOne(fetch = LAZY)
     @JoinColumn(name = "person_id")
     private Person person;
 
-    @OneToOne
+    @OneToOne(fetch = LAZY)
     @JoinColumn(name = "job_id")
     private Job job;
+
+
+    //== 연관관계 메서드 ==//
+
+    public void setPerson(Person person) {
+        this.person = person;
+        person.setFile(this);
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
+        job.setFile(this);
+    }
+
+    //== 편의 메서드 ==//
+    public String getFileName(){
+        return this.fileId.getUuid() + "_" + this.fileId.getName();
+    }
 
     // == 편의 생성자 메서드 ==//
     public File(FileId fileId){
@@ -36,10 +55,5 @@ public class File {
         this.fileId = FileId.builder()
                 .uuid(randomUUID().toString())
                 .name(multipartFile.getOriginalFilename()).build();
-    }
-
-    //== 편의 메서드 ==//
-    public String getFileName(){
-        return this.fileId.getUuid() + "_" + this.fileId.getName();
     }
 }

@@ -19,9 +19,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-
-import static com.mbtizip.service.person.PersonService.NO_CATEGORY;
 
 @Slf4j
 @RestController
@@ -49,11 +46,7 @@ public class PersonApiController {
         log.info("Person 조회");
         Person person = personService.getById(personId);
         personService.increaseView(person.getId());
-
-        List<Category> cs = categoryService.findAllByPerson(person);
-        if(cs != null && !cs.isEmpty()) return PersonGetDto.toDto(person,cs.get(0));
-
-        else return PersonGetDto.toDto(person, Category.builder().name(NO_CATEGORY).build());
+        return PersonGetDto.toDto(person);
     }
 
     // MBTI 에 해당하는 인물 목록 조회

@@ -37,11 +37,7 @@ public class JobRepositoryImpl implements JobRepository{
     @Override
     public Job find(Long id){
         QJob job = QJob.job;
-        return queryFactory.selectFrom(QJob.job)
-                .leftJoin(job.file, QFile.file)
-                .fetchJoin()
-                .where(job.id.eq(id))
-                .fetchOne();
+        return joinQuery().where(job.id.eq(id)).fetchOne();
     }
 
     @Override
