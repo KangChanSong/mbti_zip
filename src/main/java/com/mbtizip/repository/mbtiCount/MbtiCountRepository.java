@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface MbtiCountRepository {
     // Job, Person 의 모든 mbti 득표수를 계산하기 위해 불러옴
-    List<MbtiCount> findAllByJob(Long jobId);
-    List<MbtiCount> findAllByPerson(Long personId);
+    List<Object[]> findAllByPerson(Long personId);
+    List<Object[]> findAllByJob(Long jobId);
 
     // 최댓값 불러오는 메서드
     List<MbtiCount> findMaxByJob(Job job);

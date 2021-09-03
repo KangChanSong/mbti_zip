@@ -186,7 +186,7 @@ public class PersonServiceImpl implements PersonService{
                 Category category = person.getPersonCategories().get(0).getCategory();
                 dtoList.add(PersonGetDto.toDto(person, category));
             } else {
-                dtoList.add(PersonGetDto.toDto(person, Category.builder().name("no category").build()));
+                dtoList.add(PersonGetDto.toDto(person, Category.builder().name(NO_CATEGORY).build()));
             }
         });
         return dtoList;

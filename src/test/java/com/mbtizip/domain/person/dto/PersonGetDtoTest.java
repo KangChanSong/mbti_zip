@@ -38,7 +38,7 @@ class PersonGetDtoTest {
         names.add(CATEGORY_NAME_3.getText());
 
         //when
-        PersonGetDto dto = PersonGetDto.toDto(person, categories);
+        PersonGetDto dto = PersonGetDto.toDto(person, categories.get(0));
 
         //then
         assertEquals(dto.getCategory(), names);
@@ -51,17 +51,15 @@ class PersonGetDtoTest {
     public void Dto_List_생성_테스트(){
 
         //given
-        Map<Person, List<Category>> map = new HashMap<>();
 
         List<Category> categories = new ArrayList<>();
         categories.add(createCategory(CATEGORY_NAME_1));
         categories.add(createCategory(CATEGORY_NAME_2));
         categories.add(createCategory(CATEGORY_NAME_3));
 
-        map.put(createPerson(), categories);
 
         //when
-        PersonListDto listDto = PersonListDto.toDtoList(map);
+        PersonListDto listDto = PersonListDto.toDtoList(null);
 
         //then
         PersonGetDto dto = listDto.getPersonGetDtos().get(0);

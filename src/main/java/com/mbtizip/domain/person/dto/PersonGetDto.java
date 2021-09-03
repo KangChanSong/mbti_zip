@@ -53,7 +53,7 @@ public class PersonGetDto {
 
     private static String validateAndReturnMbti(Person person){
         if(person.getMbti() == null){
-            return "MBTI 미정";
+            return "없음";
         } else {
             return person.getMbti().getName().getText().toUpperCase(Locale.ROOT);
         }

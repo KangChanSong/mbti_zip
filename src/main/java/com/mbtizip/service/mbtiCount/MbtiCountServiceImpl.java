@@ -4,6 +4,7 @@ import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
+import com.mbtizip.domain.mbtiCount.dto.MbtiCountGetDto;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.repository.mbti.MbtiRepository;
 import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -90,16 +92,21 @@ public class MbtiCountServiceImpl implements MbtiCountService{
 
     private List<MbtiCount> getVotesByObject(Long targetId, String target){
 
-        List<MbtiCount> resultList;
+        List<Object[]> result;
 
         if(target.equals("job")) {
-            resultList = mbtiCountRepository.findAllByJob(targetId);
+            result = mbtiCountRepository.findAllByJob(targetId);
         } else if (target.equals("person")){
-            resultList = mbtiCountRepository.findAllByPerson(targetId);
+            result = mbtiCountRepository.findAllByPerson(targetId);
         } else {
             throw new IllegalArgumentException("target 이 적합하지 않습니다. target : " + target);
         }
-        return resultList;
+        return result.stream().map(res -> {
+                    MbtiCount mbtiCount = (MbtiCount) res[0];
+                    Mbti mbti = (Mbti) res[1];
+                    mbtiCount.setMbti(mbti);
+                    return mbtiCount;
+                    }).collect(Collectors.toList());
     }
 
     // 투표, 표 취소에 공유되는 공통 메서드

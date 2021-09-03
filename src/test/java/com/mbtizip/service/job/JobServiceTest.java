@@ -26,7 +26,6 @@ class JobServiceTest {
 
     @BeforeEach
     public void setUp(){
-        jobService = new JobServiceImpl(jobRepository, mbtiRepository, mbtiCountService);
     }
 
     @DisplayName("직업 등록 테스트")

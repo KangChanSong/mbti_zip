@@ -10,6 +10,9 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import java.util.List;
 
 public interface PersonService {
+
+    public static final String NO_CATEGORY = "없음";
+
     Boolean registerWithCategory(Person person, Long categoryId);
     Person getById(Long saveId);
     List<PersonGetDto> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword);

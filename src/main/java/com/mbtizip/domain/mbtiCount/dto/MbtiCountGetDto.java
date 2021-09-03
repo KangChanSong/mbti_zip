@@ -1,10 +1,13 @@
 package com.mbtizip.domain.mbtiCount.dto;
 
+import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Locale;
 
+@Slf4j
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

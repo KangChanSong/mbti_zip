@@ -49,10 +49,6 @@ public class PersonServiceTest {
 
     @BeforeEach
     public void setup(){
-        this.personService = new PersonServiceImpl(mockPersonRepository,
-                                                mockPersonCategoryRepository,
-                                                    mockCategoryRepository,
-                                                    mbtiRepository, mbtiCountService);
     }
 
     @DisplayName("인물을 카테고리와 함께 등록 시 카테고리가 영속성 컨텍스트에 없으면 예외 처리")

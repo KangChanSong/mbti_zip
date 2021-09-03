@@ -1,12 +1,12 @@
 package com.mbtizip.repository.mbtiCount;
 
+import com.mbtizip.domain.common.CommonEntity;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.exception.TooManyEntityException;
-import com.mbtizip.repository.common.CommonRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -23,13 +23,22 @@ public class MbtiCountRepositoryImpl implements MbtiCountRepository {
     private final MbtiRepository mbtiRepository;
 
     @Override
-    public List<MbtiCount> findAllByJob(Long jobId) {
-        return (List<MbtiCount>) CommonRepository.findAllByObject(em, MbtiCount.class, Job.class, jobId);
+    public List<Object[]> findAllByJob(Long jobId) {
+        return findAllByObject(Job.class, jobId);
     }
 
     @Override
-    public List<MbtiCount> findAllByPerson(Long personId) {
-        return (List<MbtiCount>) CommonRepository.findAllByObject(em, MbtiCount.class, Person.class,  personId);
+    public List<Object[]> findAllByPerson(Long personId) {
+        return findAllByObject(Person.class, personId);
+    }
+
+    private<T extends CommonEntity> List<Object[]> findAllByObject(Class<T> cls , Long id){
+        String name = cls.getSimpleName().toLowerCase(Locale.ROOT);
+        return  (List<Object[]>) em.createQuery("select mc, m from MbtiCount mc" +
+                        " left join fetch Mbti m on mc.mbti.id = m.id" +
+                        " where mc." + name + ".id = :id")
+                .setParameter("id", id)
+                .getResultList();
     }
 
     @Override

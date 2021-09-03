@@ -22,7 +22,7 @@ public class MbtiCount {
     @Column(columnDefinition = "integer default 0")
     private int count;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mbti_id")
     private Mbti mbti;
 
@@ -42,6 +42,10 @@ public class MbtiCount {
         this.mbti = mbti;
         this.person = person;
         this.job = job;
+    }
+
+    public void setMbti(Mbti mbti) {
+        this.mbti = mbti;
     }
 
     //== 카운트 관련 메서드 ==//

@@ -18,9 +18,10 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Map;
+
+import static com.mbtizip.service.person.PersonService.NO_CATEGORY;
+
 
 @RestController
 @RequestMapping("/person")
@@ -30,6 +31,7 @@ public class PersonApiController {
     private final PersonService personService;
     private final PersonCategoryService categoryService;
     private final FileService fileService;
+
 
     //인물 카테고리와 함께 등록
     @PostMapping("/api/v1/register")
@@ -43,9 +45,10 @@ public class PersonApiController {
     //인물 조회 (MBTI, 카테고리 포함)
     @GetMapping("/api/v1/get/{personId}")
     public PersonGetDto get(@PathVariable("personId") Long personId){
-        Person persons = personService.getById(personId);
-        Category category = categoryService.findAllByPerson(persons).get(0);
-        return PersonGetDto.toDto(persons, category);
+        Person person = personService.getById(personId);
+        List<Category> cs = categoryService.findAllByPerson(person);
+        if(cs != null && !cs.isEmpty()) return PersonGetDto.toDto(person,cs.get(0));
+        else return PersonGetDto.toDto(person, Category.builder().name(NO_CATEGORY).build());
     }
 
     // MBTI 에 해당하는 인물 목록 조회
