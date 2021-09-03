@@ -46,7 +46,8 @@ public class PersonRepositoryImpl implements PersonRepository{
     @Override
     public List<Person> findAll() {
         return em.createQuery("select p from Person p " +
-                        "join fetch p.mbti")
+                        "left join fetch p.mbti" +
+                        " left join fetch p.personCategories")
                 .getResultList();
     }
 
@@ -79,7 +80,9 @@ public class PersonRepositoryImpl implements PersonRepository{
 
     private JPAQuery<Person> joinQuery(){
         return queryFactory.selectFrom(qPerson)
-                .leftJoin(qPerson.mbti, qMbti);
+                .leftJoin(qPerson.mbti, qMbti)
+                .leftJoin(qPerson.personCategories, qPersonCategory)
+                .fetchJoin();
     }
 
 
