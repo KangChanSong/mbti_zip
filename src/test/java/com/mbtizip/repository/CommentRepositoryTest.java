@@ -1,5 +1,6 @@
 package com.mbtizip.repository;
 
+import com.mbtizip.common.enums.TestCommentEnum;
 import com.mbtizip.domain.comment.QComment;
 import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.job.Job;
@@ -10,6 +11,7 @@ import com.mbtizip.repository.comment.CommentRepository;
 import com.mbtizip.repository.test.TestJobRepository;
 import com.mbtizip.repository.test.TestMbtiRepository;
 import com.mbtizip.repository.test.TestPersonRepository;
+import com.mbtizip.repository.test.TestRepository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +24,7 @@ import javax.persistence.EntityManager;
 
 import java.util.List;
 
+import static com.mbtizip.common.enums.TestCommentEnum.COMMENT_CONTENT;
 import static com.mbtizip.common.util.TestEntityGenerator.createComment;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,26 +38,19 @@ public class CommentRepositoryTest {
     @Autowired
     EntityManager em;
 
-    private static final String COMMENT_CONTENT = "댓글내용";
-
-    TestJobRepository testJobRepository;
-    TestPersonRepository testPersonRepository;
-    TestMbtiRepository testMbtiRepository;
+    private TestRepository testRepository;
 
     @BeforeEach
     public void setUp(){
-
-        testPersonRepository = new TestPersonRepository(em);
-        testJobRepository = new TestJobRepository(em);
-        testMbtiRepository = new TestMbtiRepository(em);
+        testRepository = new TestRepository(em);
     }
 
     @Test
     public void 직업_댓글_등록과_조회(){
         
         //given
-        Job job = testJobRepository.createJob();
-        Mbti mbti = testMbtiRepository.findAll().get(0);
+        Job job = testRepository.getJobRepository().createJob();
+        Mbti mbti = testRepository.getMbtiRepository().findAll().get(0);
         Comment comment = createComment();
 
         //when
@@ -74,8 +70,8 @@ public class CommentRepositoryTest {
     @Test
     public void 직업_댓글_목록_조회(){
         //given
-        Mbti mbti = testMbtiRepository.findAll().get(0);
-        Job job = testJobRepository.createJob();
+        Mbti mbti = testRepository.getMbtiRepository().findAll().get(0);
+        Job job = testRepository.getJobRepository().createJob();
         int count = 10;
 
         Page page = Page.builder().pageNum(1).amount(10).build();
@@ -102,8 +98,8 @@ public class CommentRepositoryTest {
     public void 인물_댓글_목록_조회(){
 
         //given
-        Person person = testPersonRepository.createPerson();
-        Mbti mbti = testMbtiRepository.findAll().get(0);
+        Person person = testRepository.getPersonRepository().createPerson();
+        Mbti mbti = testRepository.getMbtiRepository().findAll().get(0);
         int count = 10;
         //when
         for(int i = 0 ; i < count ; i++){
@@ -128,8 +124,8 @@ public class CommentRepositoryTest {
     public void 직업_댓글_수정(){
 
         //given
-        Job job = testJobRepository.createJob();
-        Mbti mbti = testMbtiRepository.findAll().get(0);
+        Job job = testRepository.getJobRepository().createJob();
+        Mbti mbti = testRepository.getMbtiRepository().findAll().get(0);
         Comment comment = createComment();
         commentRepository.save(comment);
         comment.setJob(job);

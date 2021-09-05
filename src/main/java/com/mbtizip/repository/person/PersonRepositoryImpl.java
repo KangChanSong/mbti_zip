@@ -40,9 +40,7 @@ public class PersonRepositoryImpl implements PersonRepository{
     @Override
     public Person find(Long id) {
         QPerson person = QPerson.person;
-        return queryFactory.selectFrom(person)
-                .leftJoin(person.file, QFile.file)
-                .fetchJoin()
+        return joinQuery()
                 .where(person.id.eq(id))
                 .fetchOne();
     }

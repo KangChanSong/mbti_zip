@@ -177,17 +177,8 @@ public class PersonServiceImpl implements PersonService{
     }
 
     private List<PersonGetDto> createPersonListWithCategories(List<Person> findPersons) {
-
         List<PersonGetDto> dtoList = new ArrayList<>();
-
-        findPersons.forEach(person -> {
-            if(person.getPersonCategories() != null && person.getPersonCategories().size() > 0){
-                Category category = person.getPersonCategories().get(0).getCategory();
-                dtoList.add(PersonGetDto.toDto(person, category));
-            } else {
-                dtoList.add(PersonGetDto.toDto(person, Category.builder().name(NO_CATEGORY).build()));
-            }
-        });
+        findPersons.forEach(person -> dtoList.add(PersonGetDto.toDto(person)));
         return dtoList;
     }
 

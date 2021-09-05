@@ -81,11 +81,9 @@ public class TestEntityGenerator {
     }
 
     public static File createFile(){
-        File file = new File();
-        file.setFileId(FileId.builder()
+        return new File(FileId.builder()
                 .uuid(FILE_UUID.getText())
                 .name(FILE_NAME.getText())
                 .build());
-        return file;
     }
 }

@@ -1,6 +1,7 @@
 package com.mbtizip.repository;
 
 import com.mbtizip.domain.common.pageSortFilter.Page;
+import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.job.QJob;
 import com.mbtizip.domain.mbti.Mbti;
@@ -9,8 +10,10 @@ import com.mbtizip.domain.mbti.QMbti;
 import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.job.JobRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
+import com.mbtizip.repository.test.TestFileRepository;
 import com.mbtizip.repository.test.TestJobRepository;
 import com.mbtizip.repository.test.TestMbtiRepository;
+import com.mbtizip.repository.test.TestRepository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,16 +38,13 @@ class JobRepositoryTest {
     @Autowired
     private MbtiRepository mbtiRepository;
 
-    private TestMbtiRepository testMbtiRepository;
-    private TestJobRepository testJobRepository;
-
     @Autowired
     private EntityManager em;
 
+    private TestRepository testRepository;
     @BeforeEach
     public void setUp(){
-        this.testMbtiRepository = new TestMbtiRepository(em);
-        this.testJobRepository = new TestJobRepository(em);
+        this.testRepository = new TestRepository(em);
     }
     
     @Test 
@@ -107,7 +107,7 @@ class JobRepositoryTest {
         //given
         Page page = Page.builder().pageNum(0).amount(10).build();
         OrderSpecifier sort = QJob.job.id.desc();
-        MbtiEnum filter = testMbtiRepository.findAll().get(0).getName();
+        MbtiEnum filter = testRepository.getMbtiRepository().findAll().get(0).getName();
         BooleanExpression keyword = QMbti.mbti.name.eq(filter);
 
         insertMultipleJobs();
@@ -119,9 +119,9 @@ class JobRepositoryTest {
     }
 
     private void insertMultipleJobs(){
-        testMbtiRepository.findAll().forEach(
+        testRepository.getMbtiRepository().findAll().forEach(
                         mbti -> {
-                            testJobRepository.createJobWithMbti(mbti);}
+                            testRepository.getJobRepository().createJobWithMbti(mbti);}
         );
     }
 
@@ -129,7 +129,7 @@ class JobRepositoryTest {
     public void 좋아요_증감(){
 
         //given
-        Job job = testJobRepository.createJob();
+        Job job = testRepository.getJobRepository().createJob();
         //when
         jobRepository.modifyLikes(job, true);
 
@@ -149,9 +149,9 @@ class JobRepositoryTest {
     public void MBTI_변경(){
 
         //given
-        Mbti mbti = testMbtiRepository.findAll().get(0);
-        Mbti modifiedMbti = testMbtiRepository.findAll().get(0);
-        Job job = testJobRepository.createJobWithMbti(mbti);
+        Mbti mbti = testRepository.getMbtiRepository().findAll().get(0);
+        Mbti modifiedMbti = testRepository.getMbtiRepository().findAll().get(0);
+        Job job = testRepository.getJobRepository().createJobWithMbti(mbti);
 
         //when
         jobRepository.changeMbti(job, modifiedMbti);
@@ -161,4 +161,17 @@ class JobRepositoryTest {
         assertSame(modifiedJob.getMbti(), modifiedMbti);
     }
 
+    @Test
+    public void 직업_파일_FETCH_JOIN(){
+
+        //given
+        File file = testRepository.getFileRepostiroy().saveAndGetFile();
+        Job job = testRepository.getJobRepository().createJob();
+        //when
+        job.setFile(file);
+
+        //then
+        Job found = jobRepository.find(job.getId());
+        assertEquals(file ,found.getFile());
+    }
 }

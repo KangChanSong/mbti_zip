@@ -11,6 +11,7 @@ import com.mbtizip.repository.file.FileRepository;
 import com.mbtizip.repository.person.PersonRepository;
 import com.mbtizip.repository.test.TestJobRepository;
 import com.mbtizip.repository.test.TestPersonRepository;
+import com.mbtizip.repository.test.TestRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,17 +36,12 @@ public class FileRepositoryTest {
 
     @Autowired
     EntityManager em;
-
-    TestPersonRepository testPersonRepository;
-    TestJobRepository testJobRepository;
-
+    private TestRepository testRepository;
     FileId fileId;
 
     @BeforeEach
     public void setup(){
-
-        this.testPersonRepository = new TestPersonRepository(em);
-        this.testJobRepository = new TestJobRepository(em);
+        this.testRepository = new TestRepository(em);
         fileId = fileId.builder().uuid(FILE_UUID.getText())
                                     .name(FILE_NAME.getText())
                 .build();
@@ -55,8 +51,7 @@ public class FileRepositoryTest {
     public void 파일_등록(){
 
         //when
-        File file = new File();
-        file.setFileId(fileId);
+        File file = new File(fileId);
         fileRepository.save(file);
 
         //then
@@ -70,7 +65,7 @@ public class FileRepositoryTest {
 
         //given
         File file = createFile();
-        Person person = testPersonRepository.createPerson();
+        Person person = testRepository.getPersonRepository().createPerson();
         file.setPerson(person);
 
         //when
@@ -86,7 +81,7 @@ public class FileRepositoryTest {
     public void 파일_JOB_조회(){
         //given
         File file = createFile();
-        Job job = testJobRepository.createJob();
+        Job job = testRepository.getJobRepository().createJob();
         file.setJob(job);
 
         //when
@@ -105,7 +100,7 @@ public class FileRepositoryTest {
 
         //given
         File file = createFile();
-        Person person = testPersonRepository.createPerson();
+        Person person = testRepository.getPersonRepository().createPerson();
         file.setPerson(person);
 
         //when
@@ -121,7 +116,7 @@ public class FileRepositoryTest {
 
         //given
         File file = createFile();
-        Job job = testJobRepository.createJob();
+        Job job = testRepository.getJobRepository().createJob();
         file.setJob(job);
 
         //when

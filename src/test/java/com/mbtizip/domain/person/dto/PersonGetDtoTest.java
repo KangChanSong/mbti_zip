@@ -5,6 +5,7 @@ import com.mbtizip.common.enums.TestCategoryEnum;
 import com.mbtizip.common.enums.TestPersonEnum;
 import com.mbtizip.common.util.TestEntityGenerator;
 import com.mbtizip.domain.category.Category;
+import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.person.Gender;
 import com.mbtizip.domain.person.Person;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,7 @@ import java.util.Map;
 
 import static com.mbtizip.common.enums.TestCategoryEnum.*;
 import static com.mbtizip.common.enums.TestPersonEnum.PERSON_NAME;
-import static com.mbtizip.common.util.TestEntityGenerator.createCategory;
-import static com.mbtizip.common.util.TestEntityGenerator.createPerson;
+import static com.mbtizip.common.util.TestEntityGenerator.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersonGetDtoTest {
@@ -38,7 +38,7 @@ class PersonGetDtoTest {
         names.add(CATEGORY_NAME_3.getText());
 
         //when
-        PersonGetDto dto = PersonGetDto.toDto(person, categories.get(0));
+        PersonGetDto dto = PersonGetDto.toDto(person);
 
         //then
         assertEquals(dto.getCategory(), names);
@@ -67,5 +67,18 @@ class PersonGetDtoTest {
         assertEquals(listDto.getPersonGetDtos().size() , 1);
         assertEquals(dto.getName(), PERSON_NAME.getText());
         assertTrue(dto.getCategory().contains(categories.get(0).getName()));
+    }
+
+    @Test
+    public void 파일_이름_변환(){
+
+        //given
+        File file = createFile();
+        Person person = createPerson();
+        //when
+        person.setFile(file);
+        //then
+        PersonGetDto dto = PersonGetDto.toDto(person);
+        assertEquals(file.getFileName(), dto.getFilename());
     }
 }

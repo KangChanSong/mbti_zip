@@ -53,7 +53,7 @@ public class MbtiCountServiceTest {
     // 테스트 대역을 써보려고 했다가 실패함
     @BeforeEach
     public void setUp(){
-        mbtiCountService = new MbtiCountServiceImpl( mockMbtiCountRepository,mockMbtiRepository);
+
     }
 
 

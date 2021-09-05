@@ -12,7 +12,6 @@ import com.mbtizip.domain.person.dto.PersonGetDto;
 import com.mbtizip.domain.person.dto.PersonListDto;
 import com.mbtizip.domain.person.dto.PersonRegisterDto;
 import com.mbtizip.service.file.FileService;
-import com.mbtizip.service.personCategory.PersonCategoryService;
 import com.mbtizip.service.person.PersonService;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 public class PersonApiController {
 
     private final PersonService personService;
-    private final PersonCategoryService categoryService;
     private final FileService fileService;
 
 

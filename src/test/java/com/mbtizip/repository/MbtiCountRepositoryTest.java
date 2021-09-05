@@ -1,6 +1,5 @@
 package com.mbtizip.repository;
 
-import com.mbtizip.domain.category.Category;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
@@ -57,10 +56,9 @@ class MbtiCountRepositoryTest {
         //when
         Long saveid = childMbtiCountRepository.save(mbtiCount);
         //then
-        List<MbtiCount> mbtiCounts = childMbtiCountRepository.findAllByJob(job.getId());
+        List<Object[]> mbtiCounts = childMbtiCountRepository.findAllByJob(job.getId());
 
         assertEquals(mbtiCounts.size() , 1);
-        assertEquals(mbtiCounts.get(0).getJob().getTitle(), JOB_TITLE);
 
     }
 
@@ -164,7 +162,7 @@ class MbtiCountRepositoryTest {
 
         //then
         MbtiCount max = childMbtiCountRepository.findMaxByJob(job).get(0);
-        List<MbtiCount> counts = childMbtiCountRepository.findAllByJob(job.getId());
+        List<Object[]> counts = childMbtiCountRepository.findAllByJob(job.getId());
 
         assertEquals(counts.size(), 1);
         assertEquals(max.getCount(), 1);
@@ -182,7 +180,7 @@ class MbtiCountRepositoryTest {
 
         //then
         MbtiCount max = childMbtiCountRepository.findMaxByPerson(person).get(0);
-        List<MbtiCount> counts = childMbtiCountRepository.findAllByPerson(person.getId());
+        List<Object[]> counts = childMbtiCountRepository.findAllByPerson(person.getId());
 
         assertEquals(counts.size(), 1);
         assertEquals(max.getCount(), 1);
@@ -242,7 +240,7 @@ class MbtiCountRepositoryTest {
                         i-> childMbtiCountRepository.modifyJobCount(mbti, job, true));
         //then
         childMbtiCountRepository.removeAllByJob(job);
-        List<MbtiCount> findJobs = childMbtiCountRepository.findAllByJob(job.getId());
+        List<Object[]> findJobs = childMbtiCountRepository.findAllByJob(job.getId());
         assertEquals(findJobs.size(), 0);
     }
 

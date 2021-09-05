@@ -1,16 +1,11 @@
 package com.mbtizip.repository;
-
-import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
-import com.mbtizip.domain.person.Person;
 import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.mbti.MbtiRepository;
-import com.mbtizip.repository.test.MbtiRowCounter;
 import com.mbtizip.repository.test.TestJobRepository;
 import com.mbtizip.repository.test.TestMbtiRepository;
 import com.mbtizip.repository.test.TestPersonRepository;
-import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,13 +14,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
-
 import java.util.List;
 
 import static com.mbtizip.repository.test.MbtiRowCounter.MBTI_ROW_NUMBER;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
