@@ -59,8 +59,9 @@ public class PersonServiceImpl implements PersonService{
 
     @Override
     public Person getById(Long saveId) {
-        Person findPerson = personRepository.findWithMbti(saveId);
-        if(findPerson == null) throw new IllegalArgumentException("Person 을 찾을 수 없습니다. id : " + saveId);
+        Person findPerson = personRepository.find(saveId);
+        findPerson.setFile(fileService.getByPerson(findPerson));
+        if (findPerson == null) throw new IllegalArgumentException("Person 을 찾을 수 없습니다. id : " + saveId);
         return findPerson;
     }
 

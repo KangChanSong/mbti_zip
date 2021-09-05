@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface PersonService {
 
-    public static final String NO_CATEGORY = "없음";
+    String NO_CATEGORY = "없음";
 
     Boolean registerWithCategory(Person person, Long categoryId);
     Person getById(Long saveId);

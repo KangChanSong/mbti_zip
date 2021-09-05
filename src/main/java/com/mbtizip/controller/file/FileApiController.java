@@ -27,11 +27,13 @@ public class FileApiController {
 
     @PostMapping("/api/v1/upload")
     public FileResponseDto upload(MultipartFile file){
+        log.info("파일 업로드");
         return new FileResponseDto(fileService.upload(file));
     }
 
     @DeleteMapping("/api/v1/delete/{filename}")
     public void delete(@PathVariable("filename") String filename){
+        log.info("파일 삭제");
         fileService.delete(filename);
     }
 
@@ -39,7 +41,7 @@ public class FileApiController {
             value = "/api/v1/get/{filename}",
             produces = {"image/*"})
     public byte[] get(@PathVariable("filename") String filename) throws IOException {
-
+        log.info("파일 불러오기");
         return storeService.loadFromLocal(filename);
     }
 

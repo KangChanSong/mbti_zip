@@ -48,6 +48,16 @@ public class FileServiceImpl implements FileService{
     private final FileRepository fileRepository;
     private final StoreService storeService;
 
+    @Override
+    public File getByPerson(Person person) {
+        return fileRepository.findByPerson(person);
+    }
+
+    @Override
+    public File getByJob(Job job) {
+        return fileRepository.findByJob(job);
+    }
+
     @Transactional
     @Override
     public String upload(MultipartFile multipartFile) {
@@ -88,6 +98,7 @@ public class FileServiceImpl implements FileService{
     public Boolean deleteFileByJob(Job job) {
         return deleteFileByObject(job);
     }
+
 
     //== private 메서드 ==//
 

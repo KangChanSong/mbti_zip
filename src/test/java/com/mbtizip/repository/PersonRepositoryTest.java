@@ -90,7 +90,7 @@ public class PersonRepositoryTest {
         Long saveId = personRepository.save(person);
 
         //then
-        Person findPerson = personRepository.findWithMbti(saveId);
+        Person findPerson = personRepository.find(saveId);
         assertEquals(findPerson.getMbti(), mbti);
     }
 
@@ -102,7 +102,7 @@ public class PersonRepositoryTest {
         //when
         Long saveId = personRepository.save(person);
         //then
-        Person findPerson = personRepository.findWithMbti(saveId);
+        Person findPerson = personRepository.find(saveId);
         assertNull(findPerson.getMbti());
     }
 

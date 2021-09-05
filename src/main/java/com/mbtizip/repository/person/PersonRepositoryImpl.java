@@ -22,14 +22,8 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class PersonRepositoryImpl implements PersonRepository{
-
     private final JPAQueryFactory queryFactory;
-
     private final EntityManager em;
-
-    private QPerson qPerson = QPerson.person;
-    private QMbti qMbti = QMbti.mbti;
-    private QPersonCategory qPersonCategory = QPersonCategory.personCategory;
 
     @Override
     public Long save(Person person) {
@@ -40,54 +34,58 @@ public class PersonRepositoryImpl implements PersonRepository{
     @Override
     public Person find(Long id) {
         QPerson person = QPerson.person;
-        return joinQuery()
+        return queryFactory.selectFrom(person)
+                .leftJoin(person.mbti, QMbti.mbti)
+                .leftJoin(person.personCategories, QPersonCategory.personCategory)
+                .leftJoin(person.file, QFile.file)
                 .where(person.id.eq(id))
                 .fetchOne();
     }
 
     @Override
     public List<Person> findAll() {
-        return em.createQuery("select p from Person p " +
-                        "left join fetch p.mbti" +
-                        " left join fetch p.personCategories")
-                .getResultList();
+        return queryFactory.selectFrom(QPerson.person).fetch();
     }
-
     @Override
     public List<Person> findAll(Page page) {
-        return joinQuery()
+        List<Long> extractedIds = queryFactory.select(QPerson.person.id).from(QPerson.person)
                 .offset(page.getOffset())
                 .limit(page.getAmount())
+                .fetch();
+
+        return joinFetch(extractedIds);
+    }
+
+    private List<Person> joinFetch(List<Long> extractedIds){
+        QPerson person = QPerson.person;
+        return queryFactory.selectFrom(person)
+                .leftJoin(person.mbti , QMbti.mbti)
+                .leftJoin(person.personCategories, QPersonCategory.personCategory)
+                .where(person.id.in(extractedIds))
                 .fetch();
     }
 
     @Override
     public List<Person> findAll(Page page, OrderSpecifier sort) {
-        return joinQuery()
+        List<Long> extractedIds = queryFactory.select(QPerson.person.id).from(QPerson.person)
                 .orderBy(sort)
                 .offset(page.getOffset())
                 .limit(page.getAmount())
                 .fetch();
+
+        return joinFetch(extractedIds);
     }
 
     @Override
     public List<Person> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword) {
-        return joinQuery()
+        List<Long> extractedIds = queryFactory.select(QPerson.person.id).from(QPerson.person)
                 .where(keyword)
                 .orderBy(sort)
                 .offset(page.getOffset())
-                .limit(page.getAmount()).fetch();
+                .limit(page.getAmount())
+                .fetch();
 
-    }
-
-    private JPAQuery<Person> joinQuery(){
-        return queryFactory.selectFrom(qPerson)
-                .leftJoin(qPerson.mbti, qMbti)
-                .fetchJoin()
-                .leftJoin(qPerson.personCategories, qPersonCategory)
-                .fetchJoin()
-                .leftJoin(qPerson.file, QFile.file)
-                .fetchJoin();
+        return joinFetch(extractedIds);
     }
 
 
@@ -99,12 +97,6 @@ public class PersonRepositoryImpl implements PersonRepository{
     @Override
     public void remove(Person person) {
         em.remove(person);
-    }
-
-    @Override
-    public Person findWithMbti(Long saveId) {
-        QPerson person = QPerson.person;
-        return joinQuery().where(person.id.eq(saveId)).fetchOne();
     }
 
     @Override
