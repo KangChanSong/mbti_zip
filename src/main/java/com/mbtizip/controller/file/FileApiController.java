@@ -40,9 +40,7 @@ public class FileApiController {
 
     @GetMapping(
             value = "/api/v1/get/{filename}",
-            produces = {MediaType.IMAGE_GIF_VALUE,
-                        MediaType.IMAGE_JPEG_VALUE,
-                        MediaType.IMAGE_PNG_VALUE})
+            produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] get(@PathVariable("filename") String filename) throws IOException {
         log.info("파일 불러오기");
         return storeService.loadFromLocal(filename);

@@ -8,8 +8,10 @@ import com.mbtizip.domain.person.QPerson;
 import com.mbtizip.domain.personCategory.QPersonCategory;
 import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.common.CommonRepository;
-import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.ListExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,8 +19,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.querydsl.QSort;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
@@ -40,8 +44,11 @@ public class PersonRepositoryImpl implements PersonRepository{
         QPerson person = QPerson.person;
         return queryFactory.selectFrom(person)
                 .leftJoin(person.mbti, QMbti.mbti)
+                .fetchJoin()
                 .leftJoin(person.personCategories, QPersonCategory.personCategory)
+                .fetchJoin()
                 .leftJoin(person.file, QFile.file)
+                .fetchJoin()
                 .where(person.id.eq(id))
                 .fetchOne();
     }
@@ -52,39 +59,43 @@ public class PersonRepositoryImpl implements PersonRepository{
     }
     @Override
     public List<Person> findAll(Page page) {
-        List<Long> extractedIds = queryFactory.select(QPerson.person.id).from(QPerson.person)
+        QPerson person = QPerson.person;
+        return queryFactory.selectFrom(person)
+                .leftJoin(person.mbti, QMbti.mbti)
+                .fetchJoin()
+                .leftJoin(person.file, QFile.file)
+                .fetchJoin()
                 .offset(page.getOffset())
-                .limit(page.getAmount())
-                .fetch();
-
-        return joinFetch(extractedIds);
+                .limit(page.getAmount()).fetch();
     }
 
 
     @Override
     public List<Person> findAll(Page page, OrderSpecifier sort) {
-        List<Long> extractedIds = queryFactory.select(QPerson.person.id).from(QPerson.person)
+        QPerson person = QPerson.person;
+        return queryFactory.selectFrom(person)
+                .leftJoin(person.mbti, QMbti.mbti)
+                .fetchJoin()
+                .leftJoin(person.file, QFile.file)
+                .fetchJoin()
                 .orderBy(sort)
                 .offset(page.getOffset())
-                .limit(page.getAmount())
-                .fetch();
-
-        return joinFetch(extractedIds);
+                .limit(page.getAmount()).fetch();
     }
 
     @Override
     public List<Person> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword) {
-        List<Long> extractedIds = queryFactory.select(QPerson.person.id).from(QPerson.person)
+        QPerson person = QPerson.person;
+        return queryFactory.selectFrom(person)
                 .where(keyword)
+                .leftJoin(person.mbti, QMbti.mbti)
+                .fetchJoin()
+                .leftJoin(person.file, QFile.file)
+                .fetchJoin()
                 .orderBy(sort)
                 .offset(page.getOffset())
-                .limit(page.getAmount())
-                .fetch();
-
-        return joinFetch(extractedIds);
+                .limit(page.getAmount()).fetch();
     }
-
-
     @Override
     public void modifyLikes(Person person, Boolean isIncrease) {
         CommonRepository.modifyLikes(em, Person.class, person.getId(), isIncrease);
@@ -101,18 +112,4 @@ public class PersonRepositoryImpl implements PersonRepository{
                 .getSingleResult();
     }
 
-
-    private List<Person> joinFetch(List<Long> extractedIds){
-
-        QPerson person = QPerson.person;
-        return queryFactory.selectFrom(person)
-                .leftJoin(person.mbti , QMbti.mbti)
-                .fetchJoin()
-                .leftJoin(person.personCategories, QPersonCategory.personCategory)
-                .fetchJoin()
-                .leftJoin(person.file, QFile.file)
-                .fetchJoin()
-                .where(person.id.in(extractedIds))
-                .fetch();
-    }
 }
