@@ -1,6 +1,5 @@
 package com.mbtizip.controller.person;
 
-import com.mbtizip.domain.category.Category;
 import com.mbtizip.domain.common.dto.CountDto;
 import com.mbtizip.domain.common.dto.PasswordDto;
 import com.mbtizip.domain.common.pageSortFilter.Page;
@@ -91,5 +90,10 @@ public class PersonApiController {
     @GetMapping("/api/v1/count/all")
     public CountDto getTotalCount(){
         return new CountDto(personService.getTotalCount());
+    }
+
+    @GetMapping("/api/v1/exists/{name}")
+    public boolean checkIfExists(@PathVariable("name") String name){
+        return personService.checkIfExists(name);
     }
 }

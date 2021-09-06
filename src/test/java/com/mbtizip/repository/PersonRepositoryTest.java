@@ -15,6 +15,7 @@ import com.mbtizip.repository.test.TestPersonRepository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -189,6 +190,7 @@ public class PersonRepositoryTest {
         Person found = personRepository.find(savePerson.getId());
         assertEquals(found.getFile(), file);
     }
+
     
     private void insertMultiplePerson(int count){
         Mbti mbti = testMbtiRepository.findAll().get(0);

@@ -156,6 +156,11 @@ public class PersonServiceImpl implements PersonService{
         return personRepository.countAll();
     }
 
+    @Override
+    public Boolean checkIfExists(String name) {
+        return personRepository.countByName(name) > 0 ? true : false;
+    }
+
 
     //== private method ==//
     private void savePersonCategories(Person person, Long categoryId){

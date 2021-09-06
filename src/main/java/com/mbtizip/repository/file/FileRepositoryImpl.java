@@ -50,6 +50,15 @@ public class FileRepositoryImpl implements FileRepository{
     public File findByJob(Job job) {
         return findByObject(Job.class, job.getId());
     }
+
+    @Override
+    public List<File> findAllNotRegistered() {
+        return em.createQuery("select f from File f " +
+                "where f.person is null and f.job is null")
+                .getResultList();
+    }
+
+
     @Override
     public void delete(File file) {
         em.remove(file);

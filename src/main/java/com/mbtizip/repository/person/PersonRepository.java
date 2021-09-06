@@ -10,12 +10,16 @@ import java.util.List;
 public interface PersonRepository {
     Long save(Person person);
     Person find(Long id);
+
     List<Person> findAll();
     List<Person> findAll(Page page);
     List<Person> findAll(Page page, OrderSpecifier sort);
     List<Person> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword);
+
     void modifyLikes(Person person, Boolean isIncrease);
     void remove(Person person);
+
     Long countAll();
+    Long countByName(String name);
 
 }

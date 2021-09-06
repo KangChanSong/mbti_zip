@@ -142,6 +142,11 @@ public class JobServiceImpl implements JobService{
         job.increaseViews();
     }
 
+    @Override
+    public Boolean checkIfExists(String title) {
+        return jobRepository.countByTitle(title) > 0 ? true : false;
+    }
+
     private Job checkAndReturn(Long jobId){
         Job findJob = jobRepository.find(jobId);
         if(findJob == null) throw new IllegalArgumentException("직업을 찾을 수 없습니다. id : " + jobId);

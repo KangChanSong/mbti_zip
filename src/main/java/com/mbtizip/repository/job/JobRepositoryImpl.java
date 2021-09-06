@@ -25,8 +25,8 @@ import java.util.List;
 public class JobRepositoryImpl implements JobRepository{
 
     private final EntityManager em;
-
     private final JPAQueryFactory queryFactory;
+    private final QJob job = QJob.job;
 
     @Override
     public Long save(Job job) {
@@ -36,7 +36,6 @@ public class JobRepositoryImpl implements JobRepository{
 
     @Override
     public Job find(Long id){
-        QJob job = QJob.job;
         return joinQuery().where(job.id.eq(id)).fetchOne();
     }
 
@@ -68,7 +67,6 @@ public class JobRepositoryImpl implements JobRepository{
     }
 
     private JPAQuery<Job> joinQuery(){
-        QJob job = QJob.job;
         QMbti mbti = QMbti.mbti;
         return queryFactory.selectFrom(job)
                 .leftJoin(job.mbti, mbti)
@@ -96,6 +94,13 @@ public class JobRepositoryImpl implements JobRepository{
     public Long countAll() {
     return (Long) em.createQuery("select count(j) from Job j")
             .getSingleResult();
+    }
+
+    @Override
+    public Long countByTitle(String title) {
+        return queryFactory.selectFrom(job)
+                .where(job.title.eq(title))
+                .fetchCount();
     }
 
 }

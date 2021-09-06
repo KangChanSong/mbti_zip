@@ -93,4 +93,9 @@ public class JobApiController {
     public CountDto getTotalCount(){
         return new CountDto(jobService.getTotalCount());
     }
+
+    @GetMapping("/api/v1/exists/{title}")
+    public boolean checkIfExists(@PathVariable("title") String title){
+        return jobService.checkIfExists(title);
+    }
 }

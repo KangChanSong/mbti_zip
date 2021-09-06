@@ -32,6 +32,7 @@ import java.util.List;
 public class PersonRepositoryImpl implements PersonRepository{
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
+    private final QPerson person = QPerson.person;
 
     @Override
     public Long save(Person person) {
@@ -41,7 +42,6 @@ public class PersonRepositoryImpl implements PersonRepository{
 
     @Override
     public Person find(Long id) {
-        QPerson person = QPerson.person;
         return queryFactory.selectFrom(person)
                 .leftJoin(person.mbti, QMbti.mbti)
                 .fetchJoin()
@@ -53,13 +53,13 @@ public class PersonRepositoryImpl implements PersonRepository{
                 .fetchOne();
     }
 
+
     @Override
     public List<Person> findAll() {
         return queryFactory.selectFrom(QPerson.person).fetch();
     }
     @Override
     public List<Person> findAll(Page page) {
-        QPerson person = QPerson.person;
         return queryFactory.selectFrom(person)
                 .leftJoin(person.mbti, QMbti.mbti)
                 .fetchJoin()
@@ -72,7 +72,6 @@ public class PersonRepositoryImpl implements PersonRepository{
 
     @Override
     public List<Person> findAll(Page page, OrderSpecifier sort) {
-        QPerson person = QPerson.person;
         return queryFactory.selectFrom(person)
                 .leftJoin(person.mbti, QMbti.mbti)
                 .fetchJoin()
@@ -85,7 +84,6 @@ public class PersonRepositoryImpl implements PersonRepository{
 
     @Override
     public List<Person> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword) {
-        QPerson person = QPerson.person;
         return queryFactory.selectFrom(person)
                 .where(keyword)
                 .leftJoin(person.mbti, QMbti.mbti)
@@ -110,6 +108,13 @@ public class PersonRepositoryImpl implements PersonRepository{
     public Long countAll() {
         return (Long)em.createQuery("select count(p) from Person p")
                 .getSingleResult();
+    }
+
+    @Override
+    public Long countByName(String name) {
+        return queryFactory.selectFrom(person)
+                .where(person.name.eq(name))
+                .fetchCount();
     }
 
 }

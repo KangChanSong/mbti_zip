@@ -16,6 +16,8 @@ JOB
     DELETE /job/api/v1/delete/{jobId}
         request body : PasswordDto
 
+    GET /job/api/v1/exists/{title}
+
 PERSON
     POST /person/api/v1/register
         request body : PersonRegisterDto
@@ -30,6 +32,8 @@ PERSON
 
     DELETE /person/api/v1/delete/{personId}
         request body : PasswordDto
+
+    GET /person/api/v1/exists/{name}
 
 VOTE
     POST /vote/api/v1/mbti/{mbtiId}/{target}/{targetId}
