@@ -10,12 +10,16 @@ import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.common.CommonRepository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.querydsl.QSort;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -56,14 +60,6 @@ public class PersonRepositoryImpl implements PersonRepository{
         return joinFetch(extractedIds);
     }
 
-    private List<Person> joinFetch(List<Long> extractedIds){
-        QPerson person = QPerson.person;
-        return queryFactory.selectFrom(person)
-                .leftJoin(person.mbti , QMbti.mbti)
-                .leftJoin(person.personCategories, QPersonCategory.personCategory)
-                .where(person.id.in(extractedIds))
-                .fetch();
-    }
 
     @Override
     public List<Person> findAll(Page page, OrderSpecifier sort) {
@@ -106,4 +102,17 @@ public class PersonRepositoryImpl implements PersonRepository{
     }
 
 
+    private List<Person> joinFetch(List<Long> extractedIds){
+
+        QPerson person = QPerson.person;
+        return queryFactory.selectFrom(person)
+                .leftJoin(person.mbti , QMbti.mbti)
+                .fetchJoin()
+                .leftJoin(person.personCategories, QPersonCategory.personCategory)
+                .fetchJoin()
+                .leftJoin(person.file, QFile.file)
+                .fetchJoin()
+                .where(person.id.in(extractedIds))
+                .fetch();
+    }
 }

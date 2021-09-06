@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,7 +40,9 @@ public class FileApiController {
 
     @GetMapping(
             value = "/api/v1/get/{filename}",
-            produces = {"image/*"})
+            produces = {MediaType.IMAGE_GIF_VALUE,
+                        MediaType.IMAGE_JPEG_VALUE,
+                        MediaType.IMAGE_PNG_VALUE})
     public byte[] get(@PathVariable("filename") String filename) throws IOException {
         log.info("파일 불러오기");
         return storeService.loadFromLocal(filename);

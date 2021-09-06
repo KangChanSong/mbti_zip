@@ -17,6 +17,7 @@ public class DummyInserter {
     private final PersonDummyRepository personDummyRepository;
     private final JobDummyRepository jobDummyRepository;
     private final MbtiCountDummyRepository mbtiCountDummyRepository;
+    private final PersonCategoryDummyRepository personCategoryDummyRepository;
 
     @PostConstruct
     public void insertDummies(){
@@ -25,9 +26,6 @@ public class DummyInserter {
         personDummyRepository.insertPersons();
         jobDummyRepository.insertJobs();
         mbtiCountDummyRepository.insertAll();
+        personCategoryDummyRepository.insertPersonCategories();;
     }
-
-
-
-
 }

@@ -1,12 +1,16 @@
 package com.mbtizip.dummies;
 
+import com.mbtizip.domain.category.Category;
 import com.mbtizip.domain.person.Gender;
 import com.mbtizip.domain.person.Person;
+import com.mbtizip.repository.category.CategoryRepository;
+import com.mbtizip.repository.personCategory.PersonCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.stream.IntStream;
 
 @Repository
@@ -14,7 +18,6 @@ import java.util.stream.IntStream;
 public class PersonDummyRepository {
 
     private final EntityManager em;
-
     @Transactional
     public void save(Person person){
         em.persist(person);
