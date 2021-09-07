@@ -87,7 +87,6 @@ public class PersonServiceImpl implements PersonService{
         return createPersonListWithCategories(findPersons);
     }
 
-
     @Transactional
     @Override
     public Boolean delete(Long id, String password) {

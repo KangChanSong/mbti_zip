@@ -12,6 +12,7 @@ import com.mbtizip.repository.person.PersonRepository;
 import com.mbtizip.service.file.store.StoreService;
 import com.mbtizip.util.ErrorMessageProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -37,11 +38,11 @@ import static com.mbtizip.util.ErrorMessageProvider.INVALID_INSTANCE;
 import static com.mbtizip.util.ErrorMessageProvider.NO_ENTITY_FOUND;
 import static java.util.UUID.randomUUID;
 
-@Service
+@Slf4j
 @Transactional(readOnly = true)
+@Service
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService{
-
 
     private final PersonRepository personRepository;
     private final JobRepository jobRepository;

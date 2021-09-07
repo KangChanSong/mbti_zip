@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class StoreServiceImpl implements StoreService{
 
-    private final Path rootLocation = Paths.get("src/main/resources/static/upload");
+    Path rootLocation = Paths.get(PATH_STATIC_UPLOAD);
 
     @Override
     public void storeInLocal(MultipartFile file, String uuid) {

@@ -10,6 +10,8 @@ import java.util.List;
 public interface FileRepository {
     FileId save(File file);
 
+    Long countByFileId(FileId fileId);
+
     File find(FileId fileId);
     File findByPerson(Person person);
     File findByJob(Job job);

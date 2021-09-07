@@ -1,6 +1,7 @@
 package com.mbtizip.other;
 
 import com.google.common.net.MediaType;
+import com.mbtizip.service.file.store.StoreService;
 import org.hibernate.bytecode.internal.bytebuddy.BytecodeProviderImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -40,5 +41,14 @@ public class FileUploadTest {
         System.out.println(location.resolve(filename));
         System.out.println(file.getAbsolutePath());
         assertTrue(isDeleted);
+    }
+
+    @Test
+    public void 디렉토리_탐색(){
+        File[] files = new File(StoreService.PATH_STATIC_UPLOAD).listFiles();
+
+        for(File file : files){
+            System.out.println(file.getName());
+        }
     }
 }

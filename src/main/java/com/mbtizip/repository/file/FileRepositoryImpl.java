@@ -3,10 +3,12 @@ package com.mbtizip.repository.file;
 import com.mbtizip.domain.common.CommonEntity;
 import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.file.FileId;
+import com.mbtizip.domain.file.QFile;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.util.ErrorMessageProvider;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -24,12 +26,23 @@ import static com.mbtizip.util.ErrorMessageProvider.NO_ENTITY_FOUND;
 public class FileRepositoryImpl implements FileRepository{
 
     private final EntityManager em;
+    private final JPAQueryFactory queryFactory;
 
     @Override
     public FileId save(File file) {
         em.persist(file);
         return file.getFileId();
     }
+
+    @Override
+    public Long countByFileId(FileId fileId) {
+        QFile file = QFile.file;
+
+        return queryFactory.selectFrom(file)
+                .where(file.fileId.eq(fileId))
+                .fetchCount();
+    }
+
     @Override
     public File find(FileId fileId) {
         try {
@@ -61,6 +74,7 @@ public class FileRepositoryImpl implements FileRepository{
 
     @Override
     public void delete(File file) {
+        log.info("파일 DB에서 삭제");
         em.remove(file);
     }
 
@@ -88,6 +102,7 @@ public class FileRepositoryImpl implements FileRepository{
     }
 
     private <T extends CommonEntity> void deleteByObject(Class<T> cls, Long id){
+        log.info("파일 DB에서 삭제");
         String name = cls.getSimpleName().toLowerCase(Locale.ROOT);
         em.createQuery("delete from File f" +
                         " where f." + name + ".id =: id")

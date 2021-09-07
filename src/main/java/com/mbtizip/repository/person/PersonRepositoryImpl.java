@@ -13,6 +13,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.ListExpression;
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.impl.AbstractJPAQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -94,6 +95,7 @@ public class PersonRepositoryImpl implements PersonRepository{
                 .offset(page.getOffset())
                 .limit(page.getAmount()).fetch();
     }
+
     @Override
     public void modifyLikes(Person person, Boolean isIncrease) {
         CommonRepository.modifyLikes(em, Person.class, person.getId(), isIncrease);

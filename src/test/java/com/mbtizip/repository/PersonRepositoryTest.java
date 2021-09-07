@@ -191,7 +191,6 @@ public class PersonRepositoryTest {
         assertEquals(found.getFile(), file);
     }
 
-    
     private void insertMultiplePerson(int count){
         Mbti mbti = testMbtiRepository.findAll().get(0);
         for(int i=0; i<count; i++){
