@@ -35,6 +35,7 @@ public class PageSortFilterDto<T extends InterfaceForPageSortFilter> extends Pag
             return person.gender.eq(Gender.valueOf(keyword));
         }
         if (filterBy.equals("category")){
+            return person.category.name.eq(keyword);
         }
         return null;
     }
