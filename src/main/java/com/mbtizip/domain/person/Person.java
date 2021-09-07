@@ -1,9 +1,9 @@
 package com.mbtizip.domain.person;
 
+import com.mbtizip.domain.category.Category;
 import com.mbtizip.domain.common.CommonEntity;
 import com.mbtizip.domain.common.pageSortFilter.InterfaceForPageSortFilter;
 import com.mbtizip.domain.file.File;
-import com.mbtizip.domain.personCategory.PersonCategory;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.comment.Comment;
 import lombok.Builder;
@@ -64,8 +64,9 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
     @OneToMany(mappedBy = "person", cascade = ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "person", cascade = ALL)
-    private List<PersonCategory> personCategories = new ArrayList<>();
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @OneToOne(mappedBy = "person", fetch = LAZY)
     private File file;
@@ -84,6 +85,11 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
     public void changeMbti(Mbti mbti) {
         this.mbti = mbti;
         if(mbti != null) mbti.getPersons().add(this);
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+        category.getPersons().add(this);
     }
 
     //== 편의 메서드 ==//

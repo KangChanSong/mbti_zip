@@ -64,7 +64,8 @@ public class PersonApiController {
                                  @RequestParam(name = "dir", required = false) String dir,
                                  @RequestParam(name = "keyword", required = false) String keyword,
                                  @RequestParam(name = "filterBy", required = false) String filterBy){
-
+        log.info("인물 목록 조회");
+        log.info("page : " + page +  " , size : " + size + ", sort : " + sort + ", dir : " + dir + ", keyword : " + keyword + ", filterBy : " + filterBy );
         PageSortFilterDto psf = new PageSortFilterDto();
         psf.setPage(page);
         psf.setSize(size);

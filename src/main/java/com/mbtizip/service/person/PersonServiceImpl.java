@@ -7,12 +7,9 @@ import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.mbti.QMbti;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.domain.person.dto.PersonGetDto;
-import com.mbtizip.domain.personCategory.PersonCategory;
 import com.mbtizip.repository.category.CategoryRepository;
-import com.mbtizip.repository.file.FileRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
 import com.mbtizip.repository.person.PersonRepository;
-import com.mbtizip.repository.personCategory.PersonCategoryRepository;
 import com.mbtizip.service.file.FileService;
 import com.mbtizip.service.mbtiCount.MbtiCountService;
 import com.querydsl.core.types.OrderSpecifier;
@@ -23,11 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static com.mbtizip.util.EncryptHelper.*;
+import static com.mbtizip.util.EncryptHelper.encrypt;
+import static com.mbtizip.util.EncryptHelper.isMatch;
 
 @Slf4j
 @Service
@@ -36,7 +32,6 @@ import static com.mbtizip.util.EncryptHelper.*;
 public class PersonServiceImpl implements PersonService{
 
     private final PersonRepository personRepository;
-    private final PersonCategoryRepository personCategoryRepository;
     private final CategoryRepository categoryRepository;
     private final MbtiRepository mbtiRepository;
     private final MbtiCountService mbtiCountService;
@@ -164,14 +159,8 @@ public class PersonServiceImpl implements PersonService{
     //== private method ==//
     private void savePersonCategories(Person person, Long categoryId){
         Category category = categoryRepository.find(categoryId);
-
         if(category == null) throw new IllegalArgumentException("카테고리를 찾을 수 없습니다. id : " + categoryId);
-
-        PersonCategory personCategory = PersonCategory.builder()
-                .person(person)
-                .category(category).build();
-
-        personCategoryRepository.save(personCategory);
+        person.setCategory(category);
     }
 
 

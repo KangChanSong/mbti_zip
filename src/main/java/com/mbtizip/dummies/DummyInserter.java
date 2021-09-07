@@ -1,6 +1,5 @@
 package com.mbtizip.dummies;
 
-import com.mbtizip.domain.mbti.MbtiEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +16,6 @@ public class DummyInserter {
     private final PersonDummyRepository personDummyRepository;
     private final JobDummyRepository jobDummyRepository;
     private final MbtiCountDummyRepository mbtiCountDummyRepository;
-    private final PersonCategoryDummyRepository personCategoryDummyRepository;
 
     @PostConstruct
     public void insertDummies(){
@@ -26,6 +24,5 @@ public class DummyInserter {
         personDummyRepository.insertPersons();
         jobDummyRepository.insertJobs();
         mbtiCountDummyRepository.insertAll();
-        personCategoryDummyRepository.insertPersonCategories();;
     }
 }

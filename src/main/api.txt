@@ -61,3 +61,6 @@ COMMENT
 
     DELETE /comment/api/v1/delete/{commentId}
         request body : PasswordDto
+
+CATEGORY
+    GET /category/api/v1/list

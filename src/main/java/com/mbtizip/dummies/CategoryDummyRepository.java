@@ -30,4 +30,9 @@ public class CategoryDummyRepository {
             save(names[i]);
         }
     }
+
+    public Category getCategory(){
+        return (Category) em.createQuery("select c from Category c")
+                .getResultList().get(0);
+    }
 }

@@ -5,34 +5,37 @@ import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.person.Gender;
 import com.mbtizip.domain.person.QPerson;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class PageSortFilterDto<T extends InterfaceForPageSortFilter> extends PageSortDto {
-
     private String filterBy;
     private String keyword;
 
     //검색
-    public BooleanExpression toPersonKeyword(){
+    public BooleanExpression toPersonKeyword() {
 
-        if(checkIfKeywordNull()) return null;
+        if (checkIfKeywordNull()) return null;
 
         QPerson person = QPerson.person;
 
-        if(filterBy.equals("mbti")) {
+        if (filterBy.equals("mbti")) {
             return person.mbti.name.eq(MbtiEnum.valueOf(keyword));
         }
-        if(filterBy.equals("name")){
+        if (filterBy.equals("name")) {
             return person.name.eq(keyword);
         }
-        if(filterBy.equals("gender")){
+        if (filterBy.equals("gender")) {
             return person.gender.eq(Gender.valueOf(keyword));
         }
-
+        if (filterBy.equals("category")){
+        }
         return null;
     }
     public BooleanExpression toJobKeyword(){

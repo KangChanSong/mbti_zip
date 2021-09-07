@@ -1,6 +1,6 @@
 package com.mbtizip.domain.category;
 
-import com.mbtizip.domain.personCategory.PersonCategory;
+import com.mbtizip.domain.person.Person;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,7 +22,7 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category")
-    private List<PersonCategory> personCategories = new ArrayList<>();
+    private List<Person> persons = new ArrayList<>();
 
     @Builder
     public Category(String name){

@@ -197,6 +197,4 @@ public class PersonRepositoryTest {
             testPersonRepository.createPersonWithMbti(mbti);
         }
     }
-
-
 }
