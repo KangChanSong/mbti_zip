@@ -29,7 +29,7 @@ public class PageSortFilterDto<T extends InterfaceForPageSortFilter> extends Pag
             return person.mbti.name.eq(MbtiEnum.valueOf(keyword));
         }
         if (filterBy.equals("name")) {
-            return person.name.eq(keyword);
+            return person.name.likeIgnoreCase("%" + keyword + "%");
         }
         if (filterBy.equals("gender")) {
             return person.gender.eq(Gender.valueOf(keyword));
@@ -49,7 +49,7 @@ public class PageSortFilterDto<T extends InterfaceForPageSortFilter> extends Pag
             return job.mbti.name.eq(MbtiEnum.valueOf(keyword));
         }
         if(filterBy.equals("title")){
-            return job.title.eq(keyword);
+            return job.title.like("%" + keyword + "%");
         }
         return null;
     }
