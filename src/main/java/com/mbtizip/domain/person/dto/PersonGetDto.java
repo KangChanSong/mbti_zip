@@ -1,5 +1,6 @@
 package com.mbtizip.domain.person.dto;
 
+import com.mbtizip.domain.common.var.Text;
 import com.mbtizip.domain.person.Person;
 import lombok.*;
 
@@ -56,7 +57,7 @@ public class PersonGetDto {
 
     private static String validateAndReturnMbti(Person person){
         if(person.getMbti() == null){
-            return "없음";
+            return Text.NO_MBTI_VOTED;
         } else {
             return person.getMbti().getName().getText().toUpperCase(Locale.ROOT);
         }

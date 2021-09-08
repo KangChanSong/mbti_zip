@@ -1,6 +1,7 @@
 package com.mbtizip.domain.job.dto;
 
 import com.mbtizip.domain.common.FileNameProvider;
+import com.mbtizip.domain.common.var.Text;
 import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.job.Job;
 import lombok.Builder;
@@ -48,7 +49,7 @@ public class JobGetDto {
     private static String vaildateAndReturnMbti(Job job) {
 
         if(job.getMbti() == null){
-            return "MBTI 미정";
+            return Text.NO_MBTI_VOTED;
         } else {
             return job.getMbti().getName().getText().toUpperCase(Locale.ROOT);
         }
