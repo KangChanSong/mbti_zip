@@ -41,6 +41,7 @@ public class PageSortDto<T extends InterfaceForPageSortFilter> {
     public OrderSpecifier toJobSort(){
         return createSort(QJob.job);
     }
+    public OrderSpecifier toCommentSort() {return createSort(QComment.comment);}
 
 
     private OrderSpecifier createSort(EntityPath qObject){

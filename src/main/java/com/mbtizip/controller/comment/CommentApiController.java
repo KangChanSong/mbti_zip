@@ -74,8 +74,8 @@ public class CommentApiController {
 
         List<Comment> findComments = null;
         Page pageObj = dto.toPage();
-        Supplier personMethod = () -> commentService.findAllByPerson(targetId, pageObj, dto.toPersonSort());
-        Supplier jobMethod = () -> commentService.findAllByJob(targetId, pageObj, dto.toJobSort());
+        Supplier personMethod = () -> commentService.findAllByPerson(targetId, pageObj, dto.toCommentSort());
+        Supplier jobMethod = () -> commentService.findAllByJob(targetId, pageObj, dto.toCommentSort());
         findComments = checkTargetAndReturn(findComments, target, personMethod, jobMethod);
 
         return CommentListDto.toDto(findComments);
