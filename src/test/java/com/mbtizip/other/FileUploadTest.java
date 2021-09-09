@@ -29,12 +29,4 @@ public class FileUploadTest {
         System.out.println(resolved.toString());
     }
 
-    @Test
-    public void 디렉토리_탐색(){
-        File[] files = new File(StoreService.PATH_STATIC_UPLOAD).listFiles();
-
-        for(File file : files){
-            System.out.println(file.getName());
-        }
-    }
 }
