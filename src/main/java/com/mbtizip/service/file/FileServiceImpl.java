@@ -10,33 +10,16 @@ import com.mbtizip.repository.file.FileRepository;
 import com.mbtizip.repository.job.JobRepository;
 import com.mbtizip.repository.person.PersonRepository;
 import com.mbtizip.service.file.store.StoreService;
-import com.mbtizip.util.ErrorMessageProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.text.html.Option;
-import java.awt.image.ColorModel;
-import java.awt.image.MultiResolutionImage;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Supplier;
 
 import static com.mbtizip.util.ErrorMessageProvider.INVALID_INSTANCE;
 import static com.mbtizip.util.ErrorMessageProvider.NO_ENTITY_FOUND;
-import static java.util.UUID.randomUUID;
 
 @Slf4j
 @Transactional(readOnly = true)
