@@ -42,7 +42,7 @@ class MbtiRepositoryTest {
         testPersonRepository = new TestPersonRepository(em);
     }
 
-    @Test
+   // @Test
     public void MBTI_등록_조회(){
         //given
         Mbti mbti = Mbti.builder()
@@ -67,7 +67,7 @@ class MbtiRepositoryTest {
         });
     }
 
-    @Test
+   // @Test
     public void UNIQUE_KEY_테스트(){
 
         //given
@@ -91,7 +91,7 @@ class MbtiRepositoryTest {
 
     }
 
-    @Test
+   // @Test
     public void 목록_조회(){
 
         //when
@@ -100,7 +100,7 @@ class MbtiRepositoryTest {
         assertEquals(mbtis.size(), MBTI_ROW_NUMBER);
     }
 
-    @Test
+    //@Test
     public void 이름으로_찾기(){
 
         //given

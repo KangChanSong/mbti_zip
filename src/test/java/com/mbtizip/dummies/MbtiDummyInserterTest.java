@@ -18,7 +18,7 @@ class MbtiDummyInserterTest {
 
     @Autowired
     EntityManager em;
-    @Test
+    //@Test
     @Transactional
     public void 더미_확인(){
 

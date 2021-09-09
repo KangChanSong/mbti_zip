@@ -24,7 +24,7 @@ public class MbtiEnumResultTest {
     @Autowired
     private JPAQueryFactory queryFactory;
 
-    @Test
+    //@Test
     public void MBTI_ENUM_결과() {
 
         QMbti mbti = QMbti.mbti;

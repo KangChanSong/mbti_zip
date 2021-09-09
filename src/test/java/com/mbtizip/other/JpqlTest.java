@@ -20,7 +20,7 @@ public class JpqlTest {
     @Autowired
     private EntityManager em;
 
-    @Test
+   // @Test
     public void SELECT_MULTIPLE_ENTITY(){
 
         //given

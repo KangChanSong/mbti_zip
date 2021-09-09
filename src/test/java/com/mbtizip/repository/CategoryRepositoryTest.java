@@ -22,7 +22,7 @@ public class CategoryRepositoryTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Test
+   // @Test
     public void 카테고리_등록(){
 
         //given

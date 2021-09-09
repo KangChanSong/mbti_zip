@@ -60,7 +60,7 @@ public class FileRepositoryTest {
     }
 
     //파일 person으로 조회
-    @Test
+   // @Test
     public void 파일_PERSON_조회(){
 
         //given
@@ -77,7 +77,7 @@ public class FileRepositoryTest {
         assertFileWithPerson(findFile, person);
     }
 
-    @Test
+   // @Test
     public void 파일_JOB_조회(){
         //given
         File file = createFile();
@@ -95,7 +95,7 @@ public class FileRepositoryTest {
     }
 
     //person 을 참조하는 file 삭제
-    @Test
+   // @Test
     public void 파일_PERSON_삭제(){
 
         //given
@@ -111,7 +111,7 @@ public class FileRepositoryTest {
         assertThrows(NoEntityFoundException.class, () -> fileRepository.findByPerson(person));
     }
 
-    @Test
+    //@Test
     public void 파일_JOB_삭제(){
 
         //given

@@ -59,7 +59,7 @@ public class QuerydslTest {
         assertNotNull(bean);
     }
 
-    @Test
+   // @Test
     public void 간단한_조회(){
 
         QMbti qMbti = QMbti.mbti;
@@ -80,7 +80,7 @@ public class QuerydslTest {
         assertEquals(findJob.getMbti(), null);
     }
 
-    @Test
+    //@Test
     public void 조인(){
 
         //given
@@ -99,7 +99,7 @@ public class QuerydslTest {
         assertEquals(results.size(), 2);
     }
 
-    @Test
+    //@Test
     public void 서브_쿼리(){
 
         //given
@@ -122,7 +122,7 @@ public class QuerydslTest {
         assertEquals(findJob.getLikes(), 3);
     }
 
-    @Test
+    //@Test
     public void 연관된_객체_프로퍼티로_검색() {
 
         //given

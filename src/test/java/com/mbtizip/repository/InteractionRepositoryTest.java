@@ -23,7 +23,7 @@ public class InteractionRepositoryTest {
     @Autowired
     private InteractionRepository interactionRepository;
 
-    @Test
+    //@Test
     public void Interaction_삽입(){
 
         //given
@@ -52,7 +52,7 @@ public class InteractionRepositoryTest {
     }
 
     @DisplayName("Job에 대해 insert 했을 때 올바르게 찾는지에 대한 테스트")
-    @Test
+   // @Test
     public void JOB_INSERT(){
 
         //given

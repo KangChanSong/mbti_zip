@@ -33,7 +33,7 @@ public class NullToTable {
     }
 
     @Transactional
-    @Test
+    //@Test
     public void MBTI_널값으로_했을때_수정되나(){
         //given
         Mbti mbti = TestEntityGenerator.createMbti(MbtiEnum.INFP);

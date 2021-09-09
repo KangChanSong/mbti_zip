@@ -47,7 +47,7 @@ class JobRepositoryTest {
         this.testRepository = new TestRepository(em);
     }
     
-    @Test 
+    //@Test
     public void 직업_등록(){
         //given
         String title = "개발자";
@@ -65,7 +65,7 @@ class JobRepositoryTest {
     }
 
 
-    @Test
+    //@Test
     public void 직업_페이징(){
 
         //given
@@ -78,7 +78,7 @@ class JobRepositoryTest {
         assertEquals(findJobs.size(), 10);
     }
 
-    @Test
+    //@Test
     public void 직업_정렬(){
 
         //given
@@ -93,7 +93,7 @@ class JobRepositoryTest {
         findJobs.forEach(job -> assertTrue(firstOne.getId() >= job.getId()));
     }
 
-    @Test
+    //@Test
     public void 직업_검색(){
 
         //given
@@ -117,7 +117,7 @@ class JobRepositoryTest {
         );
     }
 
-    @Test
+    //@Test
     public void 좋아요_증감(){
 
         //given
@@ -137,7 +137,7 @@ class JobRepositoryTest {
     }
 
 
-    @Test
+   // @Test
     public void MBTI_변경(){
 
         //given
@@ -153,7 +153,7 @@ class JobRepositoryTest {
         assertSame(modifiedJob.getMbti(), modifiedMbti);
     }
 
-    @Test
+   // @Test
     public void 직업_파일_FETCH_JOIN(){
 
         //given
