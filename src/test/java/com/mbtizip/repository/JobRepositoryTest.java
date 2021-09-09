@@ -64,14 +64,6 @@ class JobRepositoryTest {
         assertEquals(findJob.getTitle(), title);
     }
 
-    @Test
-    public void 조회_실패_예외(){
-        //then
-
-        assertThrows(NoEntityFoundException.class, () -> {
-           jobRepository.find(123L);
-        });
-    }
 
     @Test
     public void 직업_페이징(){

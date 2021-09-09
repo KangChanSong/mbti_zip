@@ -27,7 +27,6 @@ public class InteractionRepositoryTest {
     public void Interaction_삽입(){
 
         //given
-        String sessionId = "asdlskdj12312312";
         Long personId = 1L;
         String dType = "L";
 
@@ -39,7 +38,6 @@ public class InteractionRepositoryTest {
         //then
         Interaction finded = interactionRepository.findOneByObject(interaction);
 
-        assertEquals(finded.getSessionId() , sessionId );
         assertEquals(finded.getPersonId(), personId);
         assertEquals(finded.getDType(), dType);
 
@@ -49,9 +47,8 @@ public class InteractionRepositoryTest {
     @Test
     public void 결과_0_에러(){
         //when
-        Interaction finded = interactionRepository.findOneByObject(new Interaction("sd", 1L ,  "person"));
-
-        assertNull(finded);
+        assertThrows(IllegalArgumentException.class, () ->
+                interactionRepository.findOneByObject(new Interaction("sd", 1L ,  "person")));
     }
 
     @DisplayName("Job에 대해 insert 했을 때 올바르게 찾는지에 대한 테스트")

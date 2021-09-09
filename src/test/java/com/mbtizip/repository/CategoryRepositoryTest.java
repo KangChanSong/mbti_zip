@@ -36,14 +36,4 @@ public class CategoryRepositoryTest {
         assertEquals(findCategory.getName(), TestCategoryEnum.CATEGORY_NAME_1.getText());
     }
 
-    @Test
-    public void 카테고리_페이징_조회(){
-
-        //given
-        Page page = Page.builder().pageNum(1).amount(3).build();
-        //when
-        List<Category> findCategories = categoryRepository.findAll();
-        //then
-        assertEquals(findCategories.size(), 3);
-    }
 }

@@ -1,16 +1,12 @@
 package com.mbtizip.repository;
 
-import com.mbtizip.common.enums.TestCommentEnum;
+import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.comment.QComment;
 import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.job.Job;
-import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.person.Person;
 import com.mbtizip.repository.comment.CommentRepository;
-import com.mbtizip.repository.test.TestJobRepository;
-import com.mbtizip.repository.test.TestMbtiRepository;
-import com.mbtizip.repository.test.TestPersonRepository;
 import com.mbtizip.repository.test.TestRepository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -21,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-
 import java.util.List;
 
 import static com.mbtizip.common.enums.TestCommentEnum.COMMENT_CONTENT;
@@ -62,36 +57,9 @@ public class CommentRepositoryTest {
         //then
 
         assertTrue(saveId > 0);
-        assertEquals(findComment.getContent(), COMMENT_CONTENT);
+        assertEquals(findComment.getContent(), COMMENT_CONTENT.getText());
         assertEquals(findComment.getJob(), job);
         assertEquals(findComment.getMbti(), mbti);
-    }
-
-    @Test
-    public void 직업_댓글_목록_조회(){
-        //given
-        Mbti mbti = testRepository.getMbtiRepository().findAll().get(0);
-        Job job = testRepository.getJobRepository().createJob();
-        int count = 10;
-
-        Page page = Page.builder().pageNum(1).amount(10).build();
-        OrderSpecifier sort = QComment.comment.id.desc();
-
-        //when
-        for(int i = 0; i < count ; i++){
-            Comment comment = createComment();
-            commentRepository.save(comment);
-            comment.setJob(job);
-            comment.setMbti(mbti);
-        }
-
-        //then
-
-        List<Comment> comments = commentRepository.findAll(page, sort);
-
-        assertEquals(comments.size(), count);
-        comments.forEach( i -> assertSame(i.getJob(), job));
-        comments.forEach( i -> assertSame(i.getMbti(), mbti));
     }
 
     @Test

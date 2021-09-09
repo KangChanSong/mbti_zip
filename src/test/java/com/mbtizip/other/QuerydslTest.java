@@ -100,29 +100,6 @@ public class QuerydslTest {
     }
 
     @Test
-    public void 정렬(){
-
-        //given
-        Job job1 = testJobRepository.createJob();
-        job1.modifyLikes(true);
-        job1.modifyLikes(true);
-        job1.modifyLikes(true);
-        Job job2 = testJobRepository.createJob();
-        job2.modifyLikes(true);
-        job2.modifyLikes(true);
-        Job job3 = testJobRepository.createJob();
-
-        //when
-        QJob job = QJob.job;
-        List<Job> jobs = queryFactory.selectFrom(job)
-                .orderBy(job.likes.asc())
-                .fetch();
-
-        //then
-        assertSame(jobs.get(0), job3);
-    }
-
-    @Test
     public void 서브_쿼리(){
 
         //given
@@ -171,26 +148,6 @@ public class QuerydslTest {
         System.out.println(findJob.get(0).getMbti().getName());
         assertEquals(findJob.get(0).getMbti().getName(), filterName);
         assertEquals(findJob.size(), 3);
-        //then
-    }
-
-    @Test
-    public void OFFSET_LIMIT(){
-
-        //given
-        List<Mbti> mbtis = testMbtiRepository.findAll();
-        mbtis.forEach( mbti -> testJobRepository.createJobWithMbti(mbti));
-
-        //when
-        QJob job = QJob.job;
-
-
-        List<Job> findJob = joinQuery()
-                .offset(10)
-                .limit(20)
-                .fetch();
-
-        assertEquals(findJob.size(), 8);
         //then
     }
 

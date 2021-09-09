@@ -32,18 +32,6 @@ public class FileUploadTest {
     }
 
     @Test
-    public void 파일_삭제(){
-        Path location = Paths.get(path);
-        String filename = "c0c2ed70-89fe-4505-8a06-3e76786ae229_ScoreVO.jpg";
-
-        File file = location.resolve(filename).toFile();
-        boolean isDeleted = file.delete();
-        System.out.println(location.resolve(filename));
-        System.out.println(file.getAbsolutePath());
-        assertTrue(isDeleted);
-    }
-
-    @Test
     public void 디렉토리_탐색(){
         File[] files = new File(StoreService.PATH_STATIC_UPLOAD).listFiles();
 

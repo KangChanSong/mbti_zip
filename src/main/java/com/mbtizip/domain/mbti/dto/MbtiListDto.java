@@ -21,8 +21,6 @@ public class MbtiListDto {
                                 .map(mbti -> MbtiGetDto.toDto(mbti))
                                 .filter(dto ->
                                         !dto.getName().equals(MbtiEnum.NONE.getText()) && !dto.getName().equals(MbtiEnum.DRAW.getText()))
-
-
                                 .collect(Collectors.toList())
                 ).build();
 
