@@ -6,6 +6,7 @@ import com.mbtizip.domain.common.pageSortFilter.InterfaceForPageSortFilter;
 import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.comment.Comment;
+import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,18 +32,23 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
     @Column(name ="person_id")
     private Long id;
 
-    @Column(name = "person_name" )
+    @NotNull
+    @Column(name = "person_name", length = 15)
     private String name;
 
+    @NotNull
     @Column(name = "person_gender")
     private Gender gender;
 
-    @Column(name = "person_description")
+    @NotNull
+    @Column(name = "person_description", length = 15)
     private String description;
 
+    @NotNull
     @Column(name = "person_writer")
     private String writer;
 
+    @NotNull
     @Column(name = "person_password")
     private String password;
 
@@ -64,10 +70,12 @@ public class Person extends CommonEntity implements InterfaceForPageSortFilter {
     @OneToMany(mappedBy = "person", cascade = ALL)
     private List<Comment> comments = new ArrayList<>();
 
+    @NotNull
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @NotNull
     @OneToOne(mappedBy = "person", fetch = LAZY)
     private File file;
 

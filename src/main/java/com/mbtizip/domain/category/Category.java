@@ -1,6 +1,7 @@
 package com.mbtizip.domain.category;
 
 import com.mbtizip.domain.person.Person;
+import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ public class Category {
     @Column(name = "category_id")
     private Long id;
 
+    @NotNull
     @Column(name = "category_name")
     private String name;
 

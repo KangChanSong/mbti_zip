@@ -28,6 +28,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.querydsl/querydsl-jpa
     implementation 'com.querydsl:querydsl-jpa'
+    // https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
+    implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.2'
 
     implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.3m'
 

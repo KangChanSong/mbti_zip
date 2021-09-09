@@ -5,6 +5,7 @@ import com.mbtizip.domain.common.pageSortFilter.InterfaceForPageSortFilter;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.person.Person;
+import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,12 +28,15 @@ public class Comment extends CommonEntity implements InterfaceForPageSortFilter 
     @Column(name = "comment_id")
     private Long id;
 
+    @NotNull
     @Column(name = "comment_content")
     private String content;
 
+    @NotNull
     @Column(name = "comment_writer")
     private String writer;
 
+    @NotNull
     @Column(name = "comment_password")
     private String password;
 

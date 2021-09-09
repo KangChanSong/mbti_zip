@@ -1,5 +1,6 @@
 package com.mbtizip.domain.interaction;
 
+import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.web.context.request.RequestContextHolder;
 
@@ -20,6 +21,7 @@ public class Interaction {
     @Column(name = "interaction_id")
     private Long id;
 
+    @NotNull
     @Column(name = "session_id")
     private String sessionId;
 
@@ -29,6 +31,7 @@ public class Interaction {
     @Column(name = "job_id")
     private Long jobId;
 
+    @NotNull
     @Column(name = "d_type")
     private String dType;
 

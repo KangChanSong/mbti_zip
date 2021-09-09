@@ -3,6 +3,7 @@ package com.mbtizip.domain.mbtiCount;
 import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.person.Person;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class MbtiCount {
     @Column(columnDefinition = "integer default 0")
     private int count;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mbti_id")
     private Mbti mbti;

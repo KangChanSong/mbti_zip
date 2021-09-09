@@ -5,6 +5,7 @@ import com.mbtizip.domain.common.CommonEntity;
 import com.mbtizip.domain.common.pageSortFilter.InterfaceForPageSortFilter;
 import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.mbti.Mbti;
+import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,14 +29,18 @@ public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
     @Column(name = "job_id")
     private Long id;
 
-    @Column(name = "job_title")
+    @NotNull
+    @Column(name = "job_title", length = 15)
     private String title;
 
+    @NotNull
     @Column(name = "job_writer")
     private String writer;
 
+    @NotNull
     @Column(name = "job_password")
     private String password;
+
 
     @Column(name = "job_likes", columnDefinition = "integer default 0")
     private int likes;
@@ -55,6 +60,7 @@ public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
     @OneToMany(mappedBy = "job", cascade = ALL)
     private List<Comment> comments = new ArrayList<>();
 
+    @NotNull
     @OneToOne(mappedBy = "job", fetch = LAZY)
     private File file;
 
