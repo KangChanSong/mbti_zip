@@ -1,6 +1,7 @@
 package com.mbtizip.other;
 
 import com.google.common.net.MediaType;
+import com.mbtizip.service.file.FileService;
 import com.mbtizip.service.file.store.StoreService;
 import org.hibernate.bytecode.internal.bytebuddy.BytecodeProviderImpl;
 import org.junit.jupiter.api.Assertions;
@@ -14,9 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileUploadTest {
-
-    private final String path = "C:/fileupload";
-
     @Test
     public void test(){
         MediaType jpeg = MediaType.JPEG;
@@ -25,7 +23,7 @@ public class FileUploadTest {
 
     @Test
     public void 파일_읽기(){
-        Path location = Paths.get(path);
+        Path location = Paths.get(StoreService.PATH_STATIC_UPLOAD);
         String filename = "kakaotalk.jpg";
         Path resolved = location.resolve(filename);
         System.out.println(resolved.toString());
