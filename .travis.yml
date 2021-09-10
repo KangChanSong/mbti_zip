@@ -43,7 +43,7 @@ deploy:
     access_key_id: $AWS_ACCESS_KEY
     secret_access_key: $AWS_SECRET_KEY
 
-    bucket: mbti-zip
+    bucket: mbti-zip-build
     key: mbti_zip.zip
     bundle-type: zip
     application: mbti-zip
