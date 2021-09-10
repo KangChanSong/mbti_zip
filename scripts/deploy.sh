@@ -9,7 +9,7 @@ PROJECT_NAME=mbti_zip
 
 echo "> Build 파일 복사"
 
-cp $ZIP_REPOSITORY/zip/*.jar $REPOSITORY/
+cp $ZIP_REPOSITORY/*.jar $REPOSITORY/
 
 echo "> 현재 구동중인 애플리케이션 pid 확인"
 
@@ -27,7 +27,7 @@ fi
 
 echo "> 새 애플리케이션 배포"
 
-JAR_NAME=$(ls -tr ZIP_REPOSITORY/*.jar |tail -n 1)
+JAR_NAME=$(ls -tr $REPOSITORY/*.jar |tail -n 1)
 
 echo "> Jar Name : $JAR_NAME"
 
