@@ -13,9 +13,9 @@ cp $ZIP_REPOSITORY/*.jar $REPOSITORY/
 
 echo "> 현재 구동중인 애플리케이션 pid 확인"
 
-#CURRENT_PID=$(pgrep -fl mbti_zip | grep jar | awk '{print $1}')
+CURRENT_PID=$(pgrep -fl mbti_zip | grep jar | awk '{print $1}')
 
-CURRENT_PID=$(pgrep -f jar | awk '{print $1}')
+#CURRENT_PID=$(pgrep -f jar | awk '{print $1}')
 
 echo "> 현재 구동중인 애플리케이션 pid: $CURRENT_PID"
 
