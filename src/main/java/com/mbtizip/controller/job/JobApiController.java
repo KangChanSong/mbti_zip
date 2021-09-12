@@ -22,14 +22,14 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/job")
+@RequestMapping("/api/v1/job")
 public class JobApiController {
 
     private final JobService jobService;
     private final FileService fileService;
     
     //직업 등록
-    @PostMapping("/api/v1/register")
+    @PostMapping("/register")
     public BooleanResponseDto register(@RequestBody JobRegisterDto dto){
 
         Job job= dto.toEntity();
@@ -39,7 +39,7 @@ public class JobApiController {
     }
 
     //직업 조회
-    @GetMapping("/api/v1/get/{jobId}")
+    @GetMapping("/get/{jobId}")
     public JobGetDto get(@PathVariable("jobId") Long id){
 
         Job job = jobService.get(id);
@@ -48,7 +48,7 @@ public class JobApiController {
     }
 
     //직업 MBTI로 목록 조회
-    @GetMapping("/api/v1/list/mbti/{mbtiId}")
+    @GetMapping("/list/mbti/{mbtiId}")
     public JobListDto getListWithMbti(@PathVariable("mbtiId") Long mbtiId, @RequestBody PageSortDto psd){
         Page page = psd.toPage();
         OrderSpecifier sort = psd.toJobSort();
@@ -59,7 +59,7 @@ public class JobApiController {
     //직업 목록 조회
     //직업 삭제
 
-    @GetMapping("/api/v1/list")
+    @GetMapping("/list")
     public JobListDto getList(@RequestParam(name ="page", required = false) int page,
                               @RequestParam(name ="size", required = false) int size,
                               @RequestParam(name ="sort", required = false) String sort,
@@ -83,18 +83,18 @@ public class JobApiController {
 
         return JobListDto.toDto(fnidJobs);
     }
-    @DeleteMapping("/api/v1/delete/{jobId}")
+    @DeleteMapping("/delete/{jobId}")
     public BooleanResponseDto delete(@PathVariable("jobId") Long jobId, @RequestBody PasswordDto dto){
         Boolean isSuccess = jobService.delete(jobId, dto.getPassword());
         return new BooleanResponseDto(isSuccess);
     }
 
-    @GetMapping("/api/v1/count/all")
+    @GetMapping("/count/all")
     public CountDto getTotalCount(){
         return new CountDto(jobService.getTotalCount());
     }
 
-    @GetMapping("/api/v1/exists/{title}")
+    @GetMapping("/exists/{title}")
     public boolean checkIfExists(@PathVariable("title") String title){
         return jobService.checkIfExists(title);
     }

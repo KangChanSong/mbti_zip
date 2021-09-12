@@ -23,7 +23,7 @@ import static com.mbtizip.controller.common.TargetProperties.TARGET_PERSON;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/comment")
+@RequestMapping("/api/v1/comment")
 @Slf4j
 public class CommentApiController {
 
@@ -35,7 +35,7 @@ public class CommentApiController {
      * @param targetId : 댓글이 달릴 대상의 id personId or jobId
      */
     //댓글 등록
-    @PostMapping("/api/v1/{target}/{targetId}/register")
+    @PostMapping("/{target}/{targetId}/register")
     public BooleanResponseDto register(@PathVariable("target") String target,
                                        @PathVariable("targetId") Long targetId,
                                        @RequestBody CommentRegisterDto dto){
@@ -50,7 +50,7 @@ public class CommentApiController {
     }
     
     //댓글 조회
-    @GetMapping("/api/v1/get/{commentId}")
+    @GetMapping("/get/{commentId}")
     public CommentGetDto get(@PathVariable("commentId") Long commentId){
 
         Comment findComment = commentService.find(commentId);
@@ -58,7 +58,7 @@ public class CommentApiController {
     }
     
     //댓글 목록 조회(페이징)
-    @GetMapping("/api/v1/{target}/{targetId}/list")
+    @GetMapping("/{target}/{targetId}/list")
     public CommentListDto getList(@PathVariable("target") String target
                                 , @PathVariable("targetId") Long targetId,
                                   @RequestParam("page") int page,
@@ -82,7 +82,7 @@ public class CommentApiController {
     }
 
     //댓글 수정
-    @PutMapping("/api/v1/update/{commentId}")
+    @PutMapping("/update/{commentId}")
     public BooleanResponseDto update(@PathVariable("commentId") Long commentId,
                                      @RequestBody CommentUpdateDto dto){
 
@@ -91,14 +91,14 @@ public class CommentApiController {
     }
     
     //댓글 삭제
-    @DeleteMapping("/api/v1/delete/{commentId}")
+    @DeleteMapping("/delete/{commentId}")
     public BooleanResponseDto delete(@PathVariable("commentId") Long commentId, @RequestBody PasswordDto dto){
 
         Boolean isSuccess = commentService.delete(commentId, dto.getPassword());
         return new BooleanResponseDto(isSuccess);
     }
 
-    @GetMapping("/{target}/{targetId}/api/v1/count/all")
+    @GetMapping("/{target}/{targetId}/count/all")
     public CountDto getTotalCount(@PathVariable("target") String target, @PathVariable("targetId") Long targetId){
         if(!target.equals("person") && !target.equals("job")){
             throw new IllegalArgumentException("target 이 적합하지 않습니다. target : " + target);

@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @Entity
 public class Comment extends CommonEntity implements InterfaceForPageSortFilter {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
     private Long id;
 

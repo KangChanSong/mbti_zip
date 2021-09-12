@@ -15,7 +15,7 @@ import java.util.List;
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"category_name"})})
 public class Category {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
     private Long id;
 

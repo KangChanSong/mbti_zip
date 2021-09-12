@@ -19,7 +19,7 @@ import java.util.List;
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"mbti_name"})})
 public class Mbti {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="mbti_id")
     private Long id;
 

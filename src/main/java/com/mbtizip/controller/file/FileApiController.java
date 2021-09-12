@@ -20,26 +20,26 @@ import static com.mbtizip.controller.common.common.InteractionControllerHelper.h
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("file")
+@RequestMapping("/api/v1/file")
 public class FileApiController {
 
     private final FileService fileService;
     private final StoreService storeService;
 
-    @PostMapping("/api/v1/upload")
+    @PostMapping("/upload")
     public FileResponseDto upload(MultipartFile file){
         log.info("파일 업로드");
         return new FileResponseDto(fileService.upload(file));
     }
 
-    @DeleteMapping("/api/v1/delete/{filename}")
+    @DeleteMapping("/delete/{filename}")
     public void delete(@PathVariable("filename") String filename){
         log.info("파일 삭제");
         fileService.delete(filename);
     }
 
     @GetMapping(
-            value = "/api/v1/get/{filename}",
+            value = "/get/{filename}",
             produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] get(@PathVariable("filename") String filename) throws IOException {
         log.info("파일 불러오기");

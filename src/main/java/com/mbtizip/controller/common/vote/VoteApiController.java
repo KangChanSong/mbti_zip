@@ -22,7 +22,7 @@ import static com.mbtizip.controller.common.common.InteractionDType.V;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/vote")
+@RequestMapping("/api/v1/vote")
 public class VoteApiController {
 
     private final JobService jobService;
@@ -30,7 +30,7 @@ public class VoteApiController {
     private final MbtiCountService mbtiCountService;
     private final InteractionService interactionService;
 
-    @PostMapping("/api/v1/mbti/{mbtiId}/{target}/{targetId}")
+    @PostMapping("/mbti/{mbtiId}/{target}/{targetId}")
     public BooleanResponseDto vote(@PathVariable("mbtiId") Long mbtiId,
                                        @PathVariable("target") String target,
                                        @PathVariable("targetId") Long targetId){
@@ -53,7 +53,7 @@ public class VoteApiController {
 
     }
 
-    @GetMapping("/api/v1/list/{target}/{targetId}")
+    @GetMapping("/list/{target}/{targetId}")
     public VoteResponseDto getList(@PathVariable("target") String target,
                                     @PathVariable("targetId") Long targetId){
         

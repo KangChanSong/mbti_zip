@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Entity
 public class MbtiCount {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mbti_count_id")
     private Long id;
 

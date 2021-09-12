@@ -25,7 +25,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "job_id")
     private Long id;
 
@@ -61,7 +61,7 @@ public class Job  extends CommonEntity implements InterfaceForPageSortFilter {
     private List<Comment> comments = new ArrayList<>();
 
     @NotNull
-    @OneToOne(mappedBy = "job", fetch = LAZY)
+    @OneToOne(mappedBy = "job", fetch = LAZY, cascade = ALL)
     private File file;
 
     @Builder

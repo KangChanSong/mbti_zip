@@ -26,7 +26,7 @@ import static com.mbtizip.controller.common.common.InteractionDType.L;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/like")
+@RequestMapping("/api/v1/like")
 public class LikeApiController {
 
     private final PersonService personService;
@@ -34,7 +34,7 @@ public class LikeApiController {
     private final InteractionService interactionService;
 
 
-    @PostMapping("/api/v1/{target}/{targetId}")
+    @PostMapping("/{target}/{targetId}")
     public BooleanResponseDto like(@PathVariable("target") String target,
                                        @PathVariable("targetId") Long targetId){
         boolean isExists = interactionService.checkAndRemove(new Interaction(target, targetId, L.name()));
@@ -54,7 +54,7 @@ public class LikeApiController {
         return new BooleanResponseDto(isSuccess);
     }
 
-    @GetMapping("/api/v1/get/{target}/{targetId}")
+    @GetMapping("/get/{target}/{targetId}")
     public LikeResponseDto get(@PathVariable("target") String target,
                             @PathVariable("targetId") Long targetId){
 

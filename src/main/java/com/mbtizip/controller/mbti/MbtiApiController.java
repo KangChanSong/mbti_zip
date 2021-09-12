@@ -13,12 +13,12 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/mbti")
+@RequestMapping("/api/v1/mbti")
 @RequiredArgsConstructor
 public class MbtiApiController {
     private final MbtiRepository mbtiRepository;
 
-    @GetMapping("/api/v1/list")
+    @GetMapping("/list")
     public MbtiListDto getList(){
         log.info("MBTI 목록 조회");
         List<Mbti> mbtis = mbtiRepository.findAll();

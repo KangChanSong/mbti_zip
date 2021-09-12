@@ -4,10 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.web.context.request.RequestContextHolder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import static com.mbtizip.controller.common.common.InteractionControllerHelper.TARGET_INVALID_ERROR_MESSAGE;
 
@@ -17,7 +14,7 @@ import static com.mbtizip.controller.common.common.InteractionControllerHelper.T
 @Entity
 public class Interaction {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "interaction_id")
     private Long id;
 

@@ -13,13 +13,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/category")
+@RequestMapping("/api/v1/category")
 public class CategoryApiController {
 
     private final CategoryService categoryService;
 
     //카테고리 등록
-    @PostMapping("/api/v1/register")
+    @PostMapping("/register")
     public BooleanResponseDto register(@RequestBody CategoryRegisterDto dto){
 
         Boolean isSuccess = categoryService.register(dto.toEntity()) == null ? false : true;
@@ -28,7 +28,7 @@ public class CategoryApiController {
     }
 
     //카테고리 목록 조회
-    @GetMapping("/api/v1/list")
+    @GetMapping("/list")
     public CategoryListDto getList(){
 
         List<Category> findCategories = categoryService.findAll();
