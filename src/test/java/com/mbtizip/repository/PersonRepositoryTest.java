@@ -66,7 +66,7 @@ public class PersonRepositoryTest {
     /**
      * 인물 좋아요 감소 확인
      */
-    @Test
+    //@Test
     public void 좋아요_취소(){
 
         //given
@@ -79,7 +79,7 @@ public class PersonRepositoryTest {
         assertEquals(person.getLikes(), 0);
     }
 
-    @Test
+    //@Test
     public void MBTI와_조회(){
 
         //given
