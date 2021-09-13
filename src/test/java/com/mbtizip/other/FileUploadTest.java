@@ -23,7 +23,7 @@ public class FileUploadTest {
 
     @Test
     public void 파일_읽기(){
-        Path location = Paths.get(StoreService.PATH_STATIC_UPLOAD);
+        Path location = Paths.get("C:/fileupload");
         String filename = "kakaotalk.jpg";
         Path resolved = location.resolve(filename);
         System.out.println(resolved.toString());

@@ -6,6 +6,7 @@ import com.mbtizip.repository.file.FileRepository;
 import com.mbtizip.service.file.store.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,7 +19,8 @@ public class FileSchedulerImpl implements FileScheduler {
     private final FileRepository fileRepository;
     private final StoreService storeService;
 
-
+    @Value("${file.path}")
+    private String path;
     /**
      * 한시간마다 등록되지 않은 이미지를 삭제한다.
      */
@@ -38,7 +40,7 @@ public class FileSchedulerImpl implements FileScheduler {
 
     @Override
     public void deleteFilesNotInDb() {
-        java.io.File[] files = new java.io.File(StoreService.PATH_STATIC_UPLOAD).listFiles();
+        java.io.File[] files = new java.io.File(path).listFiles();
 
         if(files == null) return;
 

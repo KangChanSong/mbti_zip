@@ -1,11 +1,13 @@
 package com.mbtizip.service.file.store;
 
 import com.mbtizip.domain.file.File;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +21,15 @@ import java.util.List;
 @Service
 public class StoreServiceImpl implements StoreService{
 
-    Path rootLocation = Paths.get(PATH_STATIC_UPLOAD);
+    @Value("${file.path}")
+    private String path;
+
+    Path rootLocation;
+
+    @PostConstruct
+    public void setRootLocation(){
+        rootLocation = Paths.get(path);
+    }
 
     @Override
     public void storeInLocal(MultipartFile file, String uuid) {

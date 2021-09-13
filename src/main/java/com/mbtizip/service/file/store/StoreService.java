@@ -9,7 +9,8 @@ import java.util.List;
 
 public interface StoreService {
 
-    String PATH_STATIC_UPLOAD = "/home/ec2-user/app/back/upload/";
+    //String PATH_STATIC_UPLOAD_LOCAL = "c:/upload/filupload";
+    //String PATH_STATIC_UPLOAD = "/home/ec2-user/app/back/upload/";
 
     void storeInLocal(MultipartFile file, String uuid);
     byte[] loadFromLocal(String filename);
