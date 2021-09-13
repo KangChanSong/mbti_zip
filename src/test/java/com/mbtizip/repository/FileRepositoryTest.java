@@ -47,7 +47,7 @@ public class FileRepositoryTest {
                 .build();
     }
 
-    @Test
+    //@Test
     public void 파일_등록(){
 
         //when

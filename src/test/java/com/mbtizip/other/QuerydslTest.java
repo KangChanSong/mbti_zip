@@ -53,7 +53,7 @@ public class QuerydslTest {
         testJobRepository = new TestJobRepository(em);
     }
 
-    @Test
+    //@Test
     public void JpaQueryFactory_주입_테스트(){
         JPAQueryFactory bean = context.getBean(JPAQueryFactory.class);
         assertNotNull(bean);
