@@ -38,6 +38,3 @@ out/
 
 ### DB계정 ###
 application.properties
-
-### 더미 데이터 ###
-src/main/java/com/mbtizip/dummies/
