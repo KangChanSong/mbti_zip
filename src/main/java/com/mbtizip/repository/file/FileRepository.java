@@ -1,5 +1,6 @@
 package com.mbtizip.repository.file;
 
+import com.mbtizip.domain.candidate.Candidate;
 import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.file.FileId;
 import com.mbtizip.domain.candidate.job.Job;
@@ -13,11 +14,9 @@ public interface FileRepository {
     Long countByFileId(FileId fileId);
 
     File find(FileId fileId);
-    File findByPerson(Person person);
-    File findByJob(Job job);
+    File findByCandidate(Candidate candidate);
     List<File> findAllNotRegistered();
 
     void delete(File file);
-    void deleteByPerson(Person job);
-    void deleteByJob(Job job);
+    void deleteByCandidate(Candidate candidate);
 }

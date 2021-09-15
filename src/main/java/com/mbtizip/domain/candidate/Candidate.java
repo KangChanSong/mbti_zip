@@ -76,4 +76,8 @@ public abstract class Candidate extends BaseEntity {
     public void increaseViews() {
         this.views++;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

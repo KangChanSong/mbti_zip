@@ -1,13 +1,16 @@
 package com.mbtizip.service.comment;
 
+import com.mbtizip.domain.candidate.Candidate;
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.comment.QComment;
 import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.candidate.job.Job;
 import com.mbtizip.domain.candidate.person.Person;
+import com.mbtizip.repository.candidate.CandidateRepository;
 import com.mbtizip.repository.comment.CommentRepository;
 import com.mbtizip.repository.job.JobRepository;
 import com.mbtizip.repository.person.PersonRepository;
+import com.mbtizip.util.ErrorMessageProvider;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,7 @@ import java.util.function.Supplier;
 
 import static com.mbtizip.util.EncryptHelper.encrypt;
 import static com.mbtizip.util.EncryptHelper.isMatch;
+import static com.mbtizip.util.ErrorMessageProvider.NO_ENTITY_FOUND;
 
 @Slf4j
 @Service
@@ -28,17 +32,18 @@ import static com.mbtizip.util.EncryptHelper.isMatch;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
-    private final PersonRepository personRepository;
-    private final JobRepository jobRepository;
-    @Transactional
+    private final CandidateRepository candidateRepository;
+
     @Override
-    public Boolean addPersonComment(Long personId, Comment comment) {
-        return addCommonComment(comment, () -> personRepository.find(personId));
-    }
-    @Transactional
-    @Override
-    public Boolean addJobComment(Long jobId, Comment comment) {
-        return addCommonComment(comment, () -> jobRepository.find(jobId));
+    public Boolean addComment(Long candidateId, Comment comment) {
+        Candidate candidate = candidateRepository.find(candidateId);
+        if(candidate == null) throw new IllegalArgumentException(NO_ENTITY_FOUND + " id = " + candidateId);
+
+        comment.setPassword(encrypt(comment.getPassword()));
+        commentRepository.save(comment);
+        comment.setCandidate(candidate);
+
+        return comment.getId() == null ? false : true;
     }
 
     @Override
@@ -47,19 +52,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> findAllByPerson(Long personId, Page page, OrderSpecifier sort) {
-        Person person = personRepository.find(personId);
-        if(person == null) throw new IllegalArgumentException("Person 을 찾을 수 없습니다. id : " + personId);
+    public List<Comment> findAll(Long candidateId, Page page, OrderSpecifier sort) {
+        if(page == null) page = Page.builder().build();
+        if(sort == null) sort = QComment.comment.createDate.desc();
 
-        return findAllByObject(person, page , sort);
-    }
+        BooleanExpression keyword = QComment.comment.candidate.id.eq(candidateId);
 
-    @Override
-    public List<Comment> findAllByJob(Long jobId , Page page, OrderSpecifier sort) {
-        Job job = jobRepository.find(jobId);
-        if(job == null) throw new IllegalArgumentException("Job 을 찾을 수 없습니다. id : " + jobId);
-
-        return findAllByObject(job, page, sort);
+        return commentRepository.findAll(page, sort , keyword);
     }
 
     @Transactional
@@ -99,8 +98,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Long getTotalCount(String target, Long targetId) {
-        return commentRepository.countAll(target, targetId);
+    public Long getTotalCount(Long candidateId) {
+        return commentRepository.countAll(candidateId);
     }
 
     //== private 메서드 ==//
@@ -110,30 +109,4 @@ public class CommentServiceImpl implements CommentService {
         return comment;
     }
 
-    private Boolean addCommonComment(Comment comment, Supplier findQuery){
-        Object obj = findQuery.get();
-        if(obj == null) throw new IllegalArgumentException();
-
-        comment.setPassword(encrypt(comment.getPassword()));
-        commentRepository.save(comment);
-
-        if(obj instanceof Job) comment.setJob((Job) obj);
-        if (obj instanceof Person) comment.setPerson((Person) obj);
-
-        return comment.getId() == null ? false : true;
-    }
-
-    private <T> List<Comment> findAllByObject(T obj, Page page ,OrderSpecifier sort){
-
-        if(page == null) page = Page.builder().build();
-        if(sort == null) sort = QComment.comment.createDate.desc();
-
-        BooleanExpression keyword;
-
-        if(obj instanceof Job) keyword = QComment.comment.job.eq((Job)obj);
-        else if(obj instanceof Person) keyword = QComment.comment.person.eq((Person) obj);
-        else throw new IllegalArgumentException("Person 이나 Job 의 인스턴스여야 합니다. 클래스명 : " + obj.getClass().getName());
-
-        return commentRepository.findAll(page, sort , keyword);
-    }
 }

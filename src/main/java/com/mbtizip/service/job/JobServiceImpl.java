@@ -40,7 +40,7 @@ public class JobServiceImpl implements JobService{
         Long saveId = jobRepository.save(job);
 
         if(saveId != null){
-            mbtiCountService.initailizeByJob(job);
+            mbtiCountService.initializeByCandidate(job);
         }
         return saveId == null ? false : true;
     }
@@ -90,8 +90,8 @@ public class JobServiceImpl implements JobService{
     }
 
     private void delete(Job job){
-        fileService.deleteFileByJob(job);
-        mbtiCountService.deleteAllByJob(job);
+        fileService.deleteFileWithCandidate(job);
+        mbtiCountService.deleteAllByCandidate(job);
         jobRepository.remove(job);
     }
 

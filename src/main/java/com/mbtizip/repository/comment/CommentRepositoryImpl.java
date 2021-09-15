@@ -1,12 +1,10 @@
 package com.mbtizip.repository.comment;
 
+import com.mbtizip.domain.candidate.QCandidate;
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.comment.QComment;
 import com.mbtizip.domain.common.pageSortFilter.Page;
-import com.mbtizip.domain.candidate.job.QJob;
 import com.mbtizip.domain.mbti.QMbti;
-import com.mbtizip.domain.candidate.person.QPerson;
-import com.mbtizip.repository.common.CommonRepository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -59,27 +57,19 @@ public class CommentRepositoryImpl implements CommentRepository{
         QComment qComment = QComment.comment;
         return queryFactory.selectFrom(qComment)
                 .leftJoin(qComment.mbti, QMbti.mbti)
-                .leftJoin(qComment.person, QPerson.person)
-                .leftJoin(qComment.job, QJob.job);
+                .leftJoin(qComment.candidate, QCandidate.candidate);
     }
-
-
     @Override
     public void remove(Comment comment) {
         em.remove(comment);
     }
 
     @Override
-    public void modifyLikes(Comment comment, Boolean isIncrease) {
-        CommonRepository.modifyLikes(em, Comment.class, comment.getId(), isIncrease);
-    }
-
-    @Override
-    public Long countAll(String target, Long targetId) {
+    public Long countAll(Long candidateId) {
 
         return (Long) em.createQuery("select count(c) from Comment c " +
-                "where c." + target + ".id = :id" )
-                .setParameter("id",targetId )
+                "where c.candidate.id = :id" )
+                .setParameter("id",candidateId )
                 .getSingleResult();
     }
 

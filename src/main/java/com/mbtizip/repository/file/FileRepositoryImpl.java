@@ -1,5 +1,6 @@
 package com.mbtizip.repository.file;
 
+import com.mbtizip.domain.candidate.Candidate;
 import com.mbtizip.domain.common.CommonEntity;
 import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.file.FileId;
@@ -25,6 +26,8 @@ public class FileRepositoryImpl implements FileRepository{
 
     private final EntityManager em;
     private final JPAQueryFactory queryFactory;
+
+    private final QFile file = QFile.file;
 
     @Override
     public FileId save(File file) {
@@ -54,21 +57,18 @@ public class FileRepositoryImpl implements FileRepository{
     }
 
     @Override
-    public File findByPerson(Person person) {
-         return findByObject(Person.class, person.getId());
-    }
-    @Override
-    public File findByJob(Job job) {
-        return findByObject(Job.class, job.getId());
+    public File findByCandidate(Candidate candidate) {
+        return queryFactory.selectFrom(file)
+                .where(file.candidate.eq(candidate))
+                .fetchOne();
     }
 
     @Override
     public List<File> findAllNotRegistered() {
-        return em.createQuery("select f from File f " +
-                "where f.person is null and f.job is null")
-                .getResultList();
+        return queryFactory.selectFrom(file)
+                .where(file.candidate.isNull())
+                .fetch();
     }
-
 
     @Override
     public void delete(File file) {
@@ -77,36 +77,8 @@ public class FileRepositoryImpl implements FileRepository{
     }
 
     @Override
-    public void deleteByPerson(Person person) {
-        deleteByObject(Person.class, person.getId());
+    public void deleteByCandidate(Candidate candidate) {
+        queryFactory.delete(file).where(file.candidate.eq(candidate));
     }
-    @Override
-    public void deleteByJob(Job job) {
-        deleteByObject(Job.class, job.getId());
-    }
-
-    private <T extends CommonEntity> File findByObject(Class<T> cls, Long id){
-        String name = cls.getSimpleName();
-
-        try {
-            return (File) em.createQuery("select f from File f" +
-                        " where f." + name.toLowerCase(Locale.ROOT) + ".id =: id")
-                        .setParameter("id", id)
-                        .getSingleResult();
-
-        } catch(RuntimeException e){
-            throw new NoEntityFoundException("파일를 찾을 수 없습니다. Class : " + cls.getName() + " , id : " + id);
-        }
-    }
-
-    private <T extends CommonEntity> void deleteByObject(Class<T> cls, Long id){
-        log.info("파일 DB에서 삭제");
-        String name = cls.getSimpleName().toLowerCase(Locale.ROOT);
-        em.createQuery("delete from File f" +
-                        " where f." + name + ".id =: id")
-                .setParameter("id", id)
-                    .executeUpdate();
-    }
-
 
 }

@@ -1,5 +1,6 @@
 package com.mbtizip.repository.mbtiCount;
 
+import com.mbtizip.domain.candidate.Candidate;
 import com.mbtizip.domain.candidate.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
@@ -9,23 +10,17 @@ import java.util.List;
 
 public interface MbtiCountRepository {
     // Job, Person 의 모든 mbti 득표수를 계산하기 위해 불러옴
-    List<Object[]> findAllByPerson(Long personId);
-    List<Object[]> findAllByJob(Long jobId);
+    List<Object[]> findAllByCandidate(Long candidateId);
 
     // 최댓값 불러오는 메서드
-    List<MbtiCount> findMaxByJob(Job job);
-    List<MbtiCount> findMaxByPerson(Person person);
+    List<MbtiCount> findMaxByCandidate(Candidate candidate);
 
     // 카운트 증가, 감소 메서드
-    void modifyJobCount(Mbti mbti , Job job, boolean isIncrease);
-    void modifyPersonCount(Mbti mbti , Person person, boolean isIncrease);
+    void modifyCandidateCount(Mbti mbti , Candidate candidate, boolean isIncrease);
 
-    void removeAllByPerson(Person person);
-    void removeAllByJob(Job job);
+    void removeAllByCandidate(Candidate candidate);
 
-    void insertAllByPerson(Person person);
-    void insertAllByJob(Job job);
+    void insertAllByCandidate(Candidate candidate);
 
-    Long sumAllOfJob(Long jobId);
-    Long sumAllOfPerson(Long personId);
+    Long sumAllOfCandidate(Long candidateId);
 }

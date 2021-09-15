@@ -1,15 +1,18 @@
 package com.mbtizip.service.file;
 
+import com.mbtizip.domain.candidate.Candidate;
 import com.mbtizip.domain.common.CommonEntity;
 import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.file.FileId;
 import com.mbtizip.domain.candidate.job.Job;
 import com.mbtizip.domain.candidate.person.Person;
 import com.mbtizip.exception.NoEntityFoundException;
+import com.mbtizip.repository.candidate.CandidateRepository;
 import com.mbtizip.repository.file.FileRepository;
 import com.mbtizip.repository.job.JobRepository;
 import com.mbtizip.repository.person.PersonRepository;
 import com.mbtizip.service.file.store.StoreService;
+import com.mbtizip.util.ErrorMessageProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,19 +30,13 @@ import static com.mbtizip.util.ErrorMessageProvider.NO_ENTITY_FOUND;
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService{
 
-    private final PersonRepository personRepository;
-    private final JobRepository jobRepository;
     private final FileRepository fileRepository;
+    private final CandidateRepository candidateRepository;
     private final StoreService storeService;
 
     @Override
-    public File getByPerson(Person person) {
-        return fileRepository.findByPerson(person);
-    }
-
-    @Override
-    public File getByJob(Job job) {
-        return fileRepository.findByJob(job);
+    public File getByCandidate(Candidate candidate) {
+        return fileRepository.findByCandidate(candidate);
     }
 
     @Transactional
@@ -49,19 +46,15 @@ public class FileServiceImpl implements FileService{
         storeService.storeInLocal(multipartFile, saved.getUuid());
         return saved.getUuid() + "_" + saved.getName();
     }
+
     @Transactional
     @Override
-    public void saveFileWithPerson(Long personId, String filename) {
-        Person findPerson = checkAndReturn(Person.class, personId);
-        File file = fileRepository.find(new FileId(filename));
-        file.setPerson(findPerson);
-    }
-    @Transactional
-    @Override
-    public void saveFileWithJob(Long jobId, String filename) {
-        Job findJob = checkAndReturn(Job.class,jobId);
-        File file = fileRepository.find(new FileId(filename));
-        file.setJob(findJob);
+    public void saveFileWithCandidate(Long id, String fullname) {
+        Candidate candidate = candidateRepository.find(id);
+        if(candidate == null) throw new IllegalArgumentException(NO_ENTITY_FOUND + " id = " + id);
+        File file = new File(new FileId(fullname));
+        fileRepository.save(new File(new FileId(fullname)));
+        file.setCandidate(candidate);
     }
 
     @Transactional
@@ -71,46 +64,11 @@ public class FileServiceImpl implements FileService{
         fileRepository.delete(file);
         storeService.deleteFromLocal(file);
     }
-    @Transactional
-    @Override
-    public Boolean deleteFileByPerson(Person person) {
-        return deleteFileByObject(person);
-    }
 
     @Transactional
     @Override
-    public Boolean deleteFileByJob(Job job) {
-        return deleteFileByObject(job);
-    }
-
-
-    //== private 메서드 ==//
-
-    private Boolean deleteFileByObject(Object obj){
-        Optional<File> optFile;
-        if(obj instanceof Person) optFile = Optional.of(fileRepository.findByPerson((Person) obj));
-        else optFile = Optional.of(fileRepository.findByJob((Job) obj));
-
-        File file = optFile.orElseThrow(() -> {throw new IllegalArgumentException(NO_ENTITY_FOUND);});
-        boolean isDeleted = storeService.deleteFromLocal(file);
-
-        if(isDeleted) {
-            if(obj instanceof Person) fileRepository.deleteByPerson((Person) obj);
-            else fileRepository.deleteByJob((Job) obj);
-            return true;
-        }
-        else return false;
-    }
-
-    private <T extends CommonEntity> T checkAndReturn( Class<T> cls, Long id){
-        Object found = checkByClass(cls, id);
-        if(found == null) throw new NoEntityFoundException(NO_ENTITY_FOUND + " class : " + cls.getName() + ", id : " + id);
-        return (T) found;
-    }
-
-    private <T extends CommonEntity> T checkByClass(Class cls, Long id){
-        if (cls.equals(Person.class)) return (T) personRepository.find(id);
-        else if (cls.equals(Job.class)) return (T) jobRepository.find(id);
-        else throw new IllegalArgumentException(INVALID_INSTANCE + " class : " + cls.getName());
+    public Boolean deleteFileWithCandidate(Candidate candidate) {
+        deleteFileWithCandidate(candidate);
+        return true;
     }
 }

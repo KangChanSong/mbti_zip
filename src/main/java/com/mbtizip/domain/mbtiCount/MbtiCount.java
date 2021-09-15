@@ -1,5 +1,6 @@
 package com.mbtizip.domain.mbtiCount;
 
+import com.mbtizip.domain.candidate.Candidate;
 import com.mbtizip.domain.candidate.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.candidate.person.Person;
@@ -31,18 +32,13 @@ public class MbtiCount {
      * Job 과 Person 은 둘중 하나만 있어야 함.
      */
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "job_id")
-    private Job job;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "person_id")
-    private Person person;
+    @JoinColumn(name = "candidate_id")
+    private Candidate candidate;
 
     @Builder
-    public MbtiCount(Mbti mbti , Job job, Person person){
+    public MbtiCount(Mbti mbti , Candidate candidate){
         this.mbti = mbti;
-        this.person = person;
-        this.job = job;
+        this.candidate = candidate;
     }
 
     public void setMbti(Mbti mbti) {

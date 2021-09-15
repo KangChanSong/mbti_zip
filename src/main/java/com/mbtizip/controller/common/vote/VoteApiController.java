@@ -59,20 +59,11 @@ public class VoteApiController {
         
         log.info("투표수 집계 조회");
         boolean isExists = interactionService.checkIfExists(new Interaction(target, targetId, V.name()));
+
         log.info(Boolean.toString(isExists));
-        MbtiCountListDto listDto = MbtiCountListDto.toDto(
-                handleTarget(
-                        target,
-                        () -> mbtiCountService.getVotesByPerson(targetId),
-                        () -> mbtiCountService.getVotesByJob(targetId)));
+        MbtiCountListDto listDto = MbtiCountListDto.toDto(mbtiCountService.getVotesByCandidate(targetId));
 
-        return new VoteResponseDto(listDto, !isExists, getTotalCount(target, targetId));
-    }
-
-    private Long getTotalCount(String target, Long targetId) {
-        if(target.equals("person")) return mbtiCountService.getTotalCountOfPerson(targetId);
-        else if(target.equals("job")) return mbtiCountService.getTotalCountOfJob(targetId);
-        else throw new IllegalArgumentException(TARGET_INVALID_ERROR_MESSAGE + target);
+        return new VoteResponseDto(listDto, !isExists, mbtiCountService.getTotalCountOfCandidate(targetId));
     }
 
     @Data

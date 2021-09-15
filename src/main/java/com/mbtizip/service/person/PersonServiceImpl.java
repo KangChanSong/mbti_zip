@@ -47,7 +47,7 @@ public class PersonServiceImpl implements PersonService{
         savePersonCategories(person, categoryId);
 
         if(saveId != null){
-            mbtiCountService.initializeByPerson(person);
+            mbtiCountService.initializeByCandidate(person);
         }
         return saveId == null ? false : true;
     }
@@ -95,8 +95,8 @@ public class PersonServiceImpl implements PersonService{
     }
 
     private void delete(Person person){
-        fileService.deleteFileByPerson(person);
-        mbtiCountService.deleteAllByPerson(person);
+        fileService.deleteFileWithCandidate(person);
+        mbtiCountService.deleteAllByCandidate(person);
         personRepository.remove(person);
     }
 

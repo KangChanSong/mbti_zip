@@ -33,7 +33,7 @@ public class PersonApiController {
     public BooleanResponseDto register(@RequestBody PersonRegisterDto dto){
         Person person = dto.toEntity();
         Boolean isSuccess = personService.registerWithCategory(person, dto.getCategoryId());
-        fileService.saveFileWithPerson(person.getId(), dto.getFilename());
+        fileService.saveFileWithCandidate(person.getId(), dto.getFilename());
         return new BooleanResponseDto(isSuccess);
     }
 

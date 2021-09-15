@@ -39,14 +39,8 @@ public class CommentApiController {
     public BooleanResponseDto register(@PathVariable("target") String target,
                                        @PathVariable("targetId") Long targetId,
                                        @RequestBody CommentRegisterDto dto){
-        Boolean isSuccess = null;
-        Supplier personMethod = () -> commentService.addPersonComment(targetId, dto.toEntity());
-        Supplier jobMethod = () -> commentService.addJobComment(targetId, dto.toEntity());
-        isSuccess = checkTargetAndReturn(isSuccess, target, personMethod, jobMethod);
-        log.info(target);
 
-
-        return new BooleanResponseDto(isSuccess);
+        return new BooleanResponseDto(commentService.addComment(targetId, dto.toEntity()));
     }
     
     //댓글 조회
@@ -72,13 +66,9 @@ public class CommentApiController {
         dto.setSort(sort);
         dto.setDir(dir);
 
-        List<Comment> findComments = null;
         Page pageObj = dto.toPage();
-        Supplier personMethod = () -> commentService.findAllByPerson(targetId, pageObj, dto.toCommentSort());
-        Supplier jobMethod = () -> commentService.findAllByJob(targetId, pageObj, dto.toCommentSort());
-        findComments = checkTargetAndReturn(findComments, target, personMethod, jobMethod);
 
-        return CommentListDto.toDto(findComments);
+        return CommentListDto.toDto(commentService.findAll(targetId, pageObj, dto.toCommentSort()));
     }
 
     //댓글 수정
@@ -103,22 +93,7 @@ public class CommentApiController {
         if(!target.equals("person") && !target.equals("job")){
             throw new IllegalArgumentException("target 이 적합하지 않습니다. target : " + target);
         }
-        return new CountDto(commentService.getTotalCount(target, targetId));
-    }
-
-    //== private method ==//
-
-    private <T> T checkTargetAndReturn(T obj , String target, Supplier personMethod , Supplier jobMethod){
-
-        if(target.equals(TARGET_PERSON)){
-            obj = (T) personMethod.get();
-        }
-        else if(target.equals(TARGET_JOB)){
-            obj = (T) jobMethod.get();
-        } else {
-            throw new IllegalArgumentException("target 이 적합하지 않습니다. target : " + target);
-        }
-        return obj;
+        return new CountDto(commentService.getTotalCount(targetId));
     }
 
 }

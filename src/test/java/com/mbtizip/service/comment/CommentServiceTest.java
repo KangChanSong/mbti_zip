@@ -2,6 +2,7 @@ package com.mbtizip.service.comment;
 
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.candidate.person.Person;
+import com.mbtizip.repository.candidate.CandidateRepository;
 import com.mbtizip.repository.comment.CommentRepository;
 import com.mbtizip.repository.job.JobRepository;
 import com.mbtizip.repository.person.PersonRepository;
@@ -23,16 +24,16 @@ public class CommentServiceTest {
 
     @Mock
     private CommentRepository mockCommentRepository;
+
     @Mock
-    private PersonRepository personRepository;
-    @Mock
-    private JobRepository jobRepository;
+    private CandidateRepository candidateRepository;
 
     @BeforeEach
     public void setUp(){
-        commentService = new CommentServiceImpl(mockCommentRepository, personRepository, jobRepository);
+        commentService = new CommentServiceImpl(mockCommentRepository, candidateRepository);
     }
-    
+
+
     @DisplayName("Person, Job 객체가 영속상태가 아닐 경우에 예외 발생")
     @Test
     public void 댓글_등록(){
@@ -44,7 +45,7 @@ public class CommentServiceTest {
 
         //then
         assertThrows(IllegalArgumentException.class,
-                ()->commentService.addPersonComment(person.getId(), comment));
+                ()->commentService.addComment(person.getId(), comment));
     }
 
 }

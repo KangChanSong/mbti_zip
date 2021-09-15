@@ -58,13 +58,13 @@ public class FileRepositoryTest {
         //given
         File file = createFile();
         Person person = testRepository.getPersonRepository().createPerson();
-        file.setPerson(person);
+        file.setCandidate(person);
 
         //when
         fileRepository.save(file);
 
         //then
-        File findFile = fileRepository.findByPerson(person);
+        File findFile = fileRepository.findByCandidate(person);
 
         assertFileWithPerson(findFile, person);
     }
@@ -74,13 +74,13 @@ public class FileRepositoryTest {
         //given
         File file = createFile();
         Job job = testRepository.getJobRepository().createJob();
-        file.setJob(job);
+        file.setCandidate(job);
 
         //when
         fileRepository.save(file);
 
         //then
-        File findFile =fileRepository.findByJob(job);
+        File findFile =fileRepository.findByCandidate(job);
 
         assertFileWithJob(findFile, job);
 
@@ -93,14 +93,14 @@ public class FileRepositoryTest {
         //given
         File file = createFile();
         Person person = testRepository.getPersonRepository().createPerson();
-        file.setPerson(person);
+        file.setCandidate(person);
 
         //when
         fileRepository.save(file);
-        fileRepository.deleteByPerson(person);
+        fileRepository.deleteByCandidate(person);
 
         //then
-        assertThrows(NoEntityFoundException.class, () -> fileRepository.findByPerson(person));
+        assertThrows(NoEntityFoundException.class, () -> fileRepository.findByCandidate(person));
     }
 
     //@Test
@@ -109,24 +109,24 @@ public class FileRepositoryTest {
         //given
         File file = createFile();
         Job job = testRepository.getJobRepository().createJob();
-        file.setJob(job);
+        file.setCandidate(job);
 
         //when
         fileRepository.save(file);
-        fileRepository.deleteByJob(job);
+        fileRepository.deleteByCandidate(job);
 
         //then
 
-        assertThrows(NoEntityFoundException.class, () -> fileRepository.findByJob(job));
+        assertThrows(NoEntityFoundException.class, () -> fileRepository.findByCandidate(job));
     }
 
     private void assertFileWithPerson(File findFile, Person person){
-        assertSame(person, findFile.getPerson());
+        assertSame(person, findFile.getCandidate());
         assertFile(findFile);
     }
 
     private void assertFileWithJob(File findFile , Job job){
-        assertSame(job, findFile.getJob());
+        assertSame(job, findFile.getCandidate());
         assertFile(findFile);
     }
 

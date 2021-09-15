@@ -1,12 +1,10 @@
 package com.mbtizip.repository.job;
 
-import com.mbtizip.domain.common.pageSortFilter.Page;
-import com.mbtizip.domain.file.QFile;
 import com.mbtizip.domain.candidate.job.Job;
 import com.mbtizip.domain.candidate.job.QJob;
-import com.mbtizip.domain.mbti.Mbti;
+import com.mbtizip.domain.common.pageSortFilter.Page;
+import com.mbtizip.domain.file.QFile;
 import com.mbtizip.domain.mbti.QMbti;
-import com.mbtizip.repository.common.CommonRepository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -25,6 +23,7 @@ public class JobRepositoryImpl implements JobRepository{
 
     private final EntityManager em;
     private final JPAQueryFactory queryFactory;
+
     private final QJob job = QJob.job;
 
     @Override
@@ -41,10 +40,12 @@ public class JobRepositoryImpl implements JobRepository{
     @Override
     public List<Job> findAll(Page page) {
         return joinQuery()
+                .where()
                 .offset(page.getOffset())
                 .limit(page.getAmount())
                 .fetch();
     }
+
 
     @Override
     public List<Job> findAll(Page page, OrderSpecifier sort) {
@@ -72,16 +73,6 @@ public class JobRepositoryImpl implements JobRepository{
                 .fetchJoin()
                 .leftJoin(job.file, QFile.file)
                 .fetchJoin();
-    }
-
-    @Override
-    public void modifyLikes(Job job, Boolean isIncrease) {
-        CommonRepository.modifyLikes(em, Job.class, job.getId(), isIncrease );
-    }
-
-    @Override
-    public void changeMbti(Job job, Mbti mbti) {
-        CommonRepository.changeMbti(em, Job.class, job.getId(), mbti);
     }
 
     @Override

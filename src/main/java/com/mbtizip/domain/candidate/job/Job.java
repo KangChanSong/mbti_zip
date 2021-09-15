@@ -1,6 +1,7 @@
 package com.mbtizip.domain.candidate.job;
 
 import com.mbtizip.domain.candidate.Candidate;
+import com.mbtizip.domain.candidate.DType;
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.common.CommonEntity;
 import com.mbtizip.domain.common.pageSortFilter.InterfaceForPageSortFilter;
@@ -24,9 +25,8 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @Getter
 @Entity
-@DiscriminatorValue("J")
+@DiscriminatorValue(DType.JOB_D_TYPE)
 public class Job  extends Candidate implements InterfaceForPageSortFilter {
-
 
     @NotNull
     @Column(name = "job_title", length = 15)

@@ -46,7 +46,7 @@ class MbtiCountRepositoryTest {
 
         Job job = testJobRepository.createJob();
         MbtiCount mbtiCount = MbtiCount.builder()
-                .job(job)
+                .candidate(job)
                 .build();
 
         mbtiCount.updateCount(true);
@@ -54,7 +54,7 @@ class MbtiCountRepositoryTest {
         //when
         Long saveid = childMbtiCountRepository.save(mbtiCount);
         //then
-        List<Object[]> mbtiCounts = childMbtiCountRepository.findAllByJob(job.getId());
+        List<Object[]> mbtiCounts = childMbtiCountRepository.findAllByCandidate(job.getId());
 
         assertEquals(mbtiCounts.size() , 1);
 
@@ -67,23 +67,23 @@ class MbtiCountRepositoryTest {
         Job job = testJobRepository.createJob();
         Mbti mbti = testMbtiRepository.findAll().get(0);
 
-        MbtiCount mbtiCount1 = MbtiCount.builder().job(job).build();
+        MbtiCount mbtiCount1 = MbtiCount.builder().candidate(job).build();
         IntStream.range(0, 1).forEach( i -> mbtiCount1.updateCount(true));
 
-        MbtiCount mbtiCount2 = MbtiCount.builder().job(job).build();
+        MbtiCount mbtiCount2 = MbtiCount.builder().candidate(job).build();
         IntStream.range(0, 2).forEach( i-> mbtiCount2.updateCount(true));
 
-        MbtiCount mbtiCount3 = MbtiCount.builder().job(job).build();
+        MbtiCount mbtiCount3 = MbtiCount.builder().candidate(job).build();
         IntStream.range(0, 3).forEach(i -> mbtiCount3.updateCount(true));
 
         MbtiCount mbtiMax1 = MbtiCount.builder()
                 .mbti(mbti)
-                .job(job)
+                .candidate(job)
                 .build();
 
         MbtiCount mbtiMax2 = MbtiCount.builder()
                 .mbti(mbti)
-                .job(job)
+                .candidate(job)
                 .build();
 
         IntStream.range(0, 4).forEach(i -> {
@@ -98,7 +98,7 @@ class MbtiCountRepositoryTest {
         childMbtiCountRepository.save(mbtiMax1);
 
         //then
-        MbtiCount maxObject = childMbtiCountRepository.findMaxByJob(job).get(0);
+        MbtiCount maxObject = childMbtiCountRepository.findMaxByCandidate(job).get(0);
         assertTrue(maxObject.getCount() > mbtiCount1.getCount());
         assertTrue(maxObject.getCount() > mbtiCount2.getCount());
         assertTrue(maxObject.getCount() > mbtiCount3.getCount());
@@ -115,12 +115,12 @@ class MbtiCountRepositoryTest {
 
         MbtiCount mbtiMax1 = MbtiCount.builder()
                 .mbti(mbti)
-                .job(job)
+                .candidate(job)
                 .build();
 
         MbtiCount mbtiMax2 = MbtiCount.builder()
                 .mbti(mbti)
-                .job(job)
+                .candidate(job)
                 .build();
 
         IntStream.range(0, 4).forEach(i -> {
@@ -132,7 +132,7 @@ class MbtiCountRepositoryTest {
         childMbtiCountRepository.save(mbtiMax2);
 
         //then
-        List<MbtiCount> maxList = childMbtiCountRepository.findMaxByJob(job);
+        List<MbtiCount> maxList = childMbtiCountRepository.findMaxByCandidate(job);
         assertEquals(maxList.size(), 2);
 
     }
@@ -143,7 +143,7 @@ class MbtiCountRepositoryTest {
         //given
         Job job = testJobRepository.createJob();
         //when
-        List<MbtiCount> resultList = childMbtiCountRepository.findMaxByJob(job);
+        List<MbtiCount> resultList = childMbtiCountRepository.findMaxByCandidate(job);
         //then
         assertEquals(resultList.size(), 0);
     }
@@ -156,11 +156,11 @@ class MbtiCountRepositoryTest {
         Job job = testJobRepository.createJobWithMbti(mbti);
 
         //when
-        childMbtiCountRepository.modifyJobCount(mbti, job, true);
+        childMbtiCountRepository.modifyCandidateCount(mbti, job, true);
 
         //then
-        MbtiCount max = childMbtiCountRepository.findMaxByJob(job).get(0);
-        List<Object[]> counts = childMbtiCountRepository.findAllByJob(job.getId());
+        MbtiCount max = childMbtiCountRepository.findMaxByCandidate(job).get(0);
+        List<Object[]> counts = childMbtiCountRepository.findAllByCandidate(job.getId());
 
         assertEquals(counts.size(), 1);
         assertEquals(max.getCount(), 1);
@@ -174,11 +174,11 @@ class MbtiCountRepositoryTest {
         Person person = testPersonRepository.createPersonWithMbti(mbti);
 
         //when
-        childMbtiCountRepository.modifyPersonCount(mbti, person, true);
+        childMbtiCountRepository.modifyCandidateCount(mbti, person, true);
 
         //then
-        MbtiCount max = childMbtiCountRepository.findMaxByPerson(person).get(0);
-        List<Object[]> counts = childMbtiCountRepository.findAllByPerson(person.getId());
+        MbtiCount max = childMbtiCountRepository.findMaxByCandidate(person).get(0);
+        List<Object[]> counts = childMbtiCountRepository.findAllByCandidate(person.getId());
 
         assertEquals(counts.size(), 1);
         assertEquals(max.getCount(), 1);
@@ -217,10 +217,10 @@ class MbtiCountRepositoryTest {
         //when
         IntStream.range(0, count)
                 .forEach( i->
-                        childMbtiCountRepository.modifyJobCount(mbti, job, true));
+                        childMbtiCountRepository.modifyCandidateCount(mbti, job, true));
 
         //then
-        MbtiCount max = childMbtiCountRepository.findMaxByJob(job).get(0);
+        MbtiCount max = childMbtiCountRepository.findMaxByCandidate(job).get(0);
         assertEquals(max.getCount(), count);
     }
 
@@ -235,10 +235,10 @@ class MbtiCountRepositoryTest {
         //when
         IntStream.range(0, count)
                 .forEach(
-                        i-> childMbtiCountRepository.modifyJobCount(mbti, job, true));
+                        i-> childMbtiCountRepository.modifyCandidateCount(mbti, job, true));
         //then
-        childMbtiCountRepository.removeAllByJob(job);
-        List<Object[]> findJobs = childMbtiCountRepository.findAllByJob(job.getId());
+        childMbtiCountRepository.removeAllByCandidate(job);
+        List<Object[]> findJobs = childMbtiCountRepository.findAllByCandidate(job.getId());
         assertEquals(findJobs.size(), 0);
     }
 
@@ -254,7 +254,7 @@ class MbtiCountRepositoryTest {
 
         MbtiCount mbtiCount = MbtiCount.builder()
                 .mbti(mbti)
-                .job(job).build();
+                .candidate(job).build();
 
         if(count > 0){
             IntStream.range(0, 1).forEach( i-> mbtiCount.updateCount(true));
@@ -264,7 +264,7 @@ class MbtiCountRepositoryTest {
 
         assertEquals(mbtiCount.getCount() , count);
 
-        childMbtiCountRepository.modifyJobCount(mbti, job , false);
+        childMbtiCountRepository.modifyCandidateCount(mbti, job , false);
 
         return mbtiCount;
     }

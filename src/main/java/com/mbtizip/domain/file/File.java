@@ -1,5 +1,6 @@
 package com.mbtizip.domain.file;
 
+import com.mbtizip.domain.candidate.Candidate;
 import com.mbtizip.domain.candidate.job.Job;
 import com.mbtizip.domain.candidate.person.Person;
 import lombok.Getter;
@@ -19,24 +20,13 @@ public class File {
     private FileId fileId;
 
     @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "person_id")
-    private Person person;
-
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "job_id")
-    private Job job;
+    @JoinColumn(name = "candidate_id")
+    private Candidate candidate;
 
 
     //== 연관관계 메서드 ==//
-
-    public void setPerson(Person person) {
-        this.person = person;
-        person.setFile(this);
-    }
-
-    public void setJob(Job job) {
-        this.job = job;
-        job.setFile(this);
+    public void setCandidate(Candidate candidate) {
+        this.candidate = candidate;
     }
 
     //== 편의 메서드 ==//

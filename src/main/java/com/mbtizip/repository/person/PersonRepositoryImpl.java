@@ -6,7 +6,6 @@ import com.mbtizip.domain.file.QFile;
 import com.mbtizip.domain.mbti.QMbti;
 import com.mbtizip.domain.candidate.person.Person;
 import com.mbtizip.domain.candidate.person.QPerson;
-import com.mbtizip.repository.common.CommonRepository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAQueryBase;
@@ -44,10 +43,6 @@ public class PersonRepositoryImpl implements PersonRepository{
 
 
     @Override
-    public List<Person> findAll() {
-        return queryFactory.selectFrom(QPerson.person).fetch();
-    }
-    @Override
     public List<Person> findAll(Page page) {
         return ((JPAQuery) getJoinQuery()
                 .offset(page.getOffset())
@@ -71,11 +66,6 @@ public class PersonRepositoryImpl implements PersonRepository{
                 .orderBy(sort)
                 .offset(page.getOffset())
                 .limit(page.getAmount())).fetch();
-    }
-
-    @Override
-    public void modifyLikes(Person person, Boolean isIncrease) {
-        CommonRepository.modifyLikes(em, Person.class, person.getId(), isIncrease);
     }
 
     @Override

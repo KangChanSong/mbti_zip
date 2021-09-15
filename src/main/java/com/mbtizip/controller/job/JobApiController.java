@@ -33,7 +33,7 @@ public class JobApiController {
 
         Job job= dto.toEntity();
         Boolean isSuccess = jobService.register(job);
-        fileService.saveFileWithJob(job.getId(), dto.getFilename());
+        fileService.saveFileWithCandidate(job.getId(), dto.getFilename());
         return new BooleanResponseDto(isSuccess);
     }
 

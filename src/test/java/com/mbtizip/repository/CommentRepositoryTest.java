@@ -49,7 +49,7 @@ public class CommentRepositoryTest {
 
         //when
         Long saveId = commentRepository.save(comment);
-        comment.setJob(job);
+        comment.setCandidate(job);
         comment.setMbti(mbti);
 
         Comment findComment = commentRepository.find(saveId);
@@ -57,7 +57,7 @@ public class CommentRepositoryTest {
 
         assertTrue(saveId > 0);
         assertEquals(findComment.getContent(), COMMENT_CONTENT.getText());
-        assertEquals(findComment.getJob(), job);
+        assertEquals(findComment.getCandidate(), job);
         assertEquals(findComment.getMbti(), mbti);
     }
 
@@ -71,19 +71,19 @@ public class CommentRepositoryTest {
         //when
         for(int i = 0 ; i < count ; i++){
             Comment comment = createComment();
-            comment.setPerson(person);
+            comment.setCandidate(person);
             comment.setMbti(mbti);
         }
 
         Page page = Page.builder().pageNum(1).amount(10).build();
         OrderSpecifier sort = QComment.comment.createDate.desc();
-        BooleanExpression keyword = QComment.comment.person.eq(person);
+        BooleanExpression keyword = QComment.comment.candidate.eq(person);
 
         //then
         List<Comment> comments = commentRepository.findAll(page, sort, keyword);
 
         assertEquals(comments.size(), count);
-        comments.forEach( i -> assertSame(i.getPerson(), person));
+        comments.forEach( i -> assertSame(i.getCandidate(), person));
         comments.forEach( i -> assertSame(i.getMbti(), mbti));
     }
 
@@ -95,7 +95,7 @@ public class CommentRepositoryTest {
         Mbti mbti = testRepository.getMbtiRepository().findAll().get(0);
         Comment comment = createComment();
         commentRepository.save(comment);
-        comment.setJob(job);
+        comment.setCandidate(job);
         comment.setMbti(mbti);
 
         String modifiedContent = "수정된내용";
@@ -112,7 +112,7 @@ public class CommentRepositoryTest {
         assertEquals(findComment.getContent(), modifiedContent);
         assertEquals(findComment.getContent(), comment.getContent());
         assertSame(findComment.getMbti(), mbti);
-        assertSame(findComment.getJob(), job);
+        assertSame(findComment.getCandidate(), job);
         assertSame(findComment, comment);
 
     }
@@ -140,8 +140,6 @@ public class CommentRepositoryTest {
         //when
         Comment comment = createComment();
         commentRepository.save(comment);
-        commentRepository.modifyLikes(comment, true);
-        commentRepository.modifyLikes(comment, false);
 
         //then
         Comment findComment = commentRepository.find(comment.getId());
