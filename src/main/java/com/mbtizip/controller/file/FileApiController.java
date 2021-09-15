@@ -42,7 +42,6 @@ public class FileApiController {
             value = "/get/{filename}",
             produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] get(@PathVariable("filename") String filename) throws IOException {
-        log.info("파일 불러오기");
         return storeService.loadFromLocal(filename);
     }
 
