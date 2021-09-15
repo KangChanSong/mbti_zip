@@ -37,6 +37,13 @@ public class TestEntityGenerator {
                 .build();
     }
 
+    public static Job createJob(String title) {
+        return Job.builder()
+                .title(title)
+                .writer(JOB_WRITER.getText())
+                .build();
+    }
+
     public static MbtiCount createMbtiCount(MbtiEnum name){
         return MbtiCount.builder()
                 .mbti(createMbti(name))

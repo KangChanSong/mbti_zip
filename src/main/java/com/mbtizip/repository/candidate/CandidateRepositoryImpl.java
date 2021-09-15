@@ -3,6 +3,9 @@ package com.mbtizip.repository.candidate;
 import com.mbtizip.domain.candidate.Candidate;
 import com.mbtizip.domain.candidate.QCandidate;
 import com.mbtizip.domain.candidate.job.Job;
+import com.mbtizip.domain.candidate.job.QJob;
+import com.mbtizip.domain.candidate.person.Person;
+import com.mbtizip.domain.candidate.person.QPerson;
 import com.mbtizip.domain.category.QCategory;
 import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.file.QFile;
@@ -10,6 +13,7 @@ import com.mbtizip.domain.mbti.QMbti;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAQueryBase;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -33,38 +37,46 @@ public class CandidateRepositoryImpl implements CandidateRepository{
 
     @Override
     public Candidate find(Long id) {
-
         return em.find(Candidate.class, id);
     }
 
     @Override
-    public List<Candidate> findAll(String dType, Page page) {
-        return null;
+    public <T extends Candidate> List<T> findAll(Class<T> cls, Page page) {
+        return getJoinQuery(cls)
+                .offset(page.getOffset())
+                .limit(page.getAmount())
+                .fetch();
     }
 
     @Override
-    public List<Candidate> findAll(String dType, Page page, OrderSpecifier sort) {
-        return null;
+    public <T extends Candidate> List<T> findAll(Class<T> cls, Page page, OrderSpecifier sort) {
+        return getJoinQuery(cls)
+                .orderBy(sort)
+                .offset(page.getOffset())
+                .limit(page.getAmount())
+                .fetch();
     }
 
     @Override
-    public List<Candidate> findAll(String dType, Page page, OrderSpecifier sort, BooleanExpression keyword) {
-        return null;
+    public <T extends Candidate> List<T> findAll(Class<T> cls, Page page, OrderSpecifier sort, BooleanExpression keyword) {
+        return getJoinQuery(cls)
+                .where(keyword)
+                .orderBy(sort)
+                .offset(page.getOffset())
+                .limit(page.getAmount())
+                .fetch();
     }
 
     @Override
-    public Long countAll(String dType, Page page) {
-        return null;
+    public <T extends Candidate> Long countAll(Class<T> cls) {
+        return getJoinQuery(cls).fetchCount();
     }
 
     @Override
-    public Long countAll(String dType, Page page, OrderSpecifier sort) {
-        return null;
-    }
-
-    @Override
-    public Long countAll(String dType, Page page, OrderSpecifier sort, BooleanExpression keyword) {
-        return null;
+    public <T extends Candidate> Long countAll(Class<T> cls, BooleanExpression keyword) {
+        return getJoinQuery(cls)
+                .where(keyword)
+                .fetchCount();
     }
 
     @Override
@@ -72,22 +84,40 @@ public class CandidateRepositoryImpl implements CandidateRepository{
         em.remove(candidate);
     }
 
-    @Override
-    public Long countByNameOrTitle(String dType, String title) {
+    //== private 메서드 ==//
+
+    private <T extends Candidate> JPAQuery<T> getJoinQuery(Class<T> cls) {
+        return checkAndGetQuery(cls,
+                getPersonJoinQuery(),
+                getJobJoinQuery());
+    }
+
+    private <T extends Candidate> JPAQuery<T> checkAndGetQuery(Class<T> cls, JPAQuery<T> personQuery, JPAQuery<T> jobQuery){
+        if (!cls.equals(Person.class) && !cls.equals(Job.class))
+            throw new IllegalArgumentException("Class 는 Job 이나 Person 이어야 합니다.");
+        if (cls.equals(Person.class)) return personQuery;
+        if (cls.equals(Job.class)) return jobQuery;
+
         return null;
     }
 
-    private JPAQueryBase getJoinQuery(){
-        final QCategory category = QCategory.category;
-        final QCandidate candidate = QCandidate.candidate;
-        final QFile file = QFile.file;
-        final QMbti mbti = QMbti.mbti;
+    private JPAQuery getPersonJoinQuery(){
+        final QPerson person = QPerson.person;
+        return queryFactory.selectFrom(person)
+                .leftJoin(person.mbti, QMbti.mbti)
+                .fetchJoin()
+                .leftJoin(person.file, QFile.file)
+                .fetchJoin()
+                .leftJoin(person.category, QCategory.category)
+                .fetchJoin();
+    }
 
-        return queryFactory.selectFrom(candidate)
-                .leftJoin(candidate.mbti, mbti)
+    private JPAQuery getJobJoinQuery(){
+        final QJob job = QJob.job;
+        return queryFactory.selectFrom(job)
+                .leftJoin(job.mbti, QMbti.mbti)
                 .fetchJoin()
-                .fetchJoin()
-                .leftJoin(candidate.file, file)
+                .leftJoin(job.file, QFile.file)
                 .fetchJoin();
     }
 }
