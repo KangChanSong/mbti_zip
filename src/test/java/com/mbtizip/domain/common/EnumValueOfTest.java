@@ -1,7 +1,6 @@
 package com.mbtizip.domain.common;
 
-import com.mbtizip.domain.person.Gender;
-import org.junit.jupiter.api.Assertions;
+import com.mbtizip.domain.candidate.person.Gender;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

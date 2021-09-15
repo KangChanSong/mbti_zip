@@ -1,9 +1,8 @@
 package com.mbtizip.service.job;
 
-import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.candidate.job.Job;
 import com.mbtizip.repository.job.JobRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
-import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
 import com.mbtizip.service.mbtiCount.MbtiCountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

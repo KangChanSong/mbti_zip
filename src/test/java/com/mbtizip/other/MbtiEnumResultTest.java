@@ -1,13 +1,9 @@
 package com.mbtizip.other;
 
-import com.mbtizip.common.util.TestEntityGenerator;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.mbti.QMbti;
-import com.mbtizip.domain.person.Person;
-import com.mbtizip.domain.person.QPerson;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;

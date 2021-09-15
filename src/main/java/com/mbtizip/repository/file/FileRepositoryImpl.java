@@ -4,10 +4,9 @@ import com.mbtizip.domain.common.CommonEntity;
 import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.file.FileId;
 import com.mbtizip.domain.file.QFile;
-import com.mbtizip.domain.job.Job;
-import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.candidate.job.Job;
+import com.mbtizip.domain.candidate.person.Person;
 import com.mbtizip.exception.NoEntityFoundException;
-import com.mbtizip.util.ErrorMessageProvider;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 import static com.mbtizip.util.ErrorMessageProvider.NO_ENTITY_FOUND;
 

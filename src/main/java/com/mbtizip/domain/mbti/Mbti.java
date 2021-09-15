@@ -1,13 +1,13 @@
 package com.mbtizip.domain.mbti;
 
+import com.mbtizip.domain.candidate.Candidate;
 import com.mbtizip.domain.comment.Comment;
-import com.mbtizip.domain.job.Job;
-import com.mbtizip.domain.person.Person;
-import com.querydsl.core.annotations.Config;
-import lombok.AllArgsConstructor;
+import com.mbtizip.domain.candidate.job.Job;
+import com.mbtizip.domain.candidate.person.Person;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -27,11 +27,8 @@ public class Mbti {
     private MbtiEnum name;
 
     @OneToMany(mappedBy = "mbti")
-    private List<Person> persons = new ArrayList<>();
+    private List<Candidate> candidates = new ArrayList<>();
 
-    @OneToMany(mappedBy = "mbti")
-    private List<Job> jobs = new ArrayList<>();
-    
     @OneToMany(mappedBy = "mbti")
     private List<Comment> comments = new ArrayList<>();
 

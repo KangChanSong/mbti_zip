@@ -2,8 +2,6 @@ package com.mbtizip.service.comment;
 
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.common.pageSortFilter.Page;
-import com.mbtizip.domain.job.Job;
-import com.mbtizip.domain.person.Person;
 import com.querydsl.core.types.OrderSpecifier;
 
 import java.util.List;

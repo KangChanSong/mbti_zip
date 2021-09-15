@@ -1,6 +1,6 @@
 package com.mbtizip.dummies;
 
-import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.candidate.job.Job;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,22 +1,17 @@
 package com.mbtizip.other;
 
-import com.mbtizip.common.enums.TestJobEnum;
-import com.mbtizip.domain.job.Job;
-import com.mbtizip.domain.job.QJob;
+import com.mbtizip.domain.candidate.job.Job;
+import com.mbtizip.domain.candidate.job.QJob;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.mbti.QMbti;
 import com.mbtizip.repository.test.TestJobRepository;
 import com.mbtizip.repository.test.TestMbtiRepository;
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;

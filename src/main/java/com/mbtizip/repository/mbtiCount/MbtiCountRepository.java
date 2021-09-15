@@ -1,9 +1,9 @@
 package com.mbtizip.repository.mbtiCount;
 
-import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.candidate.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
-import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.candidate.person.Person;
 
 import java.util.List;
 

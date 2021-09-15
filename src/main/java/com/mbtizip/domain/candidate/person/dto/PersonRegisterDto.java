@@ -1,13 +1,8 @@
-package com.mbtizip.domain.person.dto;
+package com.mbtizip.domain.candidate.person.dto;
 
-import com.mbtizip.domain.category.Category;
-import com.mbtizip.domain.category.dto.CategoryRegisterDto;
-import com.mbtizip.domain.person.Gender;
-import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.candidate.person.Gender;
+import com.mbtizip.domain.candidate.person.Person;
 import lombok.Data;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 public class PersonRegisterDto {

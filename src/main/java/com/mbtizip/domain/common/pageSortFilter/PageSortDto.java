@@ -1,8 +1,8 @@
 package com.mbtizip.domain.common.pageSortFilter;
 
 import com.mbtizip.domain.comment.QComment;
-import com.mbtizip.domain.job.QJob;
-import com.mbtizip.domain.person.QPerson;
+import com.mbtizip.domain.candidate.job.QJob;
+import com.mbtizip.domain.candidate.person.QPerson;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.DateTimePath;

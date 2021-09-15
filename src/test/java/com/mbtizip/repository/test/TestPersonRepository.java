@@ -1,9 +1,7 @@
 package com.mbtizip.repository.test;
 
-import com.mbtizip.domain.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
-import com.mbtizip.domain.person.Person;
-import com.mbtizip.repository.person.PersonRepository;
+import com.mbtizip.domain.candidate.person.Person;
 
 import javax.persistence.EntityManager;
 

@@ -2,7 +2,6 @@ package com.mbtizip.repository.mbti;
 
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
-import com.mbtizip.domain.person.Person;
 import com.mbtizip.exception.NoEntityFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

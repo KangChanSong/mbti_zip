@@ -1,12 +1,11 @@
 package com.mbtizip.service.mbtiCount;
 
-import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.candidate.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
-import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.candidate.person.Person;
 
 import java.util.List;
-import java.util.Map;
 
 public interface MbtiCountService {
     void vote(Mbti mbti, Object objz);

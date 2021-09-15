@@ -1,20 +1,17 @@
 package com.mbtizip.service.job;
 
 import com.mbtizip.domain.common.pageSortFilter.Page;
-import com.mbtizip.domain.job.Job;
-import com.mbtizip.domain.job.QJob;
+import com.mbtizip.domain.candidate.job.Job;
+import com.mbtizip.domain.candidate.job.QJob;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
-import com.mbtizip.repository.file.FileRepository;
 import com.mbtizip.repository.job.JobRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
 import com.mbtizip.service.file.FileService;
 import com.mbtizip.service.mbtiCount.MbtiCountService;
-import com.mbtizip.util.EncryptHelper;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

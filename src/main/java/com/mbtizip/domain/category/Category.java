@@ -1,6 +1,6 @@
 package com.mbtizip.domain.category;
 
-import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.candidate.person.Person;
 import com.sun.istack.NotNull;
 import lombok.*;
 

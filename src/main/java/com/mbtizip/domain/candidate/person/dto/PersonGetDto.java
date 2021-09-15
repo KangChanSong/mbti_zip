@@ -1,15 +1,13 @@
-package com.mbtizip.domain.person.dto;
+package com.mbtizip.domain.candidate.person.dto;
 
 import com.mbtizip.domain.common.var.Text;
-import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.candidate.person.Person;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Locale;
 
 import static com.mbtizip.domain.common.FileNameProvider.getFileName;
-import static com.mbtizip.service.person.PersonService.NO_CATEGORY;
 
 @Builder
 @Getter

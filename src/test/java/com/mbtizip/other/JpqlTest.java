@@ -1,7 +1,6 @@
 package com.mbtizip.other;
 
-import com.mbtizip.domain.job.Job;
-import org.junit.jupiter.api.Test;
+import com.mbtizip.domain.candidate.job.Job;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

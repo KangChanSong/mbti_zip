@@ -1,19 +1,16 @@
 package com.mbtizip.common.util;
 
 import com.mbtizip.common.enums.TestCategoryEnum;
-import com.mbtizip.common.enums.TestCommentEnum;
-import com.mbtizip.common.enums.TestFileEnum;
-import com.mbtizip.common.enums.TestPersonEnum;
 import com.mbtizip.domain.category.Category;
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.file.FileId;
-import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.candidate.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
-import com.mbtizip.domain.person.Gender;
-import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.candidate.person.Gender;
+import com.mbtizip.domain.candidate.person.Person;
 
 import static com.mbtizip.common.enums.TestCommentEnum.COMMENT_CONTENT;
 import static com.mbtizip.common.enums.TestCommentEnum.COMMENT_WRITER;

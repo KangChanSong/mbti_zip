@@ -1,13 +1,8 @@
-package com.mbtizip.domain.person.dto;
+package com.mbtizip.domain.candidate.person.dto;
 
-import com.mbtizip.domain.category.Category;
-import com.mbtizip.domain.person.Person;
 import lombok.*;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor

@@ -1,4 +1,4 @@
-package com.mbtizip.domain.person;
+package com.mbtizip.domain.candidate.person;
 
 public enum Gender {
 

@@ -1,21 +1,13 @@
 package com.mbtizip.repository;
 
-import com.mbtizip.common.enums.TestFileEnum;
-import com.mbtizip.common.util.TestEntityGenerator;
 import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.file.FileId;
-import com.mbtizip.domain.job.Job;
-import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.candidate.job.Job;
+import com.mbtizip.domain.candidate.person.Person;
 import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.file.FileRepository;
-import com.mbtizip.repository.person.PersonRepository;
-import com.mbtizip.repository.test.TestJobRepository;
-import com.mbtizip.repository.test.TestPersonRepository;
 import com.mbtizip.repository.test.TestRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;

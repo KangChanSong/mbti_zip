@@ -1,7 +1,7 @@
 package com.mbtizip.service.job;
 
 import com.mbtizip.domain.common.pageSortFilter.Page;
-import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.candidate.job.Job;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 

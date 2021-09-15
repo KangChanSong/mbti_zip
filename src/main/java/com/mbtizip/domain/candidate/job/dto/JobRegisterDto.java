@@ -1,9 +1,7 @@
-package com.mbtizip.domain.job.dto;
+package com.mbtizip.domain.candidate.job.dto;
 
-import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.candidate.job.Job;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class JobRegisterDto {

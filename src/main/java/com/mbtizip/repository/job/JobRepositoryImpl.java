@@ -2,11 +2,10 @@ package com.mbtizip.repository.job;
 
 import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.file.QFile;
-import com.mbtizip.domain.job.Job;
-import com.mbtizip.domain.job.QJob;
+import com.mbtizip.domain.candidate.job.Job;
+import com.mbtizip.domain.candidate.job.QJob;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.QMbti;
-import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.common.CommonRepository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;

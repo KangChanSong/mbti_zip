@@ -1,10 +1,9 @@
 package com.mbtizip.domain.mbtiCount;
 
-import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.candidate.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
-import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.candidate.person.Person;
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

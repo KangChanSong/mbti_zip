@@ -1,11 +1,11 @@
 package com.mbtizip.repository.mbtiCount;
 
 import com.mbtizip.domain.common.CommonEntity;
-import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.candidate.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
-import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.candidate.person.Person;
 import com.mbtizip.exception.TooManyEntityException;
 import com.mbtizip.repository.mbti.MbtiRepository;
 import lombok.RequiredArgsConstructor;

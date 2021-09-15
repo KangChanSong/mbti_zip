@@ -1,9 +1,7 @@
-package com.mbtizip.domain.job.dto;
+package com.mbtizip.domain.candidate.job.dto;
 
-import com.mbtizip.domain.common.FileNameProvider;
 import com.mbtizip.domain.common.var.Text;
-import com.mbtizip.domain.file.File;
-import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.candidate.job.Job;
 import lombok.Builder;
 import lombok.Data;
 

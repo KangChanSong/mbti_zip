@@ -1,8 +1,8 @@
 package com.mbtizip.service.person;
 
 import com.mbtizip.domain.common.pageSortFilter.Page;
-import com.mbtizip.domain.person.Person;
-import com.mbtizip.domain.person.dto.PersonGetDto;
+import com.mbtizip.domain.candidate.person.Person;
+import com.mbtizip.domain.candidate.person.dto.PersonGetDto;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 

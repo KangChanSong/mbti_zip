@@ -1,7 +1,7 @@
 package com.mbtizip.repository.person;
 
 import com.mbtizip.domain.common.pageSortFilter.Page;
-import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.candidate.person.Person;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 

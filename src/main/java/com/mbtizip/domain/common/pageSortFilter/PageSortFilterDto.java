@@ -1,9 +1,9 @@
 package com.mbtizip.domain.common.pageSortFilter;
 
-import com.mbtizip.domain.job.QJob;
+import com.mbtizip.domain.candidate.job.QJob;
 import com.mbtizip.domain.mbti.MbtiEnum;
-import com.mbtizip.domain.person.Gender;
-import com.mbtizip.domain.person.QPerson;
+import com.mbtizip.domain.candidate.person.Gender;
+import com.mbtizip.domain.candidate.person.QPerson;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

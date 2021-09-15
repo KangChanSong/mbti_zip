@@ -1,8 +1,8 @@
 package com.mbtizip.dummies;
 
 import com.mbtizip.domain.category.Category;
-import com.mbtizip.domain.person.Gender;
-import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.candidate.person.Gender;
+import com.mbtizip.domain.candidate.person.Person;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

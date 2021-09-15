@@ -1,11 +1,9 @@
 package com.mbtizip.domain.file;
 
-import com.mbtizip.domain.job.Job;
-import com.mbtizip.domain.person.Person;
-import lombok.Builder;
+import com.mbtizip.domain.candidate.job.Job;
+import com.mbtizip.domain.candidate.person.Person;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;

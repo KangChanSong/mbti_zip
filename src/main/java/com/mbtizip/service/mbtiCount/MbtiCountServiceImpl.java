@@ -1,23 +1,17 @@
 package com.mbtizip.service.mbtiCount;
 
-import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.candidate.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
-import com.mbtizip.domain.mbtiCount.dto.MbtiCountGetDto;
-import com.mbtizip.domain.person.Person;
-import com.mbtizip.repository.mbti.MbtiRepository;
+import com.mbtizip.domain.candidate.person.Person;
 import com.mbtizip.repository.mbtiCount.MbtiCountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 

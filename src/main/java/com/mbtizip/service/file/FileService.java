@@ -1,8 +1,8 @@
 package com.mbtizip.service.file;
 
 import com.mbtizip.domain.file.File;
-import com.mbtizip.domain.job.Job;
-import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.candidate.job.Job;
+import com.mbtizip.domain.candidate.person.Person;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {

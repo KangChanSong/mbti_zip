@@ -1,10 +1,11 @@
 package com.mbtizip.domain.comment;
 
+import com.mbtizip.domain.candidate.Candidate;
 import com.mbtizip.domain.common.CommonEntity;
 import com.mbtizip.domain.common.pageSortFilter.InterfaceForPageSortFilter;
-import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.candidate.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
-import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.candidate.person.Person;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,12 +51,8 @@ public class Comment extends CommonEntity implements InterfaceForPageSortFilter 
     private LocalDateTime updateDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "person_id")
-    private Person person;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_id")
-    private Job job;
+    @JoinColumn(name = "candidate_id")
+    private Candidate candidate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mbti_id")
@@ -69,14 +66,9 @@ public class Comment extends CommonEntity implements InterfaceForPageSortFilter 
     }
     
     //==연관관계 메서드==//
-    public void setJob(Job job){
-        this.job = job;
-        job.getComments().add(this);
-    }
-
-    public void setPerson(Person person){
-        this.person = person;
-        person.getComments().add(this);
+    public void setCandidate(Candidate candidate){
+        this.candidate = candidate;
+        candidate.getComments().add(this);
     }
 
     public void setMbti(Mbti mbti){

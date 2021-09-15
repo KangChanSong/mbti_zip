@@ -1,8 +1,7 @@
 package com.mbtizip.other;
 
-import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.candidate.job.Job;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 public class ClassGetNameTest {
 

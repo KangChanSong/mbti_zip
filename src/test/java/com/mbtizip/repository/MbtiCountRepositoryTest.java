@@ -1,16 +1,15 @@
 package com.mbtizip.repository;
 
-import com.mbtizip.domain.job.Job;
+import com.mbtizip.domain.candidate.job.Job;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbtiCount.MbtiCount;
-import com.mbtizip.domain.person.Person;
+import com.mbtizip.domain.candidate.person.Person;
 import com.mbtizip.repository.mbti.MbtiRepositoryImpl;
 import com.mbtizip.repository.mbtiCount.MbtiCountRepositoryImpl;
 import com.mbtizip.repository.test.TestJobRepository;
 import com.mbtizip.repository.test.TestMbtiRepository;
 import com.mbtizip.repository.test.TestPersonRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +18,6 @@ import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static com.mbtizip.repository.test.TestJobRepository.JOB_TITLE;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
