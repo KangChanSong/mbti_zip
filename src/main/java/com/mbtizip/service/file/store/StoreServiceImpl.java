@@ -1,6 +1,9 @@
 package com.mbtizip.service.file.store;
 
 import com.mbtizip.domain.file.File;
+import com.mbtizip.service.file.file.FileDeleteService;
+import com.mbtizip.util.FileDeleter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -15,16 +18,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class StoreServiceImpl implements StoreService{
-
     @Value("${file.path}")
     private String path;
 
     Path rootLocation;
+
+    private final FileDeleteService fileDeleteService;
 
     @PostConstruct
     public void setRootLocation(){
@@ -44,6 +47,8 @@ public class StoreServiceImpl implements StoreService{
         catch (IOException e){
             throw new RuntimeException("파일을 저장하는데 실패했습니다.", e);
         }
+
+        FileDeleter.deleteFileIfFull(() -> fileDeleteService.deleteNotRegisteredFiles());
     }
     @Override
     public byte[] loadFromLocal(String fullname) {

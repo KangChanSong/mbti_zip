@@ -1,4 +1,4 @@
-package com.mbtizip.util.schedule.file;
+package com.mbtizip.service.file.file;
 
 import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.file.FileId;
@@ -14,7 +14,7 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class FileSchedulerImpl implements FileScheduler {
+public class FileDeleteServiceImpl implements FileDeleteService {
 
     private final FileRepository fileRepository;
     private final StoreService storeService;
@@ -26,6 +26,11 @@ public class FileSchedulerImpl implements FileScheduler {
      */
     @Override
     public void deleteNotRegisteredFiles() {
+        deleteNotRegistered();
+        deleteFilesNotInDb();
+    }
+
+    public void deleteNotRegistered(){
         log.info("등록되지 않은 이미지 삭제");
 
         // 인물, 직업과 연관되지 않은 파일들을 모두 찾는다.
@@ -38,7 +43,6 @@ public class FileSchedulerImpl implements FileScheduler {
         deleteFromDb(files);
     }
 
-    @Override
     public void deleteFilesNotInDb() {
         java.io.File[] files = new java.io.File(path).listFiles();
 
