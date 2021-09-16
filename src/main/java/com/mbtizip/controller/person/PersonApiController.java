@@ -89,8 +89,8 @@ public class PersonApiController {
     }
 
     @GetMapping("/count/all")
-    public CountDto getTotalCount( @RequestParam(name = "keyword", required = false) String keyword,
-                                   @RequestParam(name = "filterBy", required = false) String filterBy){
+    public CountDto getTotalCount(@RequestParam(value = "keyword", required = false) String keyword,
+                                  @RequestParam(value = "filterBy", required = false) String filterBy){
 
         PageSortFilterDto psf = new PageSortFilterDto();
         psf.setKeyword(keyword);
