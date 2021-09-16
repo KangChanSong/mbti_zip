@@ -1,11 +1,9 @@
 package com.mbtizip.service.comment;
 
-import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.candidate.person.Person;
+import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.repository.candidate.CandidateRepository;
 import com.mbtizip.repository.comment.CommentRepository;
-import com.mbtizip.repository.job.JobRepository;
-import com.mbtizip.repository.person.PersonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,8 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static com.mbtizip.common.util.TestEntityGenerator.*;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static com.mbtizip.common.util.TestEntityGenerator.createComment;
+import static com.mbtizip.common.util.TestEntityGenerator.createPerson;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)

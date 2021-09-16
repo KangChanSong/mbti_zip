@@ -66,7 +66,7 @@ public class JobApiController {
                               @RequestParam(name ="keyword", required = false) String keyword,
                               @RequestParam(name ="filterBy", required = false) String filterBy){
 
-        PageSortFilterDto psf = new PageSortFilterDto();
+        PageSortFilterDto<Job> psf = new PageSortFilterDto();
         psf.setPage(page);
         psf.setSize(size);
         psf.setSort(sort);
@@ -89,8 +89,14 @@ public class JobApiController {
     }
 
     @GetMapping("/count/all")
-    public CountDto getTotalCount(){
-        return new CountDto(jobService.getTotalCount());
+    public CountDto getTotalCount(@RequestParam("keyword") String keyword,
+                                  @RequestParam("filterBy") String filterBy){
+
+        PageSortFilterDto<Job> psf = new PageSortFilterDto();
+        psf.setKeyword(keyword);
+        psf.setFilterBy(filterBy);
+
+        return new CountDto(jobService.countAll(psf.toJobKeyword()));
     }
 
     @GetMapping("/exists/{title}")

@@ -1,21 +1,21 @@
 package com.mbtizip.service.job;
 
 import com.mbtizip.domain.candidate.job.Job;
-import com.mbtizip.repository.job.JobRepository;
+import com.mbtizip.repository.candidate.CandidateRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
 import com.mbtizip.service.mbtiCount.MbtiCountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.mockito.Mock;
 
-import static com.mbtizip.common.util.TestEntityGenerator.*;
+import static com.mbtizip.common.util.TestEntityGenerator.createJob;
 
 class JobServiceTest {
 
     JobService jobService;
 
     @Mock
-    JobRepository jobRepository;
+    CandidateRepository candidateRepository;
 
     @Mock
     MbtiRepository mbtiRepository;

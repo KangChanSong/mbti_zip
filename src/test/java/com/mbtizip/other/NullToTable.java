@@ -4,7 +4,7 @@ import com.mbtizip.common.util.TestEntityGenerator;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.candidate.person.Person;
-import com.mbtizip.repository.person.PersonRepository;
+import com.mbtizip.repository.candidate.CandidateRepository;
 import com.mbtizip.repository.test.TestPersonRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,7 @@ import javax.persistence.EntityManager;
 public class NullToTable {
 
     @Autowired
-    PersonRepository personRepository;;
+    CandidateRepository candidateRepository;
 
     @Autowired
     EntityManager em;
@@ -41,7 +41,7 @@ public class NullToTable {
         person.changeMbti(null);
 
         //then
-        Person findPerson = personRepository.find(person.getId());
+        Person findPerson = (Person) candidateRepository.find(person.getId());
 
         Assertions.assertEquals(findPerson.getMbti(), null);
 

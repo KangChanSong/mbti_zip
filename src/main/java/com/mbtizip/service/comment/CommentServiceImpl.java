@@ -4,13 +4,8 @@ import com.mbtizip.domain.candidate.Candidate;
 import com.mbtizip.domain.comment.Comment;
 import com.mbtizip.domain.comment.QComment;
 import com.mbtizip.domain.common.pageSortFilter.Page;
-import com.mbtizip.domain.candidate.job.Job;
-import com.mbtizip.domain.candidate.person.Person;
 import com.mbtizip.repository.candidate.CandidateRepository;
 import com.mbtizip.repository.comment.CommentRepository;
-import com.mbtizip.repository.job.JobRepository;
-import com.mbtizip.repository.person.PersonRepository;
-import com.mbtizip.util.ErrorMessageProvider;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import static com.mbtizip.util.EncryptHelper.encrypt;
 import static com.mbtizip.util.EncryptHelper.isMatch;

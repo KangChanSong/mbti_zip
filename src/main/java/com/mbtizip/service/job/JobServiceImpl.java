@@ -5,7 +5,7 @@ import com.mbtizip.domain.candidate.job.Job;
 import com.mbtizip.domain.candidate.job.QJob;
 import com.mbtizip.domain.mbti.Mbti;
 import com.mbtizip.domain.mbti.MbtiEnum;
-import com.mbtizip.repository.job.JobRepository;
+import com.mbtizip.repository.candidate.CandidateRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
 import com.mbtizip.service.file.FileService;
 import com.mbtizip.service.mbtiCount.MbtiCountService;
@@ -25,7 +25,7 @@ import static com.mbtizip.util.EncryptHelper.isMatch;
 @Transactional(readOnly = true)
 public class JobServiceImpl implements JobService{
 
-    private final JobRepository jobRepository;
+    private final CandidateRepository candidateRepository;
     private final MbtiRepository mbtiRepository;
     private final MbtiCountService mbtiCountService;
     private final FileService fileService;
@@ -37,7 +37,7 @@ public class JobServiceImpl implements JobService{
         if(job == null) throw new IllegalArgumentException("Job 이 존재하지 않습니다.");
 
         job.setPassword(encrypt(job.getPassword()));
-        Long saveId = jobRepository.save(job);
+        Long saveId = candidateRepository.save(job);
 
         if(saveId != null){
             mbtiCountService.initializeByCandidate(job);
@@ -61,24 +61,31 @@ public class JobServiceImpl implements JobService{
             sort = QJob.job.createDate.desc();
         }
         if(keyword == null){
-            return jobRepository.findAll(page, sort);
+            return candidateRepository.findAll(Job.class, page, sort);
         }
 
-        return jobRepository.findAll(page, sort, keyword);
+        return candidateRepository.findAll(Job.class, page, sort, keyword);
     }
 
     @Override
     public List<Job> findAllWithMbti(Page page, OrderSpecifier sort, Long mbtiId) {
         MbtiEnum mbti = mbtiRepository.find(mbtiId).getName();
         BooleanExpression keyword = QJob.job.mbti.name.eq(mbti);
-        return jobRepository.findAll(page, sort, keyword);
+        return candidateRepository.findAll(Job.class, page, sort, keyword);
+    }
+
+    @Override
+    public Long countAll(BooleanExpression keyword) {
+        if(keyword == null) return candidateRepository.countAll(Job.class);
+        if(keyword != null) return candidateRepository.countAll(Job.class, keyword);
+        return 0L;
     }
 
 
     @Transactional
     @Override
     public Boolean delete(Long jobId, String password) {
-        Job findJob = jobRepository.find(jobId);
+        Job findJob = (Job) candidateRepository.find(jobId);
         if(findJob == null) throw new IllegalArgumentException("직업을 찾을 수 없습니다. id : " + jobId);
         if(isMatch(password, findJob.getPassword())) {
             delete(findJob);
@@ -92,14 +99,14 @@ public class JobServiceImpl implements JobService{
     private void delete(Job job){
         fileService.deleteFileWithCandidate(job);
         mbtiCountService.deleteAllByCandidate(job);
-        jobRepository.remove(job);
+        candidateRepository.remove(job);
     }
 
     @Transactional
     @Override
     public Boolean vote(Long mbtiId, Long jobId) {
         Mbti mbti = mbtiRepository.find(mbtiId);
-        Job job = jobRepository.find(jobId);
+        Job job = (Job) candidateRepository.find(jobId);
         mbtiCountService.vote(mbti, job);
         return true;
     }
@@ -108,7 +115,7 @@ public class JobServiceImpl implements JobService{
     @Override
     public Boolean cancelVote(Long mbtiId, Long jobId) {
         Mbti mbti = mbtiRepository.find(mbtiId);
-        Job job = jobRepository.find(jobId);
+        Job job = (Job) candidateRepository.find(jobId);
         mbtiCountService.cancelVote(mbti, job);
         return true;
     }
@@ -127,25 +134,20 @@ public class JobServiceImpl implements JobService{
         return true;
     }
 
-    @Override
-    public Long getTotalCount() {
-        return jobRepository.countAll();
-    }
-
     @Transactional
     @Override
     public void increaseView(Long jobId) {
-        Job job = jobRepository.find(jobId);
+        Job job = (Job) candidateRepository.find(jobId);
         job.increaseViews();
     }
 
     @Override
     public Boolean checkIfExists(String title) {
-        return jobRepository.countByTitle(title) > 0 ? true : false;
+        return candidateRepository.countAll(Job.class, QJob.job.title.eq(title)) > 0 ? true : false;
     }
 
     private Job checkAndReturn(Long jobId){
-        Job findJob = jobRepository.find(jobId);
+        Job findJob = (Job) candidateRepository.find(jobId);
         if(findJob == null) throw new IllegalArgumentException("직업을 찾을 수 없습니다. id : " + jobId);
         return findJob;
     }

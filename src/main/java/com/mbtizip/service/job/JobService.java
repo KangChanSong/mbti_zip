@@ -14,6 +14,8 @@ public interface JobService {
     List<Job> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword);
     List<Job> findAllWithMbti(Page page, OrderSpecifier sort, Long mbtiId);
 
+    Long countAll(BooleanExpression keyword);
+
     Boolean delete(Long jobId, String password);
 
     Boolean vote(Long mbtiId, Long jobId);
@@ -22,7 +24,6 @@ public interface JobService {
     Boolean like(Long jobId);
     Boolean cancelLike(Long jobId);
 
-    Long getTotalCount();
     void increaseView(Long jobId);
     Boolean checkIfExists(String title);
 }

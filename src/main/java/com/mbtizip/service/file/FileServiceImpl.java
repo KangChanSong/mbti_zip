@@ -1,27 +1,17 @@
 package com.mbtizip.service.file;
 
 import com.mbtizip.domain.candidate.Candidate;
-import com.mbtizip.domain.common.CommonEntity;
 import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.file.FileId;
-import com.mbtizip.domain.candidate.job.Job;
-import com.mbtizip.domain.candidate.person.Person;
-import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.candidate.CandidateRepository;
 import com.mbtizip.repository.file.FileRepository;
-import com.mbtizip.repository.job.JobRepository;
-import com.mbtizip.repository.person.PersonRepository;
 import com.mbtizip.service.file.store.StoreService;
-import com.mbtizip.util.ErrorMessageProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Optional;
-
-import static com.mbtizip.util.ErrorMessageProvider.INVALID_INSTANCE;
 import static com.mbtizip.util.ErrorMessageProvider.NO_ENTITY_FOUND;
 
 @Slf4j

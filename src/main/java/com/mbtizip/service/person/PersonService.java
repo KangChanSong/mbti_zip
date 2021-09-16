@@ -10,13 +10,13 @@ import java.util.List;
 
 public interface PersonService {
 
-    String NO_CATEGORY = "없음";
-
     Boolean registerWithCategory(Person person, Long categoryId);
     Person getById(Long saveId);
 
     List<PersonGetDto> findAll(Page page, OrderSpecifier sort, BooleanExpression keyword);
     List<PersonGetDto> findAllWithMbti(Page page, OrderSpecifier sort, Long mbtiId);
+
+    Long countAll(BooleanExpression keyword);
 
     Boolean delete(Long id, String password);
 
@@ -27,6 +27,5 @@ public interface PersonService {
     Boolean cancelLike(Long personId);
 
     Boolean increaseView(Long personId);
-    Long getTotalCount();
     Boolean checkIfExists(String name);
 }

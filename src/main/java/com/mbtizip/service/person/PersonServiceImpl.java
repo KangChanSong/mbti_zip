@@ -1,5 +1,6 @@
 package com.mbtizip.service.person;
 
+import com.mbtizip.domain.candidate.person.QPerson;
 import com.mbtizip.domain.category.Category;
 import com.mbtizip.domain.common.pageSortFilter.Page;
 import com.mbtizip.domain.mbti.Mbti;
@@ -7,9 +8,9 @@ import com.mbtizip.domain.mbti.MbtiEnum;
 import com.mbtizip.domain.mbti.QMbti;
 import com.mbtizip.domain.candidate.person.Person;
 import com.mbtizip.domain.candidate.person.dto.PersonGetDto;
+import com.mbtizip.repository.candidate.CandidateRepository;
 import com.mbtizip.repository.category.CategoryRepository;
 import com.mbtizip.repository.mbti.MbtiRepository;
-import com.mbtizip.repository.person.PersonRepository;
 import com.mbtizip.service.file.FileService;
 import com.mbtizip.service.mbtiCount.MbtiCountService;
 import com.querydsl.core.types.OrderSpecifier;
@@ -31,7 +32,7 @@ import static com.mbtizip.util.EncryptHelper.isMatch;
 @RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService{
 
-    private final PersonRepository personRepository;
+    private final CandidateRepository candidateRepository;
     private final CategoryRepository categoryRepository;
     private final MbtiRepository mbtiRepository;
     private final MbtiCountService mbtiCountService;
@@ -43,7 +44,7 @@ public class PersonServiceImpl implements PersonService{
     public Boolean registerWithCategory(Person person, Long categoryId) {
         if(person == null) throw new IllegalArgumentException("Person 이 null 입니다.");
         person.setPassword(encrypt(person.getPassword()));
-        Long saveId = personRepository.save(person);
+        Long saveId = candidateRepository.save(person);
         savePersonCategories(person, categoryId);
 
         if(saveId != null){
@@ -54,7 +55,7 @@ public class PersonServiceImpl implements PersonService{
 
     @Override
     public Person getById(Long saveId) {
-        Person findPerson = personRepository.find(saveId);
+        Person findPerson = (Person) candidateRepository.find(saveId);
         if (findPerson == null) throw new IllegalArgumentException("Person 을 찾을 수 없습니다. id : " + saveId);
         return findPerson;
     }
@@ -64,9 +65,9 @@ public class PersonServiceImpl implements PersonService{
 
         List<Person> findPersons;
         if(keyword == null){
-            findPersons = personRepository.findAll(page, sort);
+            findPersons = candidateRepository.findAll(Person.class, page, sort);
         } else {
-            findPersons = personRepository.findAll(page, sort, keyword);
+            findPersons = candidateRepository.findAll(Person.class, page, sort, keyword);
         }
         return  createPersonListWithCategories(findPersons);
     }
@@ -77,8 +78,15 @@ public class PersonServiceImpl implements PersonService{
     public List<PersonGetDto> findAllWithMbti(Page page, OrderSpecifier sort, Long mbtiId) {
         MbtiEnum mbti = mbtiRepository.find(mbtiId).getName();
         BooleanExpression keyword = QMbti.mbti.name.eq(mbti);
-        List<Person> findPersons = personRepository.findAll(page, sort, keyword);
+        List<Person> findPersons = candidateRepository.findAll(Person.class, page, sort, keyword);
         return createPersonListWithCategories(findPersons);
+    }
+
+    @Override
+    public Long countAll(BooleanExpression keyword) {
+        if(keyword == null) return candidateRepository.countAll(Person.class);
+        if(keyword != null) return candidateRepository.countAll(Person.class, keyword);
+        return 0L;
     }
 
     @Transactional
@@ -97,14 +105,14 @@ public class PersonServiceImpl implements PersonService{
     private void delete(Person person){
         fileService.deleteFileWithCandidate(person);
         mbtiCountService.deleteAllByCandidate(person);
-        personRepository.remove(person);
+        candidateRepository.remove(person);
     }
 
     @Transactional
     @Override
     public Boolean vote(Long personId, Long mbtiId) {
         Mbti mbti = mbtiRepository.find(mbtiId);
-        Person person = personRepository.find(personId);
+        Person person = (Person) candidateRepository.find(personId);
         checkIfNull(mbti, person);
 
         mbtiCountService.vote(mbti, person);
@@ -116,7 +124,7 @@ public class PersonServiceImpl implements PersonService{
     @Override
     public Boolean cancelVote(Long personId, Long mbtiId) {
         Mbti mbti = mbtiRepository.find(mbtiId);
-        Person person = personRepository.find(personId);
+        Person person = (Person) candidateRepository.find(personId);
 
         mbtiCountService.cancelVote(mbti, person);
 
@@ -145,13 +153,8 @@ public class PersonServiceImpl implements PersonService{
     }
 
     @Override
-    public Long getTotalCount() {
-        return personRepository.countAll();
-    }
-
-    @Override
     public Boolean checkIfExists(String name) {
-        return personRepository.countByName(name) > 0 ? true : false;
+        return candidateRepository.countAll(Person.class, QPerson.person.name.eq(name)) > 0 ? true : false;
     }
 
 
@@ -164,7 +167,7 @@ public class PersonServiceImpl implements PersonService{
 
 
     private Person checkAndReturnPerson(Long personId){
-        Person findPerson = personRepository.find(personId);
+        Person findPerson = (Person) candidateRepository.find(personId);
         if(findPerson == null) throw new IllegalArgumentException("인물을 찾을 수 없습니다.");
         return findPerson;
     }

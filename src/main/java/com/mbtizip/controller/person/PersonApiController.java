@@ -89,8 +89,13 @@ public class PersonApiController {
     }
 
     @GetMapping("/count/all")
-    public CountDto getTotalCount(){
-        return new CountDto(personService.getTotalCount());
+    public CountDto getTotalCount( @RequestParam(name = "keyword", required = false) String keyword,
+                                   @RequestParam(name = "filterBy", required = false) String filterBy){
+
+        PageSortFilterDto psf = new PageSortFilterDto();
+        psf.setKeyword(keyword);
+        psf.setFilterBy(filterBy);
+        return new CountDto(personService.countAll(psf.toPersonKeyword()));
     }
 
     @GetMapping("/exists/{name}")

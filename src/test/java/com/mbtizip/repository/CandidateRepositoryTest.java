@@ -2,7 +2,6 @@ package com.mbtizip.repository;
 
 import com.mbtizip.common.util.TestEntityGenerator;
 import com.mbtizip.domain.candidate.Candidate;
-import com.mbtizip.domain.candidate.CandidateDType;
 import com.mbtizip.domain.candidate.job.Job;
 import com.mbtizip.domain.candidate.person.Person;
 import com.mbtizip.domain.candidate.person.QPerson;
