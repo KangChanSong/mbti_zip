@@ -42,8 +42,7 @@ public class FileServiceImpl implements FileService{
     public void saveFileWithCandidate(Long id, String fullname) {
         Candidate candidate = candidateRepository.find(id);
         if(candidate == null) throw new IllegalArgumentException(NO_ENTITY_FOUND + " id = " + id);
-        File file = new File(new FileId(fullname));
-        fileRepository.save(new File(new FileId(fullname)));
+        File file = fileRepository.find(new FileId(fullname));
         file.setCandidate(candidate);
     }
 
@@ -58,7 +57,7 @@ public class FileServiceImpl implements FileService{
     @Transactional
     @Override
     public Boolean deleteFileWithCandidate(Candidate candidate) {
-        deleteFileWithCandidate(candidate);
+        fileRepository.deleteByCandidate(candidate);
         return true;
     }
 }

@@ -28,6 +28,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final CandidateRepository candidateRepository;
 
+    @Transactional
     @Override
     public Boolean addComment(Long candidateId, Comment comment) {
         Candidate candidate = candidateRepository.find(candidateId);
@@ -67,28 +68,12 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Boolean delete(Long commentId, String password) {
         Comment comment = checkIfNullAndReturn(commentId);
-        if(isMatch(password, comment.getPassword())){
+        if (isMatch(password, comment.getPassword())) {
             commentRepository.remove(comment);
             return true;
         } else {
             return false;
         }
-    }
-
-    @Transactional
-    @Override
-    public Boolean like(Long commentId) {
-        Comment comment = checkIfNullAndReturn(commentId);
-        comment.modifyLikes(true);
-        return true;
-    }
-
-    @Transactional
-    @Override
-    public Boolean cancelLike(Long commentId) {
-        Comment comment = checkIfNullAndReturn(commentId);
-        comment.modifyLikes(false);
-        return true;
     }
 
     @Override

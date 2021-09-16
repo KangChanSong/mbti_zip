@@ -16,8 +16,5 @@ public interface CommentService {
     Boolean update(Long commentId, Comment comment);
     Boolean delete(Long commentId, String password);
 
-    Boolean like(Long commentId);
-    Boolean cancelLike(Long commentId);
-
     Long getTotalCount(Long candidateId);
 }

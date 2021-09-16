@@ -57,7 +57,6 @@ public abstract class Candidate extends BaseEntity {
     //== 연관관계 메서드 ==//
     public void changeMbti(Mbti mbti) {
         this.mbti = mbti;
-        mbti.getCandidates().add(this);
     }
 
     //== 편의 메서드 ==//

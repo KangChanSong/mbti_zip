@@ -8,6 +8,7 @@ import com.mbtizip.exception.NoEntityFoundException;
 import com.mbtizip.repository.file.FileRepository;
 import com.mbtizip.repository.test.TestRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +40,7 @@ public class FileRepositoryTest {
                 .build();
     }
 
-    //@Test
+    @Test
     public void 파일_등록(){
 
         //when
@@ -52,7 +53,7 @@ public class FileRepositoryTest {
     }
 
     //파일 person으로 조회
-   // @Test
+   @Test
     public void 파일_PERSON_조회(){
 
         //given
@@ -69,7 +70,7 @@ public class FileRepositoryTest {
         assertFileWithPerson(findFile, person);
     }
 
-   // @Test
+   @Test
     public void 파일_JOB_조회(){
         //given
         File file = createFile();
@@ -87,7 +88,7 @@ public class FileRepositoryTest {
     }
 
     //person 을 참조하는 file 삭제
-   // @Test
+   @Test
     public void 파일_PERSON_삭제(){
 
         //given
@@ -103,7 +104,7 @@ public class FileRepositoryTest {
         assertThrows(NoEntityFoundException.class, () -> fileRepository.findByCandidate(person));
     }
 
-    //@Test
+    @Test
     public void 파일_JOB_삭제(){
 
         //given
