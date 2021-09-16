@@ -37,7 +37,8 @@ out/
 .vscode/
 
 ### DB계정 ###
-application.properties
+/src/main/resources/application.properties
 
 ### 더미 ###
-src/main/java/com/mbtizip/dummies/
+/src/main/java/com/mbtizip/dummies/DummyInserter.java
+
