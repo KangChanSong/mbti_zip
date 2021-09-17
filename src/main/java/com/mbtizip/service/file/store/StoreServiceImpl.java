@@ -27,7 +27,6 @@ public class StoreServiceImpl implements StoreService{
 
     Path rootLocation;
 
-    private final FileDeleteService fileDeleteService;
 
     @PostConstruct
     public void setRootLocation(){
@@ -48,7 +47,6 @@ public class StoreServiceImpl implements StoreService{
             throw new RuntimeException("파일을 저장하는데 실패했습니다.", e);
         }
 
-        FileDeleter.deleteFileIfFull(() -> fileDeleteService.deleteNotRegisteredFiles());
     }
     @Override
     public byte[] loadFromLocal(String fullname) {

@@ -5,7 +5,9 @@ import com.mbtizip.domain.file.File;
 import com.mbtizip.domain.file.FileId;
 import com.mbtizip.repository.candidate.CandidateRepository;
 import com.mbtizip.repository.file.FileRepository;
+import com.mbtizip.service.file.file.FileDeleteService;
 import com.mbtizip.service.file.store.StoreService;
+import com.mbtizip.util.FileDeleter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ public class FileServiceImpl implements FileService{
     private final FileRepository fileRepository;
     private final CandidateRepository candidateRepository;
     private final StoreService storeService;
+    private final FileDeleteService fileDeleteService;
 
     @Override
     public File getByCandidate(Candidate candidate) {
@@ -32,6 +35,7 @@ public class FileServiceImpl implements FileService{
     @Transactional
     @Override
     public String upload(MultipartFile multipartFile) {
+        FileDeleter.deleteFileIfFull(() -> fileDeleteService.deleteNotRegisteredFiles());
         FileId saved = fileRepository.save(new File(multipartFile));
         storeService.storeInLocal(multipartFile, saved.getUuid());
         return saved.getUuid() + "_" + saved.getName();

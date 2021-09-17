@@ -21,9 +21,7 @@ public class FileDeleteServiceImpl implements FileDeleteService {
 
     @Value("${file.path}")
     private String path;
-    /**
-     * 한시간마다 등록되지 않은 이미지를 삭제한다.
-     */
+
     @Override
     public void deleteNotRegisteredFiles() {
         deleteNotRegistered();
@@ -33,13 +31,10 @@ public class FileDeleteServiceImpl implements FileDeleteService {
     public void deleteNotRegistered(){
         log.info("등록되지 않은 이미지 삭제");
 
-        // 인물, 직업과 연관되지 않은 파일들을 모두 찾는다.
         List<File> files = fileRepository.findAllNotRegistered();
         if(files == null || files.isEmpty()) return;
 
-        // 로컬 스토리지에서 파일들을 삭제한다.
         deleteFromLocal(files);
-        // 데이터베이스에서 파일들을 삭제한다.
         deleteFromDb(files);
     }
 
