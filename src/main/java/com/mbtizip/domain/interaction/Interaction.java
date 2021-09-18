@@ -19,8 +19,8 @@ public class Interaction {
     private Long id;
 
     @NotNull
-    @Column(name = "session_id")
-    private String sessionId;
+    @Column(name = "cookie")
+    private String cookie;
 
     @Column(name = "person_id")
     private Long personId;
@@ -37,10 +37,10 @@ public class Interaction {
      * @param targetId = primary key
      * @param dType = L for like or V for vote
      */
-    public Interaction(String target, Long targetId , String dType){
+    public Interaction(String target, Long targetId , String dType, String cookie){
         assignTarget(target, targetId);
         assignDType(dType);
-        this.sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
+        this.cookie = cookie;
     }
 
     private void assignTarget(String target, Long targetId) {

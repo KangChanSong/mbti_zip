@@ -2,6 +2,7 @@ package com.mbtizip.controller.common.like;
 
 import com.mbtizip.controller.common.common.InteractionControllerHelper;
 import com.mbtizip.controller.common.common.InteractionDType;
+import com.mbtizip.controller.cookie.CookieController;
 import com.mbtizip.domain.common.wrapper.BooleanResponseDto;
 import com.mbtizip.domain.interaction.Interaction;
 import com.mbtizip.domain.interaction.dto.InteractionResponseDto;
@@ -22,6 +23,7 @@ import java.util.function.Supplier;
 import static com.mbtizip.controller.common.TargetProperties.*;
 import static com.mbtizip.controller.common.common.InteractionControllerHelper.*;
 import static com.mbtizip.controller.common.common.InteractionDType.L;
+import static com.mbtizip.controller.cookie.CookieController.INTERACTION_COOKIE;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -36,8 +38,9 @@ public class LikeApiController {
 
     @PostMapping("/{target}/{targetId}")
     public BooleanResponseDto like(@PathVariable("target") String target,
-                                       @PathVariable("targetId") Long targetId){
-        boolean isExists = interactionService.checkAndRemove(new Interaction(target, targetId, L.name()));
+                                   @PathVariable("targetId") Long targetId,
+                                   @CookieValue(INTERACTION_COOKIE) String cookie){
+        boolean isExists = interactionService.checkAndRemove(new Interaction(target, targetId, L.name(), cookie));
 
         Boolean isSuccess;
 
@@ -56,7 +59,8 @@ public class LikeApiController {
 
     @GetMapping("/get/{target}/{targetId}")
     public LikeResponseDto get(@PathVariable("target") String target,
-                            @PathVariable("targetId") Long targetId){
+                            @PathVariable("targetId") Long targetId,
+                               @CookieValue(INTERACTION_COOKIE) String cookie){
 
         log.info("좋아요 수 조회");
 
@@ -64,7 +68,7 @@ public class LikeApiController {
                 () -> personService.getById(targetId).getLikes(),
                 () -> jobService.get(targetId).getLikes());
 
-        boolean isExists = interactionService.checkIfExists(new Interaction(target, targetId, L.name()));
+        boolean isExists = interactionService.checkIfExists(new Interaction(target, targetId, L.name(), cookie));
 
         return new LikeResponseDto(likes, !isExists);
     }

@@ -1,6 +1,7 @@
 package com.mbtizip.controller.cookie;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,15 +11,24 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/cookie")
+@RequestMapping("/api/v1/cookie")
 public class CookieController {
 
     public static final String INTERACTION_COOKIE = "interaction_cookie";
 
-    @GetMapping("/api/v1/get")
-    public void getCookie(HttpServletResponse response){
+    @GetMapping("/get")
+    public void getCookie(HttpServletResponse response, @CookieValue(CookieController.INTERACTION_COOKIE) String interactionCookie){
 
-        Cookie cookie = new Cookie(INTERACTION_COOKIE, UUID.randomUUID().toString());
-        response.addCookie(cookie);
+        if(interactionCookie == null || interactionCookie.equals("")) {
+            Cookie cookie = new Cookie(INTERACTION_COOKIE, UUID.randomUUID().toString());
+            cookie.setMaxAge(60 * 60 * 24 * 365 * 10);
+            response.addCookie(cookie);
+        }
+    }
+
+    @GetMapping("/test")
+    public String getCookieTest(@CookieValue(CookieController.INTERACTION_COOKIE) String intercationCookie){
+
+        return intercationCookie;
     }
 }

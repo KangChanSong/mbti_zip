@@ -1,5 +1,6 @@
 package com.mbtizip.controller.common.vote;
 
+import com.mbtizip.controller.cookie.CookieController;
 import com.mbtizip.domain.common.wrapper.BooleanResponseDto;
 import com.mbtizip.domain.interaction.Interaction;
 import com.mbtizip.domain.mbtiCount.dto.MbtiCountGetDto;
@@ -18,6 +19,7 @@ import java.util.List;
 import static com.mbtizip.controller.common.common.InteractionControllerHelper.TARGET_INVALID_ERROR_MESSAGE;
 import static com.mbtizip.controller.common.common.InteractionControllerHelper.handleTarget;
 import static com.mbtizip.controller.common.common.InteractionDType.V;
+import static com.mbtizip.controller.cookie.CookieController.INTERACTION_COOKIE;
 
 @Slf4j
 @RestController
@@ -32,10 +34,11 @@ public class VoteApiController {
 
     @PostMapping("/mbti/{mbtiId}/{target}/{targetId}")
     public BooleanResponseDto vote(@PathVariable("mbtiId") Long mbtiId,
-                                       @PathVariable("target") String target,
-                                       @PathVariable("targetId") Long targetId){
+                                   @PathVariable("target") String target,
+                                   @PathVariable("targetId") Long targetId,
+                                   @CookieValue(INTERACTION_COOKIE) String cookie){
 
-        boolean isExists = interactionService.checkAndRemove(new Interaction(target, targetId, V.name()));
+        boolean isExists = interactionService.checkAndRemove(new Interaction(target, targetId, V.name(), cookie));
 
         Boolean isSuccess;
         if(!isExists){
@@ -55,10 +58,11 @@ public class VoteApiController {
 
     @GetMapping("/list/{target}/{targetId}")
     public VoteResponseDto getList(@PathVariable("target") String target,
-                                    @PathVariable("targetId") Long targetId){
+                                   @PathVariable("targetId") Long targetId,
+                                   @CookieValue(INTERACTION_COOKIE) String cookie){
         
         log.info("투표수 집계 조회");
-        boolean isExists = interactionService.checkIfExists(new Interaction(target, targetId, V.name()));
+        boolean isExists = interactionService.checkIfExists(new Interaction(target, targetId, V.name(), cookie));
 
         log.info(Boolean.toString(isExists));
         MbtiCountListDto listDto = MbtiCountListDto.toDto(mbtiCountService.getVotesByCandidate(targetId));
