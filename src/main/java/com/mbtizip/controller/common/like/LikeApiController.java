@@ -1,29 +1,18 @@
 package com.mbtizip.controller.common.like;
 
-import com.mbtizip.controller.common.common.InteractionControllerHelper;
-import com.mbtizip.controller.common.common.InteractionDType;
-import com.mbtizip.controller.cookie.CookieController;
 import com.mbtizip.domain.common.wrapper.BooleanResponseDto;
 import com.mbtizip.domain.interaction.Interaction;
-import com.mbtizip.domain.interaction.dto.InteractionResponseDto;
-import com.mbtizip.service.comment.CommentService;
 import com.mbtizip.service.interaction.InteractionService;
 import com.mbtizip.service.job.JobService;
 import com.mbtizip.service.person.PersonService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
 
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
-import static com.mbtizip.controller.common.TargetProperties.*;
-import static com.mbtizip.controller.common.common.InteractionControllerHelper.*;
+import static com.mbtizip.controller.common.common.InteractionControllerHelper.handleTarget;
 import static com.mbtizip.controller.common.common.InteractionDType.L;
-import static com.mbtizip.controller.cookie.CookieController.INTERACTION_COOKIE;
+import static com.mbtizip.filter.CookieFilter.INTERACTION_COOKIE;
 
 @Slf4j
 @RequiredArgsConstructor

@@ -1,6 +1,5 @@
 package com.mbtizip.controller.common.vote;
 
-import com.mbtizip.controller.cookie.CookieController;
 import com.mbtizip.domain.common.wrapper.BooleanResponseDto;
 import com.mbtizip.domain.interaction.Interaction;
 import com.mbtizip.domain.mbtiCount.dto.MbtiCountGetDto;
@@ -16,10 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.mbtizip.controller.common.common.InteractionControllerHelper.TARGET_INVALID_ERROR_MESSAGE;
 import static com.mbtizip.controller.common.common.InteractionControllerHelper.handleTarget;
 import static com.mbtizip.controller.common.common.InteractionDType.V;
-import static com.mbtizip.controller.cookie.CookieController.INTERACTION_COOKIE;
+import static com.mbtizip.filter.CookieFilter.INTERACTION_COOKIE;
 
 @Slf4j
 @RestController
