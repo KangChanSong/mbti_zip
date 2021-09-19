@@ -30,5 +30,7 @@ public class CookieFilter implements Filter {
             cookie.setMaxAge(60 * 60 * 24 * 365 * 10);
             ((HttpServletResponse)response).addCookie(cookie);
         }
+
+        chain.doFilter(request, response);
     }
 }
