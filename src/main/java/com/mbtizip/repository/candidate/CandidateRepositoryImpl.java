@@ -108,7 +108,7 @@ public class CandidateRepositoryImpl implements CandidateRepository{
                 .fetchJoin()
                 .leftJoin(person.file, QFile.file)
                 .fetchJoin()
-                .leftJoin(person.category, QCategory.category)
+                .innerJoin(person.category, QCategory.category)
                 .fetchJoin();
     }
 

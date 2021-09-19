@@ -30,7 +30,7 @@ public class InteractionRepositoryTest {
         Long personId = 1L;
         String dType = "L";
 
-        Interaction interaction = new Interaction("person", personId , dType);
+        Interaction interaction = new Interaction("person", personId , dType, "cookie");
 
         //when
         interactionRepository.save(interaction);
@@ -48,7 +48,7 @@ public class InteractionRepositoryTest {
     public void 결과_0_에러(){
         //when
         assertThrows(IllegalArgumentException.class, () ->
-                interactionRepository.findOneByObject(new Interaction("sd", 1L ,  "person")));
+                interactionRepository.findOneByObject(new Interaction("sd", 1L ,  "person", "cookie")));
     }
 
     @DisplayName("Job에 대해 insert 했을 때 올바르게 찾는지에 대한 테스트")
@@ -59,7 +59,7 @@ public class InteractionRepositoryTest {
         Long jobId = 1L;
         String dType = V.name();
 
-        Interaction interaction = new Interaction("job", jobId, dType);
+        Interaction interaction = new Interaction("job", jobId, dType, "cookie");
         interactionRepository.save(interaction);
         //when
 
