@@ -68,8 +68,8 @@ public class MbtiCountServiceImpl implements MbtiCountService{
     }
     //== private method ==//
     private void executeVote(Mbti mbti, Candidate candidate , Boolean isIncrease){
-        List<MbtiCount> maxVoted = mbtiCountRepository.findMaxByCandidate(candidate);
         mbtiCountRepository.modifyCandidateCount(mbti, candidate, isIncrease);
+        List<MbtiCount> maxVoted = mbtiCountRepository.findMaxByCandidate(candidate);
         updateCandidateMbti(maxVoted, candidate);
     }
 
