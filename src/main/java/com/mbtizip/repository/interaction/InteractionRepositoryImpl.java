@@ -24,10 +24,10 @@ public class InteractionRepositoryImpl implements InteractionRepository {
         try {
             Interaction finded = (Interaction) em.createQuery("select i from Interaction i " +
                             "where i.dType =: dType" +
-                            " and i.sessionId =: sessionId" +
+                            " and i.cookie =: cookie" +
                             " and ( i.personId =: personId or i.jobId =: jobId )")
                     .setParameter("dType", interaction.getDType())
-                    .setParameter("sessionId", interaction.getSessionId())
+                    .setParameter("cookie", interaction.getCookie())
                     .setParameter("personId", interaction.getPersonId())
                     .setParameter("jobId", interaction.getJobId())
                     .getSingleResult();

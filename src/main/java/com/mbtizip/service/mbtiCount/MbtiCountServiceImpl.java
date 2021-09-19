@@ -56,6 +56,7 @@ public class MbtiCountServiceImpl implements MbtiCountService{
         mbtiCountRepository.removeAllByCandidate(candidate);
     }
 
+    @Transactional
     @Override
     public void initializeByCandidate(Candidate candidate) {
         mbtiCountRepository.insertAllByCandidate(candidate);
@@ -77,7 +78,7 @@ public class MbtiCountServiceImpl implements MbtiCountService{
 
         if(maxVoted != null && maxVoted.get(0).getCount() == 0) candidate.changeMbti(null);
 
-        // 같은 투표수의 MBTI 가 두개 이상 존재할때
+        // 같은 투표수의 MBTI 가 두개 이상 존재할때\
         if(maxVoted.size() > 1){
             candidate.changeMbti(null);
         } else if (maxVoted.size() == 1){
