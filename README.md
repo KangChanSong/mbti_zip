@@ -1,4 +1,4 @@
-## 🕺  MBTI-ZIP | 투표 기반 MBTI 커뮤니티 서비스
+## 🕺  MBTI-ZIP | 투표 기반 MBTI 커뮤니티 서비스  -> <a href="http://www.mbti-zip.me">링크</a>
 <p><b>좋아하는 드라마나 영화의 인물</b>에 대한 MBTI가 평소에 궁금하지 않았나요?</p>
 혹은 <b>내 직업</b>에 어떤 MBTI 유형이 가장 많이 분포해 있는지 궁금하신가요?
 
@@ -6,7 +6,6 @@
 <p>MBTI-ZIP 에서는 투표를 통해 MBTI 를 확인할 수 있습니다.</p>
 또 MBTI에 대해서 뜨거운 토론을 펼칠 수 도 있어요!
 
-<a href="http://www.mbti-zip.me">링크</a>
 
 ## 🎈 개발환경
 <ul>
