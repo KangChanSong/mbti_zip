@@ -7,7 +7,7 @@
 또 MBTI에 대해서 뜨거운 토론을 펼칠 수 도 있어요!
 
 
-## 🎈 개발환경
+## ⚙ 개발환경
 <ul>
   <li>IntelliJ IDEA</li>
   <li>Visual Studio Code</li>
@@ -16,7 +16,7 @@
   <li>putty</li>
 </ul>
 
-## 🎈 기술 스택
+## 🛠 기술 스택
 ### 프론트엔드
 <ul>
   <li>HTML</li>
@@ -33,7 +33,7 @@
   <li>Oracle Database</li>
 </ul>
 
-## 🎈 배포환경
+## 🐱‍🏍 배포환경
 <ul>
   <li>Travis CI</li>
   <li>AWS EC2</li>
@@ -43,7 +43,7 @@
   <li>NginX</li>
 </ul>
 
-## 🎈 주요 기능
+##👨‍🦯 주요 기능
 <ul>
   <li>인물, 직업 등록, 삭제</li>
   <li>댓글 등록, 수정, 삭제</li>
